@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>🔐 TensesPlay Admin – 管理</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #0f1117;
+  --bg2: #1a1d27;
+  --card: #1e2130;
+  --card2: #252840;
+  --primary: #4f6ef7;
+  --primary-dark: #3a56d4;
+  --secondary: #ff6b9d;
+  --accent: #ffd166;
+  --success: #06d6a0;
+  --danger: #ef476f;
+  --text: #e8eaf6;
+  --text-muted: #8b90b0;
+  --border: #2e3250;
+  --shadow: 0 4px 32px rgba(0,0,0,0.4);
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── LOGIN SCREEN ── */
+#login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  background-image:
+    radial-gradient(ellipse at 30% 30%, rgba(79,110,247,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 70%, rgba(255,107,157,0.1) 0%, transparent 60%);
+}
+.login-box {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 48px 40px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: var(--shadow);
+  text-align: center;
+  animation: fadeUp 0.4s ease;
+}
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.login-logo {
+  font-family: 'Baloo 2', cursive;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+.login-logo span { color: var(--secondary); }
+.login-subtitle { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 32px; }
+.login-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; text-align: left; }
+.login-label { font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+.login-input {
+  padding: 12px 16px; border-radius: var(--radius-sm);
+  border: 2px solid var(--border); background: var(--bg2);
+  color: var(--text); font-family: 'Nunito', sans-serif;
+  font-size: 1rem; font-weight: 600; outline: none; transition: border 0.2s;
+}
+.login-input:focus { border-color: var(--primary); }
+.login-error {
+  display: none; background: rgba(239,71,111,0.12); border: 1.5px solid var(--danger);
+  color: var(--danger); border-radius: var(--radius-sm);
+  padding: 10px 14px; font-size: 0.88rem; font-weight: 700; margin-bottom: 12px;
+}
+.login-error.show { display: block; }
+.btn-login {
+  width: 100%; padding: 13px; border-radius: var(--radius-sm);
+  border: none; background: var(--primary); color: #fff;
+  font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 800;
+  cursor: pointer; transition: all 0.2s; margin-top: 4px;
+}
+.btn-login:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+/* ── MAIN ADMIN UI ── */
+#admin-ui { display: none; }
+
+header {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  padding: 0 28px;
+  height: 62px;
+  display: flex; align-items: center; gap: 14px;
+  position: sticky; top: 0; z-index: 100;
+}
+.logo { font-family: 'Baloo 2', cursive; font-size: 1.4rem; font-weight: 800; color: var(--primary); }
+.logo span { color: var(--secondary); }
+.admin-badge {
+  background: rgba(79,110,247,0.15); border: 1px solid var(--primary);
+  color: var(--primary); border-radius: 50px;
+  padding: 3px 12px; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+}
+.header-actions { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+
+/* GitHub config bar */
+.github-bar {
+  background: var(--card2);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 28px;
+  display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+}
+.gh-field { display: flex; flex-direction: column; gap: 3px; }
+.gh-label { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+.gh-input {
+  padding: 6px 12px; border-radius: 8px; border: 1.5px solid var(--border);
+  background: var(--bg2); color: var(--text);
+  font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 600;
+  outline: none; transition: border 0.2s; min-width: 160px;
+}
+.gh-input:focus { border-color: var(--primary); }
+.gh-status {
+  font-size: 0.82rem; font-weight: 700; padding: 5px 12px;
+  border-radius: 50px; margin-left: auto;
+}
+.gh-status.connected { background: rgba(6,214,160,0.12); color: var(--success); border: 1px solid var(--success); }
+.gh-status.disconnected { background: rgba(239,71,111,0.1); color: var(--danger); border: 1px solid var(--danger); }
+
+main { max-width: 1100px; margin: 0 auto; padding: 24px 20px 80px; }
+
+/* ── TOOLBAR ── */
+.toolbar {
+  display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.search-wrap { position: relative; flex: 1; min-width: 200px; }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1rem; }
+.search-input {
+  width: 100%; padding: 10px 14px 10px 36px;
+  border-radius: 50px; border: 2px solid var(--border);
+  background: var(--card); color: var(--text);
+  font-family: 'Nunito', sans-serif; font-size: 0.95rem; font-weight: 600; outline: none;
+  transition: border 0.2s;
+}
+.search-input:focus { border-color: var(--primary); }
+.btn {
+  padding: 9px 20px; border-radius: 50px; border: none;
+  font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.88rem;
+  cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 7px;
+  white-space: nowrap;
+}
+.btn-primary   { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+.btn-success   { background: var(--success); color: #111; }
+.btn-success:hover { opacity:0.9; transform:translateY(-1px); }
+.btn-danger    { background: var(--danger); color: #fff; }
+.btn-danger:hover  { opacity:0.9; }
+.btn-ghost     { background: var(--card); color: var(--text); border: 1.5px solid var(--border); }
+.btn-ghost:hover   { border-color: var(--primary); color: var(--primary); }
+.btn-accent    { background: var(--accent); color: #111; }
+.btn-accent:hover  { opacity:0.9; transform:translateY(-1px); }
+.btn-sm { padding: 6px 14px; font-size: 0.8rem; }
+
+/* ── STATS BAR ── */
+.stats-bar {
+  display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;
+}
+.stat-chip {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 50px; padding: 6px 16px;
+  font-size: 0.82rem; font-weight: 700; color: var(--text-muted);
+}
+.stat-chip strong { color: var(--text); }
+
+/* ── VERB TABLE ── */
+.table-wrap {
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.verb-table { width: 100%; border-collapse: collapse; }
+.verb-table thead tr {
+  background: var(--card2);
+  border-bottom: 1px solid var(--border);
+}
+.verb-table th {
+  padding: 12px 14px; text-align: left;
+  font-size: 0.72rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.8px; color: var(--text-muted); white-space: nowrap;
+}
+.verb-table th.sortable { cursor: pointer; user-select: none; }
+.verb-table th.sortable:hover { color: var(--primary); }
+.sort-indicator { margin-left: 4px; opacity: 0.5; }
+.verb-table td {
+  padding: 11px 14px; border-bottom: 1px solid var(--border);
+  font-size: 0.9rem; vertical-align: middle;
+}
+.verb-table tr:last-child td { border-bottom: none; }
+.verb-table tr:hover td { background: rgba(79,110,247,0.04); }
+
+.drag-handle { cursor: grab; color: var(--text-muted); font-size: 1.1rem; padding-right: 4px; }
+.drag-handle:active { cursor: grabbing; }
+.verb-table tr.dragging { opacity: 0.4; }
+.verb-table tr.drag-over td { background: rgba(79,110,247,0.1); }
+
+.cell-num { color: var(--text-muted); font-size: 0.8rem; font-weight: 700; }
+.cell-icon { font-size: 1.3rem; }
+.cell-present { font-family: 'Baloo 2', cursive; font-size: 1.05rem; font-weight: 700; color: var(--primary); }
+.cell-past { font-weight: 700; color: var(--secondary); }
+.cell-pp { font-weight: 700; color: var(--success); }
+.cell-zh { color: var(--text-muted); font-size: 0.85rem; }
+.row-actions { display: flex; gap: 6px; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.65); backdrop-filter: blur(4px);
+  z-index: 500; align-items: center; justify-content: center; padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 32px;
+  width: 100%; max-width: 680px; max-height: 90vh;
+  overflow-y: auto; animation: fadeUp 0.25s ease;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.modal-title {
+  font-family: 'Baloo 2', cursive; font-size: 1.4rem; font-weight: 800;
+  color: var(--primary); margin-bottom: 24px;
+  display: flex; align-items: center; gap: 10px;
+}
+.modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.modal-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group.full { grid-column: 1 / -1; }
+.form-label { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); }
+.form-input, .form-textarea {
+  padding: 10px 14px; border-radius: var(--radius-sm);
+  border: 2px solid var(--border); background: var(--bg2);
+  color: var(--text); font-family: 'Nunito', sans-serif;
+  font-size: 0.95rem; font-weight: 600; outline: none; transition: border 0.2s;
+}
+.form-input:focus, .form-textarea:focus { border-color: var(--primary); }
+.form-textarea { resize: vertical; min-height: 72px; }
+
+/* Sentences editor */
+.sentences-editor { grid-column: 1 / -1; }
+.sentence-item {
+  background: var(--bg2); border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); padding: 14px; margin-bottom: 10px;
+}
+.sentence-row-header {
+  display: flex; gap: 8px; align-items: center; margin-bottom: 10px;
+}
+.tense-select {
+  padding: 6px 10px; border-radius: 8px; border: 1.5px solid var(--border);
+  background: var(--bg); color: var(--text);
+  font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 700; outline: none;
+}
+.modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 28px; right: 28px;
+  padding: 13px 20px; border-radius: var(--radius-sm);
+  font-weight: 800; font-size: 0.9rem; z-index: 9999;
+  animation: toastIn 0.3s ease; display: none;
+  align-items: center; gap: 10px; box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+.toast.show { display: flex; }
+.toast.success { background: var(--success); color: #111; }
+.toast.error   { background: var(--danger);  color: #fff; }
+.toast.info    { background: var(--primary);  color: #fff; }
+@keyframes toastIn { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+/* ── CONFIRM DIALOG ── */
+.confirm-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7); z-index: 600;
+  align-items: center; justify-content: center;
+}
+.confirm-overlay.open { display: flex; }
+.confirm-box {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 28px; max-width: 380px; width: 90%;
+  text-align: center; animation: fadeUp 0.2s ease;
+}
+.confirm-box h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 10px; }
+.confirm-box p  { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; }
+.confirm-actions { display: flex; gap: 10px; justify-content: center; }
+
+/* ── PUSH MODAL ── */
+.push-log {
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); padding: 14px;
+  font-family: monospace; font-size: 0.82rem; color: var(--success);
+  min-height: 80px; max-height: 180px; overflow-y: auto;
+  margin: 16px 0;
+}
+.push-log .log-error { color: var(--danger); }
+.push-log .log-info  { color: var(--text-muted); }
+
+.hidden { display: none !important; }
+
+@media(max-width:700px) {
+  .modal-grid, .modal-grid.three { grid-template-columns: 1fr; }
+  .github-bar { flex-direction: column; align-items: stretch; }
+  .gh-input { min-width: unset; }
+  .verb-table th:nth-child(6),
+  .verb-table td:nth-child(6) { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ LOGIN ══════════════════ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">🌟 Tenses<span>Play</span></div>
+    <div class="login-subtitle">管理員登入 Admin Login</div>
+    <div class="login-field">
+      <label class="login-label">Password</label>
+      <input class="login-input" id="pw-input" type="password" placeholder="Enter admin password"
+        onkeydown="if(event.key==='Enter') doLogin()"/>
+    </div>
+    <div class="login-error" id="login-error">❌ Incorrect password. Please try again.</div>
+    <button class="btn-login" onclick="doLogin()">🔐 Login</button>
+    <div style="margin-top:16px">
+      <a href="index.html" style="color:var(--text-muted);font-size:0.85rem;text-decoration:none">← Back to App</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ ADMIN UI ══════════════════ -->
+<div id="admin-ui">
+
+  <header>
+    <div class="logo">🌟 Tenses<span>Play</span></div>
+    <div class="admin-badge">管理 Admin</div>
+    <div class="header-actions">
+      <button class="btn btn-success" onclick="openPushModal()">⬆️ Push to GitHub</button>
+      <button class="btn btn-ghost btn-sm" onclick="doLogout()">🚪 Logout</button>
+    </div>
+  </header>
+
+  <!-- GitHub Config Bar -->
+  <div class="github-bar">
+    <div class="gh-field">
+      <div class="gh-label">GitHub Token (PAT)</div>
+      <input class="gh-input" id="gh-token" type="password" placeholder="ghp_xxxxxxxxxxxx"
+        oninput="saveGhConfig()" style="min-width:200px"/>
+    </div>
+    <div class="gh-field">
+      <div class="gh-label">Owner</div>
+      <input class="gh-input" id="gh-owner" type="text" placeholder="cydev-hash"
+        oninput="saveGhConfig()" style="min-width:120px"/>
+    </div>
+    <div class="gh-field">
+      <div class="gh-label">Repo</div>
+      <input class="gh-input" id="gh-repo" type="text" placeholder="hh-tenses-play"
+        oninput="saveGhConfig()" style="min-width:140px"/>
+    </div>
+    <div class="gh-field">
+      <div class="gh-label">Branch</div>
+      <input class="gh-input" id="gh-branch" type="text" placeholder="main"
+        oninput="saveGhConfig()" style="min-width:80px"/>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="testGhConnection()" style="align-self:flex-end">🔗 Test</button>
+    <div class="gh-status disconnected" id="gh-status">⚪ Not tested</div>
+  </div>
+
+  <main>
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input class="search-input" id="search-input" type="text"
+          placeholder="Search verbs..." oninput="renderTable()"/>
+      </div>
+      <button class="btn btn-primary" onclick="openAddModal()">➕ Add Verb</button>
+      <button class="btn btn-accent" onclick="importJSON()">📥 Import JSON</button>
+      <button class="btn btn-ghost" onclick="exportJSON()">📤 Export JSON</button>
+      <button class="btn btn-ghost" onclick="exportCSV()">📊 Export CSV</button>
+      <input type="file" id="import-file" accept=".json,.csv" class="hidden" onchange="handleImport(event)"/>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-bar">
+      <div class="stat-chip">Total: <strong id="stat-total">0</strong> verbs</div>
+      <div class="stat-chip">Showing: <strong id="stat-showing">0</strong></div>
+      <div class="stat-chip" id="stat-unsaved" style="display:none;color:var(--accent);border-color:var(--accent)">
+        ⚠️ <strong>Unsaved changes</strong> — push to GitHub to update the live app
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+      <table class="verb-table" id="verb-table">
+        <thead>
+          <tr>
+            <th style="width:32px"></th>
+            <th style="width:36px">#</th>
+            <th style="width:40px">Icon</th>
+            <th class="sortable" onclick="sortBy('present')"># Present <span class="sort-indicator" id="sort-present"></span></th>
+            <th class="sortable" onclick="sortBy('past')">Past <span class="sort-indicator" id="sort-past"></span></th>
+            <th class="sortable" onclick="sortBy('pp')">Past Part. <span class="sort-indicator" id="sort-pp"></span></th>
+            <th>Chinese 中文</th>
+            <th>Sentences</th>
+            <th style="width:110px">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="verb-tbody"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<!-- ══════════════════ ADD/EDIT MODAL ══════════════════ -->
+<div class="modal-overlay" id="verb-modal">
+  <div class="modal">
+    <div class="modal-title" id="modal-title">➕ Add New Verb</div>
+
+    <div class="modal-grid three">
+      <div class="form-group">
+        <label class="form-label">Present Tense *</label>
+        <input class="form-input" id="f-present" type="text" placeholder="e.g. go"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Past Tense *</label>
+        <input class="form-input" id="f-past" type="text" placeholder="e.g. went"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Past Participle *</label>
+        <input class="form-input" id="f-pp" type="text" placeholder="e.g. gone"/>
+      </div>
+    </div>
+
+    <div class="modal-grid">
+      <div class="form-group">
+        <label class="form-label">Alt. Past (optional)</label>
+        <input class="form-input" id="f-pastAlt" type="text" placeholder="e.g. learnt"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Alt. Past Part. (optional)</label>
+        <input class="form-input" id="f-ppAlt" type="text" placeholder="e.g. learnt"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Emoji Icon</label>
+        <input class="form-input" id="f-icon" type="text" placeholder="🚶" maxlength="4"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Chinese 中文 (HK)</label>
+        <input class="form-input" id="f-zh" type="text" placeholder="e.g. 去 / 走"/>
+      </div>
+    </div>
+
+    <!-- Sentences -->
+    <div class="form-group sentences-editor">
+      <label class="form-label" style="margin-bottom:8px">📚 Example Sentences (3 tenses)</label>
+      <div id="sentences-editor-list"></div>
+      <button class="btn btn-ghost btn-sm" style="margin-top:8px" onclick="addSentenceRow()">➕ Add sentence</button>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveVerb()">💾 Save Verb</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ PUSH MODAL ══════════════════ -->
+<div class="modal-overlay" id="push-modal">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-title">⬆️ Push to GitHub</div>
+    <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:8px">
+      This will update <code style="color:var(--accent)">verbs.js</code> in your GitHub repo and trigger a live deployment.
+    </p>
+    <div class="form-group" style="margin-bottom:12px">
+      <label class="form-label">Commit Message</label>
+      <input class="form-input" id="commit-msg" type="text" value="Update verb list"/>
+    </div>
+    <div class="push-log" id="push-log"><span class="log-info">Ready to push...</span></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closePushModal()">Close</button>
+      <button class="btn btn-success" id="push-btn" onclick="pushToGitHub()">⬆️ Push Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ CONFIRM DIALOG ══════════════════ -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <h3 id="confirm-title">Delete Verb?</h3>
+    <p id="confirm-msg">This action cannot be undone.</p>
+    <div class="confirm-actions">
+      <button class="btn btn-ghost" onclick="closeConfirm()">Cancel</button>
+      <button class="btn btn-danger" id="confirm-ok">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="verbs.js"></script>
+<script>
+// ══════════════════════════════════════════
+//  CONFIG
+// ══════════════════════════════════════════
+const ADMIN_PASSWORD = 'admin1234'; // ← Change this password
+const GH_CONFIG_KEY  = 'tenses_gh_config';
+
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
+let verbs       = [];   // working copy
+let editingIdx  = null; // null = add, number = edit index
+let sortKey     = null;
+let sortDir     = 1;
+let isDirty     = false;
+let confirmCallback = null;
+
+// ══════════════════════════════════════════
+//  LOGIN
+// ══════════════════════════════════════════
+function doLogin() {
+  const pw = document.getElementById('pw-input').value;
+  if (pw === ADMIN_PASSWORD) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-ui').style.display = 'block';
+    initAdmin();
+  } else {
+    document.getElementById('login-error').classList.add('show');
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+function doLogout() {
+  document.getElementById('admin-ui').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('pw-input').value = '';
+  document.getElementById('login-error').classList.remove('show');
+}
+
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
+function initAdmin() {
+  // Deep-copy VERBS so we don't mutate the original
+  verbs = JSON.parse(JSON.stringify(VERBS));
+  loadGhConfig();
+  renderTable();
+}
+
+// ══════════════════════════════════════════
+//  GITHUB CONFIG
+// ══════════════════════════════════════════
+function saveGhConfig() {
+  const cfg = {
+    token:  document.getElementById('gh-token').value,
+    owner:  document.getElementById('gh-owner').value,
+    repo:   document.getElementById('gh-repo').value,
+    branch: document.getElementById('gh-branch').value,
+  };
+  localStorage.setItem(GH_CONFIG_KEY, JSON.stringify(cfg));
+}
+function loadGhConfig() {
+  const raw = localStorage.getItem(GH_CONFIG_KEY);
+  if (!raw) return;
+  try {
+    const cfg = JSON.parse(raw);
+    document.getElementById('gh-token').value  = cfg.token  || '';
+    document.getElementById('gh-owner').value  = cfg.owner  || 'cydev-hash';
+    document.getElementById('gh-repo').value   = cfg.repo   || 'hh-tenses-play';
+    document.getElementById('gh-branch').value = cfg.branch || 'main';
+  } catch(e) {}
+}
+function getGhConfig() {
+  return {
+    token:  document.getElementById('gh-token').value.trim(),
+    owner:  document.getElementById('gh-owner').value.trim(),
+    repo:   document.getElementById('gh-repo').value.trim(),
+    branch: document.getElementById('gh-branch').value.trim() || 'main',
+  };
+}
+async function testGhConnection() {
+  const cfg = getGhConfig();
+  const statusEl = document.getElementById('gh-status');
+  statusEl.className = 'gh-status disconnected';
+  statusEl.textContent = '⏳ Testing...';
+  if (!cfg.token || !cfg.owner || !cfg.repo) {
+    statusEl.textContent = '⚠️ Fill all fields';
+    return;
+  }
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/${cfg.owner}/${cfg.repo}`,
+      { headers: { Authorization: `token ${cfg.token}` } }
+    );
+    if (res.ok) {
+      statusEl.className = 'gh-status connected';
+      statusEl.textContent = '✅ Connected';
+      showToast('GitHub connection successful!', 'success');
+    } else {
+      statusEl.textContent = `❌ Error ${res.status}`;
+      showToast('Connection failed: ' + res.status, 'error');
+    }
+  } catch(e) {
+    statusEl.textContent = '❌ Network error';
+    showToast('Network error', 'error');
+  }
+}
+
+// ══════════════════════════════════════════
+//  TABLE RENDER
+// ══════════════════════════════════════════
+function renderTable() {
+  const q = document.getElementById('search-input').value.trim().toLowerCase();
+  let filtered = verbs.map((v, i) => ({ ...v, _i: i }));
+  if (q) filtered = filtered.filter(v =>
+    v.present.includes(q) || v.past.includes(q) || v.pp.includes(q) || v.zh.includes(q)
+  );
+
+  document.getElementById('stat-total').textContent   = verbs.length;
+  document.getElementById('stat-showing').textContent = filtered.length;
+  document.getElementById('stat-unsaved').style.display = isDirty ? '' : 'none';
+
+  // Sort indicators
+  ['present','past','pp'].forEach(k => {
+    document.getElementById('sort-' + k).textContent =
+      sortKey === k ? (sortDir === 1 ? ' ▲' : ' ▼') : '';
+  });
+
+  const tbody = document.getElementById('verb-tbody');
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--text-muted)">No verbs found</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = filtered.map((v, displayIdx) => `
+    <tr draggable="true" data-idx="${v._i}"
+      ondragstart="dragStart(event,${v._i})"
+      ondragover="dragOver(event)"
+      ondrop="dragDrop(event,${v._i})"
+      ondragleave="dragLeave(event)">
+      <td><span class="drag-handle" title="Drag to reorder">⠿</span></td>
+      <td class="cell-num">${v._i + 1}</td>
+      <td class="cell-icon">${v.icon}</td>
+      <td class="cell-present">${v.present}</td>
+      <td class="cell-past">${v.past}${v.pastAlt ? ' <small style="opacity:.6">/ '+v.pastAlt+'</small>' : ''}</td>
+      <td class="cell-pp">${v.pp}${v.ppAlt ? ' <small style="opacity:.6">/ '+v.ppAlt+'</small>' : ''}</td>
+      <td class="cell-zh">${v.zh}</td>
+      <td style="font-size:0.78rem;color:var(--text-muted)">${v.sentences.length} sentence${v.sentences.length!==1?'s':''}</td>
+      <td>
+        <div class="row-actions">
+          <button class="btn btn-ghost btn-sm" onclick="openEditModal(${v._i})" title="Edit">✏️</button>
+          <button class="btn btn-danger btn-sm" onclick="confirmDelete(${v._i})" title="Delete">🗑️</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function sortBy(key) {
+  if (sortKey === key) sortDir *= -1;
+  else { sortKey = key; sortDir = 1; }
+  verbs.sort((a, b) => a[key].localeCompare(b[key]) * sortDir);
+  markDirty();
+  renderTable();
+}
+
+// ══════════════════════════════════════════
+//  DRAG & DROP REORDER
+// ══════════════════════════════════════════
+let dragSrcIdx = null;
+function dragStart(e, idx) {
+  dragSrcIdx = idx;
+  e.currentTarget.classList.add('dragging');
+}
+function dragOver(e) {
+  e.preventDefault();
+  e.currentTarget.classList.add('drag-over');
+}
+function dragLeave(e) {
+  e.currentTarget.classList.remove('drag-over');
+}
+function dragDrop(e, targetIdx) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if (dragSrcIdx === null || dragSrcIdx === targetIdx) return;
+  const item = verbs.splice(dragSrcIdx, 1)[0];
+  verbs.splice(targetIdx, 0, item);
+  dragSrcIdx = null;
+  markDirty();
+  renderTable();
+}
+
+// ══════════════════════════════════════════
+//  ADD / EDIT MODAL
+// ══════════════════════════════════════════
+function openAddModal() {
+  editingIdx = null;
+  document.getElementById('modal-title').textContent = '➕ Add New Verb';
+  clearModalFields();
+  // Default 3 sentence rows
+  const list = document.getElementById('sentences-editor-list');
+  list.innerHTML = '';
+  ['present','past','participle'].forEach(t => addSentenceRow(t));
+  document.getElementById('verb-modal').classList.add('open');
+  document.getElementById('f-present').focus();
+}
+
+function openEditModal(idx) {
+  editingIdx = idx;
+  const v = verbs[idx];
+  document.getElementById('modal-title').textContent = '✏️ Edit Verb: ' + v.present;
+  document.getElementById('f-present').value = v.present;
+  document.getElementById('f-past').value    = v.past;
+  document.getElementById('f-pp').value      = v.pp;
+  document.getElementById('f-pastAlt').value = v.pastAlt || '';
+  document.getElementById('f-ppAlt').value   = v.ppAlt   || '';
+  document.getElementById('f-icon').value    = v.icon;
+  document.getElementById('f-zh').value      = v.zh;
+
+  const list = document.getElementById('sentences-editor-list');
+  list.innerHTML = '';
+  v.sentences.forEach(s => addSentenceRow(s.tense, s.verb, s.text));
+  document.getElementById('verb-modal').classList.add('open');
+}
+
+function clearModalFields() {
+  ['f-present','f-past','f-pp','f-pastAlt','f-ppAlt','f-icon','f-zh'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+}
+
+function addSentenceRow(tense='present', verb='', text='') {
+  const list = document.getElementById('sentences-editor-list');
+  const div  = document.createElement('div');
+  div.className = 'sentence-item';
+  div.innerHTML = `
+    <div class="sentence-row-header">
+      <select class="tense-select">
+        <option value="present"    ${tense==='present'?'selected':''}>Present</option>
+        <option value="past"       ${tense==='past'?'selected':''}>Past</option>
+        <option value="participle" ${tense==='participle'?'selected':''}>Participle</option>
+      </select>
+      <input class="form-input" placeholder="Verb form used (e.g. went)" value="${escHtml(verb)}" style="flex:0 0 140px"/>
+      <button class="btn btn-danger btn-sm" onclick="this.closest('.sentence-item').remove()" style="margin-left:auto">✕</button>
+    </div>
+    <textarea class="form-textarea" placeholder="Full example sentence..." style="width:100%">${escHtml(text)}</textarea>
+  `;
+  list.appendChild(div);
+}
+
+function escHtml(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function saveVerb() {
+  const present = document.getElementById('f-present').value.trim().toLowerCase();
+  const past    = document.getElementById('f-past').value.trim().toLowerCase();
+  const pp      = document.getElementById('f-pp').value.trim().toLowerCase();
+
+  if (!present || !past || !pp) {
+    showToast('Please fill in Present, Past, and Past Participle', 'error');
+    return;
+  }
+
+  const sentences = Array.from(document.querySelectorAll('#sentences-editor-list .sentence-item')).map(item => ({
+    tense: item.querySelector('select').value,
+    verb:  item.querySelectorAll('input')[0].value.trim(),
+    text:  item.querySelector('textarea').value.trim(),
+  })).filter(s => s.text);
+
+  const verb = {
+    present,
+    past,
+    pp,
+    pastAlt: document.getElementById('f-pastAlt').value.trim().toLowerCase() || undefined,
+    ppAlt:   document.getElementById('f-ppAlt').value.trim().toLowerCase()   || undefined,
+    icon:    document.getElementById('f-icon').value.trim() || '📝',
+    zh:      document.getElementById('f-zh').value.trim(),
+    sentences,
+  };
+
+  if (editingIdx === null) {
+    verbs.push(verb);
+    showToast('Verb "' + present + '" added!', 'success');
+  } else {
+    verbs[editingIdx] = verb;
+    showToast('Verb "' + present + '" updated!', 'success');
+  }
+
+  markDirty();
+  closeModal();
+  renderTable();
+}
+
+function closeModal() {
+  document.getElementById('verb-modal').classList.remove('open');
+}
+
+// ══════════════════════════════════════════
+//  DELETE
+// ══════════════════════════════════════════
+function confirmDelete(idx) {
+  const v = verbs[idx];
+  document.getElementById('confirm-title').textContent = 'Delete "' + v.present + '"?';
+  document.getElementById('confirm-msg').textContent   = 'This will remove the verb and all its sentences.';
+  document.getElementById('confirm-ok').onclick = () => { deleteVerb(idx); closeConfirm(); };
+  document.getElementById('confirm-overlay').classList.add('open');
+}
+function deleteVerb(idx) {
+  const name = verbs[idx].present;
+  verbs.splice(idx, 1);
+  markDirty();
+  renderTable();
+  showToast('Deleted "' + name + '"', 'info');
+}
+function closeConfirm() {
+  document.getElementById('confirm-overlay').classList.remove('open');
+}
+
+// ══════════════════════════════════════════
+//  IMPORT / EXPORT
+// ══════════════════════════════════════════
+function importJSON() { document.getElementById('import-file').click(); }
+
+function handleImport(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const ext = file.name.split('.').pop().toLowerCase();
+      if (ext === 'json') {
+        const data = JSON.parse(ev.target.result);
+        const arr  = Array.isArray(data) ? data : (data.verbs || []);
+        if (!arr.length) throw new Error('No verbs found');
+        verbs = arr;
+        markDirty();
+        renderTable();
+        showToast('Imported ' + arr.length + ' verbs from JSON', 'success');
+      } else if (ext === 'csv') {
+        importCSV(ev.target.result);
+      }
+    } catch(err) {
+      showToast('Import failed: ' + err.message, 'error');
+    }
+    e.target.value = '';
+  };
+  reader.readAsText(file);
+}
+
+function importCSV(text) {
+  const lines = text.trim().split('\n');
+  const header = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/"/g,''));
+  const imported = lines.slice(1).map(line => {
+    const cols = line.split(',').map(c => c.trim().replace(/^"|"$/g,''));
+    const obj  = {};
+    header.forEach((h, i) => obj[h] = cols[i] || '');
+    return {
+      present: obj.present || '', past: obj.past || '', pp: obj.pp || '',
+      pastAlt: obj.pastalt || undefined, ppAlt: obj.ppalt || undefined,
+      icon: obj.icon || '📝', zh: obj.zh || obj.chinese || '',
+      sentences: [],
+    };
+  }).filter(v => v.present && v.past && v.pp);
+  verbs = imported;
+  markDirty();
+  renderTable();
+  showToast('Imported ' + imported.length + ' verbs from CSV', 'success');
+}
+
+function exportJSON() {
+  const blob = new Blob([JSON.stringify(verbs, null, 2)], { type: 'application/json' });
+  downloadBlob(blob, 'verbs.json');
+  showToast('Exported verbs.json', 'info');
+}
+
+function exportCSV() {
+  const header = 'present,past,pp,pastAlt,ppAlt,icon,zh';
+  const rows   = verbs.map(v =>
+    [v.present, v.past, v.pp, v.pastAlt||'', v.ppAlt||'', v.icon, '"'+v.zh+'"'].join(',')
+  );
+  const blob = new Blob([[header, ...rows].join('\n')], { type: 'text/csv' });
+  downloadBlob(blob, 'verbs.csv');
+  showToast('Exported verbs.csv', 'info');
+}
+
+function downloadBlob(blob, filename) {
+  const a  = document.createElement('a');
+  a.href   = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+// ══════════════════════════════════════════
+//  GENERATE verbs.js CONTENT
+// ══════════════════════════════════════════
+function generateVerbsJs() {
+  const lines = verbs.map(v => {
+    const sentences = v.sentences.map(s =>
+      `      { tense:"${s.tense}", verb:"${s.verb}", text:${JSON.stringify(s.text)} }`
+    ).join(',\n');
+    const altPast = v.pastAlt ? `, pastAlt:"${v.pastAlt}"` : '';
+    const altPp   = v.ppAlt   ? `, ppAlt:"${v.ppAlt}"`     : '';
+    return (
+      `  {\n` +
+      `    present: "${v.present}", past: "${v.past}", pp: "${v.pp}"${altPast}${altPp},\n` +
+      `    icon: ${JSON.stringify(v.icon)}, zh: ${JSON.stringify(v.zh)},\n` +
+      `    sentences: [\n${sentences}\n    ]\n` +
+      `  }`
+    );
+  });
+  return `// hh-tenses-play: verbs.js\n// Auto-generated by Admin panel\n// Last updated: ${new Date().toISOString()}\n\nconst VERBS = [\n${lines.join(',\n')}\n];\n`;
+}
+
+// ══════════════════════════════════════════
+//  PUSH TO GITHUB
+// ══════════════════════════════════════════
+function openPushModal() {
+  document.getElementById('push-log').innerHTML = '<span class="log-info">Ready to push...</span>';
+  document.getElementById('push-btn').disabled = false;
+  document.getElementById('commit-msg').value  = 'Update verb list – ' + new Date().toLocaleDateString();
+  document.getElementById('push-modal').classList.add('open');
+}
+function closePushModal() {
+  document.getElementById('push-modal').classList.remove('open');
+}
+
+function logPush(msg, type='') {
+  const log = document.getElementById('push-log');
+  log.innerHTML += `\n<span class="log-${type}">${msg}</span>`;
+  log.scrollTop = log.scrollHeight;
+}
+
+async function pushToGitHub() {
+  const cfg = getGhConfig();
+  if (!cfg.token || !cfg.owner || !cfg.repo) {
+    showToast('Please fill in GitHub config (token, owner, repo)', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('push-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Pushing...';
+  document.getElementById('push-log').innerHTML = '';
+
+  const content    = generateVerbsJs();
+  const b64content = btoa(unescape(encodeURIComponent(content)));
+  const filePath   = 'verbs.js';
+  const apiBase    = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${filePath}`;
+  const headers    = {
+    'Authorization': `token ${cfg.token}`,
+    'Content-Type': 'application/json',
+    'Accept': 'application/vnd.github.v3+json',
+  };
+
+  try {
+    // Step 1: Get current file SHA
+    logPush('📡 Fetching current file SHA...', 'info');
+    const getRes = await fetch(`${apiBase}?ref=${cfg.branch}`, { headers });
+    let sha = null;
+    if (getRes.ok) {
+      const data = await getRes.json();
+      sha = data.sha;
+      logPush('✅ Got file SHA: ' + sha.substring(0, 8) + '...', '');
+    } else if (getRes.status === 404) {
+      logPush('ℹ️ File not found — will create new file', 'info');
+    } else {
+      throw new Error('Failed to fetch file: HTTP ' + getRes.status);
+    }
+
+    // Step 2: Push new content
+    logPush('📤 Pushing ' + verbs.length + ' verbs to ' + cfg.owner + '/' + cfg.repo + '/' + filePath + '...', 'info');
+    const body = {
+      message: document.getElementById('commit-msg').value || 'Update verb list',
+      content: b64content,
+      branch: cfg.branch,
+    };
+    if (sha) body.sha = sha;
+
+    const putRes = await fetch(apiBase, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify(body),
+    });
+
+    if (putRes.ok) {
+      const result = await putRes.json();
+      logPush('✅ Successfully pushed!', '');
+      logPush('📌 Commit: ' + result.commit.sha.substring(0, 8) + ' – ' + result.commit.message, '');
+      logPush('🌐 GitHub Pages will update in ~30 seconds', 'info');
+      logPush('🔗 ' + `https://${cfg.owner}.github.io/${cfg.repo}`, 'info');
+      isDirty = false;
+      renderTable();
+      showToast('Pushed to GitHub successfully!', 'success');
+      btn.textContent = '✅ Done!';
+    } else {
+      const errData = await putRes.json();
+      throw new Error(errData.message || 'HTTP ' + putRes.status);
+    }
+  } catch(err) {
+    logPush('❌ Error: ' + err.message, 'error');
+    showToast('Push failed: ' + err.message, 'error');
+    btn.disabled = false;
+    btn.textContent = '⬆️ Push Now';
+  }
+}
+
+// ══════════════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════════════
+function markDirty() {
+  isDirty = true;
+  document.getElementById('stat-unsaved').style.display = '';
+}
+
+function showToast(msg, type='info') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className   = `toast show ${type}`;
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+// Close modals on overlay click
+document.getElementById('verb-modal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeModal();
+});
+document.getElementById('push-modal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closePushModal();
+});
+document.getElementById('confirm-overlay').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeConfirm();
+});
+
+// Enter key on login
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeModal(); closePushModal(); closeConfirm(); }
+});
+</script>
+</body>
+</html>

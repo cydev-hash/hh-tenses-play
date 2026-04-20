@@ -480,7 +480,7 @@
         <div class="test-inputs" id="test-inputs-container"></div>
         <div class="actions" style="margin-top:16px">
           <button class="btn btn-secondary btn-sm" onclick="prevTest()">⬅️ Back</button>
-          <button class="btn btn-read btn-sm" onclick="readTestWord()">🔊 Read</button>
+          
           <button class="btn btn-secondary btn-sm" id="test-next-btn" onclick="testNextFromBtn()">Next ➡️</button>
         </div>
       </div>
@@ -730,6 +730,8 @@ function showAnswer() {
 }
 
 function readWord() {
+  // Cancel any currently playing speech before starting fresh
+  if (window.speechSynthesis) speechSynthesis.cancel();
   speakSequence([VERBS[exIndex].present, VERBS[exIndex].past, VERBS[exIndex].pp]);
 }
 
@@ -1163,7 +1165,9 @@ function speak(word, onEnd) {
 
 function speakSequence(words, i=0) {
   if (i >= words.length) return;
-  speak(words[i], () => setTimeout(() => speakSequence(words, i+1), 400));
+  // On first word, ensure no leftover speech is queued
+  if (i === 0 && window.speechSynthesis) speechSynthesis.cancel();
+  speak(words[i], () => setTimeout(() => speakSequence(words, i+1), 450));
 }
 
 // ===================================================

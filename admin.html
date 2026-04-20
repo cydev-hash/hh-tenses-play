@@ -344,11 +344,34 @@ const GH_OWNER          = 'cydev-hash';
 const GH_REPO           = 'hh-tenses-play';
 const GH_BRANCH         = 'main';
 const GH_FILE           = 'verbs.js';
-const OR_MODEL_PRIMARY  = 'openai/gpt-4o-mini-search-preview:free';
-const OR_MODEL_FALLBACK = 'minimax/minimax-m2:free';
-const OR_API_URL        = 'https://openrouter.ai/api/v1/chat/completions';
-const OR_KEY_INJECTED   = '__OPENROUTER_KEY__';
-const KEY_GH            = 'tenses_gh_key';
+// AI providers — tried in order (primary first, then fallbacks)
+const AI_PROVIDERS = [
+  {
+    name:    'Groq',
+    url:     'https://api.groq.com/openai/v1/chat/completions',
+    model:   'llama-3.3-70b-versatile',
+    keyInj:  '__GROQ_KEY__',
+    keyStore:'tenses_groq_key',
+    headers: (key) => ({ 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json' }),
+  },
+  {
+    name:    'OpenRouter (GPT-4o mini)',
+    url:     'https://openrouter.ai/api/v1/chat/completions',
+    model:   'openai/gpt-4o-mini-search-preview:free',
+    keyInj:  '__OPENROUTER_KEY__',
+    keyStore:'tenses_or_key',
+    headers: (key) => ({ 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json', 'HTTP-Referer': window.location.origin, 'X-Title': 'TensesPlay Admin' }),
+  },
+  {
+    name:    'OpenRouter (MiniMax)',
+    url:     'https://openrouter.ai/api/v1/chat/completions',
+    model:   'minimax/minimax-m2:free',
+    keyInj:  '__OPENROUTER_KEY__',
+    keyStore:'tenses_or_key',
+    headers: (key) => ({ 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json', 'HTTP-Referer': window.location.origin, 'X-Title': 'TensesPlay Admin' }),
+  },
+];
+const KEY_GH = 'tenses_gh_key';
 
 // ══════════════════════════════════════════════
 //  STATE
@@ -389,31 +412,37 @@ function goBackToApp() {
 // ══════════════════════════════════════════════
 //  AI GENERATE
 // ══════════════════════════════════════════════
-function getOrKey() {
-  // 1. Injected by GitHub Actions at build time (deployed version)
-  if (OR_KEY_INJECTED && !OR_KEY_INJECTED.startsWith('__')) return OR_KEY_INJECTED;
-  // 2. Manually entered by superadmin when running locally
-  const stored = localStorage.getItem('tenses_or_key');
+function getProviderKey(provider) {
+  // 1. Injected by GitHub Actions at build time
+  if (provider.keyInj && !provider.keyInj.startsWith('__')) return provider.keyInj;
+  // 2. Stored in localStorage from previous manual entry
+  const stored = localStorage.getItem(provider.keyStore);
   if (stored) return stored;
-  // 3. Prompt once and save
-  const entered = prompt('OpenRouter API key required (one-time setup):\nEnter your sk-or-v1-... key:');
-  if (!entered || !entered.trim()) return null;
-  localStorage.setItem('tenses_or_key', entered.trim());
-  return entered.trim();
+  return null;
 }
 
-async function callOpenRouter(prompt, model) {
-  const key = getOrKey();
-  if (!key) throw new Error('OpenRouter key not configured.');
-  const res = await fetch(OR_API_URL, {
+function getOrKey() {
+  // Legacy — kept for compatibility, tries Groq first
+  return getProviderKey(AI_PROVIDERS[0]);
+}
+
+async function callAI(prompt, providerIdx = 0) {
+  const provider = AI_PROVIDERS[providerIdx];
+  if (!provider) throw new Error('All AI providers failed.');
+
+  let key = getProviderKey(provider);
+  if (!key) {
+    // Prompt for key if running locally and not yet stored
+    const entered = prompt('Enter your ' + provider.name + ' API key (one-time setup):');
+    if (!entered || !entered.trim()) throw new Error(provider.name + ' key not provided.');
+    localStorage.setItem(provider.keyStore, entered.trim());
+    key = entered.trim();
+  }
+
+  const res = await fetch(provider.url, {
     method: 'POST',
-    headers: {
-      'Authorization': 'Bearer ' + key,
-      'Content-Type': 'application/json',
-      'HTTP-Referer': window.location.origin,
-      'X-Title': 'TensesPlay Admin',
-    },
-    body: JSON.stringify({ model, max_tokens: 700,
+    headers: provider.headers(key),
+    body: JSON.stringify({ model: provider.model, max_tokens: 700,
       messages: [{ role: 'user', content: prompt }] })
   });
   if (!res.ok) {
@@ -422,6 +451,11 @@ async function callOpenRouter(prompt, model) {
   }
   const data = await res.json();
   return data.choices?.[0]?.message?.content || '';
+}
+
+// Legacy alias kept for compatibility
+async function callOpenRouter(prompt, model) {
+  return callAI(prompt, 0);
 }
 
 async function generateVerb() {
@@ -476,23 +510,25 @@ For the English verb "${present}", respond with ONLY valid JSON (no markdown, no
 Rules: sentences must be simple (age 8-12), use They/She/He as subjects, JSON only.`;
 
   let result = null;
-  try {
-    statusText.textContent = 'Asking AI for verb data...';
-    const raw = await callOpenRouter(prompt, OR_MODEL_PRIMARY);
-    result = parseJson(raw);
-  } catch (e1) {
+  // Try each provider in order until one succeeds
+  let lastErr = null;
+  for (let i = 0; i < AI_PROVIDERS.length; i++) {
     try {
-      statusText.textContent = 'Trying backup AI...';
-      const raw2 = await callOpenRouter(prompt, OR_MODEL_FALLBACK);
-      result = parseJson(raw2);
-    } catch (e2) {
-      statusBar.classList.remove('show');
-      btn.disabled = false;
-      btn.innerHTML = '&#10024; Generate';
-      if (regenBtn) regenBtn.disabled = false;
-      showToast('AI failed: ' + e2.message, 'error');
-      return;
+      statusText.textContent = 'Trying ' + AI_PROVIDERS[i].name + '...';
+      const raw = await callAI(prompt, i);
+      result = parseJson(raw);
+      if (result && result.past && result.pp) break;
+    } catch (e) {
+      lastErr = e;
     }
+  }
+  if (!result || !result.past || !result.pp) {
+    statusBar.classList.remove('show');
+    btn.disabled = false;
+    btn.innerHTML = '&#10024; Generate';
+    if (regenBtn) regenBtn.disabled = false;
+    showToast('AI failed: ' + (lastErr ? lastErr.message : 'No valid response'), 'error');
+    return;
   }
 
   statusBar.classList.remove('show');
@@ -528,10 +564,11 @@ For the verb "${present}", respond with ONLY valid JSON (no markdown):
 {"present":"${present}","past":"past tense","pp":"past participle","pastAlt":null,"ppAlt":null,"icon":"emoji","zh":"Traditional Chinese Cantonese","sentences":[{"tense":"present","verb":"${present}","text":"simple sentence"},{"tense":"past","verb":"PAST","text":"simple sentence"},{"tense":"participle","verb":"PP","text":"sentence with have/has"}]}`;
 
     try {
-      let raw;
-      try { raw = await callOpenRouter(prompt, OR_MODEL_PRIMARY); }
-      catch { raw = await callOpenRouter(prompt, OR_MODEL_FALLBACK); }
-      const r = parseJson(raw);
+      let bulkRaw, bulkResult = null;
+      for (let pi = 0; pi < AI_PROVIDERS.length; pi++) {
+        try { bulkRaw = await callAI(prompt, pi); bulkResult = parseJson(bulkRaw); if (bulkResult && bulkResult.past && bulkResult.pp) break; } catch {}
+      }
+      const r = bulkResult;
       if (r && r.past && r.pp) {
         verbs.push({ present:r.present||present, past:r.past, pp:r.pp,
           pastAlt:r.pastAlt||undefined, ppAlt:r.ppAlt||undefined,
@@ -690,10 +727,11 @@ For the English verb "${present}", respond with ONLY valid JSON:
 {"present":"${present}","past":"past tense","pp":"past participle","pastAlt":null,"ppAlt":null,"icon":"emoji","zh":"Traditional Chinese Cantonese translation","sentences":[{"tense":"present","verb":"${present}","text":"sentence"},{"tense":"past","verb":"PAST","text":"sentence"},{"tense":"participle","verb":"PP","text":"sentence using have/has"}]}
 JSON only, no extra text.`;
   try {
-    let raw;
-    try { raw = await callOpenRouter(prompt, OR_MODEL_PRIMARY); }
-    catch { raw = await callOpenRouter(prompt, OR_MODEL_FALLBACK); }
-    const r = parseJson(raw);
+    let raw, regenResult = null;
+    for (let pi = 0; pi < AI_PROVIDERS.length; pi++) {
+      try { raw = await callAI(prompt, pi); regenResult = parseJson(raw); if (regenResult && regenResult.past) break; } catch {}
+    }
+    const r = regenResult;
     if (r) {
       document.getElementById('e-past').value    = r.past    || '';
       document.getElementById('e-pp').value      = r.pp      || '';

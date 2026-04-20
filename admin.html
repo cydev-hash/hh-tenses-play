@@ -93,6 +93,11 @@ main{max-width:1000px;margin:0 auto;padding:28px 20px 80px}
 .stat-chip{background:var(--card);border:1px solid var(--border);border-radius:50px;padding:5px 14px;font-size:.82rem;font-weight:700;color:var(--text-muted)}
 .stat-chip strong{color:var(--text)}
 .unsaved-chip{background:rgba(255,209,102,.12);border:1px solid var(--accent);color:var(--accent);border-radius:50px;padding:5px 14px;font-size:.82rem;font-weight:800;display:none}
+.sort-toggle{display:flex;gap:0;border-radius:50px;overflow:hidden;border:1.5px solid var(--border);flex-shrink:0}
+.sort-btn{padding:6px 16px;border:none;background:var(--card2);color:var(--text-muted);font-family:'Nunito',sans-serif;font-weight:700;font-size:.8rem;cursor:pointer;transition:all .2s;white-space:nowrap}
+.sort-btn:first-child{border-right:1.5px solid var(--border)}
+.sort-btn.active{background:var(--primary);color:#fff}
+.sort-btn:hover:not(.active){color:var(--primary)}
 .search-wrap{position:relative;margin-left:auto}
 .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:.9rem}
 .search-input{padding:8px 14px 8px 34px;border-radius:50px;border:2px solid var(--border);background:var(--card2);color:var(--text);font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:600;outline:none;transition:border .2s;width:200px}
@@ -250,6 +255,10 @@ main{max-width:1000px;margin:0 auto;padding:28px 20px 80px}
       <div class="stat-chip">Total: <strong id="stat-total">0</strong> verbs</div>
       <div class="stat-chip">Showing: <strong id="stat-showing">0</strong></div>
       <div class="unsaved-chip" id="unsaved-chip">&#9888;&#65039; Unsaved &mdash; click Save &amp; Publish</div>
+      <div class="sort-toggle">
+        <button class="sort-btn active" id="sort-seq-btn" onclick="setSortMode('sequence')" title="Input order">&#8597; Input Order</button>
+        <button class="sort-btn" id="sort-az-btn" onclick="setSortMode('alpha')" title="A-Z alphabetical">&#127250; A &rarr; Z</button>
+      </div>
       <div class="search-wrap">
         <span class="search-icon">&#128269;</span>
         <input class="search-input" id="search-input" type="text" placeholder="Search..." oninput="renderTable()"/>
@@ -412,6 +421,8 @@ const KEY_GH = 'tenses_gh_key';
 let verbs = [], editingIdx = null, sortKey = null, sortDir = 1;
 let isDirty = false, dragSrcIdx = null;
 let pendingVerb = null; // AI-generated verb waiting for confirmation
+let sortMode = 'sequence'; // 'sequence' | 'alpha'
+let originalOrder = []; // tracks input sequence order
 
 // ══════════════════════════════════════════════
 //  LOGIN
@@ -421,6 +432,8 @@ function doLogin() {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('admin-ui').style.display = 'block';
     verbs = JSON.parse(JSON.stringify(VERBS));
+    verbs.forEach((v, i) => v._seq = i); // stamp input sequence
+    originalOrder = verbs.map((_, i) => i);
     isDirty = false;
     renderTable();
   } else {
@@ -670,6 +683,8 @@ function confirmAddVerb() {
     zh:       pendingVerb.zh      || '',
     sentences: pendingVerb.sentences || [],
   });
+  verbs[verbs.length - 1]._seq = verbs.length - 1; // stamp sequence
+  originalOrder.push(verbs.length - 1);
   markDirty();
   renderTable();
   clearPreview();
@@ -712,6 +727,29 @@ function renderTable() {
         <button class="btn btn-danger btn-sm" onclick="confirmDelete(${v._i})" title="Delete">&#128465;</button>
       </div></td>
     </tr>`).join('');
+}
+
+function setSortMode(mode) {
+  sortMode = mode;
+  document.getElementById('sort-seq-btn').classList.toggle('active', mode === 'sequence');
+  document.getElementById('sort-az-btn').classList.toggle('active', mode === 'alpha');
+
+  if (mode === 'alpha') {
+    // Sort alphabetically by present tense A→Z
+    verbs.sort((a, b) => a.present.localeCompare(b.present));
+    markDirty();
+  } else {
+    // Restore original input sequence order
+    verbs.sort((a, b) => {
+      const ai = originalOrder.indexOf(verbs.indexOf(a));
+      const bi = originalOrder.indexOf(verbs.indexOf(b));
+      return ai - bi;
+    });
+    // Simpler approach: re-sort by tracking _seqIdx on each verb
+    verbs.sort((a, b) => (a._seq || 0) - (b._seq || 0));
+    markDirty();
+  }
+  renderTable();
 }
 
 function sortBy(key) {

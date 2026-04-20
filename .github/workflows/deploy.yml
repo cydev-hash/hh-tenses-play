@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -24,11 +24,81 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Inject OpenRouter API Key into admin.html
+      - name: Inject API Keys into admin.html
         run: |
+          sed -i "s|__GROQ_KEY__|${{ secrets.GROQ_KEY }}|g" admin.html
           sed -i "s|__OPENROUTER_KEY__|${{ secrets.OPENROUTER_KEY }}|g" admin.html
-          echo "✅ OpenRouter key injected into admin.html"
+          echo "Keys injected into admin.html"
+
+      - name: Set up Python for audio generation
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install edge-tts
+        run: pip install edge-tts
+
+      - name: Generate pronunciation MP3s for new verbs
+        run: |
+          mkdir -p audio
+          python3 << 'PYEOF'
+          import subprocess, json, re, os, sys
+
+          # Parse all word forms from verbs.js
+          with open('verbs.js', 'r', encoding='utf-8') as f:
+              src = f.read()
+
+          words = set()
+          for key in ['present', 'past', 'pp', 'pastAlt', 'ppAlt']:
+              for m in re.finditer(rf'{key}:\s*"([^"]+)"', src):
+                  words.add(m.group(1).lower())
+          # Remove null/undefined values
+          words.discard('null')
+          words.discard('undefined')
+
+          print(f"Found {len(words)} unique word forms")
+          generated = 0
+          skipped = 0
+
+          for word in sorted(words):
+              filename = f"audio/{word.replace(' ', '_')}.mp3"
+              if os.path.exists(filename) and os.path.getsize(filename) > 1000:
+                  skipped += 1
+                  continue
+              try:
+                  result = subprocess.run([
+                      'edge-tts',
+                      '--voice', 'en-US-JennyNeural',
+                      '--rate', '-5%',
+                      '--text', word,
+                      '--write-media', filename
+                  ], capture_output=True, text=True, timeout=20)
+                  if result.returncode == 0 and os.path.exists(filename):
+                      size = os.path.getsize(filename)
+                      print(f"  OK: {word} ({size} bytes)")
+                      generated += 1
+                  else:
+                      print(f"  FAIL: {word} - {result.stderr.strip()[:80]}")
+              except Exception as e:
+                  print(f"  ERROR: {word} - {e}")
+
+          print(f"\nGenerated: {generated} | Skipped: {skipped}")
+          PYEOF
+
+      - name: Commit audio files if new ones were generated
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add audio/
+          if git diff --staged --quiet; then
+            echo "No new audio files to commit"
+          else
+            git commit -m "Auto-generate pronunciation MP3s [skip ci]"
+            git push
+          fi
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

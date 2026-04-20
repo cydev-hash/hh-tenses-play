@@ -344,10 +344,11 @@ const GH_OWNER          = 'cydev-hash';
 const GH_REPO           = 'hh-tenses-play';
 const GH_BRANCH         = 'main';
 const GH_FILE           = 'verbs.js';
-// AI providers — tried in order (primary first, then fallbacks)
+// AI providers — Groq primary, OpenRouter free models as backups
+const OR_HEADERS = (key) => ({ 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json', 'HTTP-Referer': window.location.origin, 'X-Title': 'TensesPlay Admin' });
 const AI_PROVIDERS = [
   {
-    name:    'Groq',
+    name:    'Groq (Llama 3.3 70B)',
     url:     'https://api.groq.com/openai/v1/chat/completions',
     model:   'llama-3.3-70b-versatile',
     keyInj:  '__GROQ_KEY__',
@@ -355,20 +356,52 @@ const AI_PROVIDERS = [
     headers: (key) => ({ 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json' }),
   },
   {
-    name:    'OpenRouter (GPT-4o mini)',
+    name:    'OpenRouter (GLM 4.5 Air)',
     url:     'https://openrouter.ai/api/v1/chat/completions',
-    model:   'openai/gpt-4o-mini-search-preview:free',
+    model:   'z-ai/glm-4.5-air:free',
     keyInj:  '__OPENROUTER_KEY__',
     keyStore:'tenses_or_key',
-    headers: (key) => ({ 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json', 'HTTP-Referer': window.location.origin, 'X-Title': 'TensesPlay Admin' }),
+    headers: OR_HEADERS,
   },
   {
-    name:    'OpenRouter (MiniMax)',
+    name:    'OpenRouter (Qwen3 Coder)',
     url:     'https://openrouter.ai/api/v1/chat/completions',
-    model:   'minimax/minimax-m2:free',
+    model:   'qwen/qwen3-coder:free',
     keyInj:  '__OPENROUTER_KEY__',
     keyStore:'tenses_or_key',
-    headers: (key) => ({ 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json', 'HTTP-Referer': window.location.origin, 'X-Title': 'TensesPlay Admin' }),
+    headers: OR_HEADERS,
+  },
+  {
+    name:    'OpenRouter (GPT-OSS 120B)',
+    url:     'https://openrouter.ai/api/v1/chat/completions',
+    model:   'openai/gpt-oss-120b:free',
+    keyInj:  '__OPENROUTER_KEY__',
+    keyStore:'tenses_or_key',
+    headers: OR_HEADERS,
+  },
+  {
+    name:    'OpenRouter (GPT-OSS 20B)',
+    url:     'https://openrouter.ai/api/v1/chat/completions',
+    model:   'openai/gpt-oss-20b:free',
+    keyInj:  '__OPENROUTER_KEY__',
+    keyStore:'tenses_or_key',
+    headers: OR_HEADERS,
+  },
+  {
+    name:    'OpenRouter (Nemotron Nano)',
+    url:     'https://openrouter.ai/api/v1/chat/completions',
+    model:   'nvidia/nemotron-3-nano-30b-a3b:free',
+    keyInj:  '__OPENROUTER_KEY__',
+    keyStore:'tenses_or_key',
+    headers: OR_HEADERS,
+  },
+  {
+    name:    'OpenRouter (MiniMax M2.5)',
+    url:     'https://openrouter.ai/api/v1/chat/completions',
+    model:   'minimax/minimax-m2.5:free',
+    keyInj:  '__OPENROUTER_KEY__',
+    keyStore:'tenses_or_key',
+    headers: OR_HEADERS,
   },
 ];
 const KEY_GH = 'tenses_gh_key';

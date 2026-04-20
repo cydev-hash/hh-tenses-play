@@ -1,7 +1,25 @@
 // hh-tenses-play: verbs.js
-// Updated: 2026-04-20T16:54:11.637Z
+// Updated: 2026-04-20T17:27:29.744Z
 
 const VERBS = [
+  {
+    present: "be", past: "was/were", pp: "been",
+    icon: "🔤", zh: "係",
+    sentences: [
+      { tense:"present", verb:"be", text:"I am a student." },
+      { tense:"past", verb:"was", text:"I was a student." },
+      { tense:"participle", verb:"been", text:"I have been a student." }
+    ]
+  },
+  {
+    present: "become", past: "became", pp: "become",
+    icon: "🔀", zh: "變成",
+    sentences: [
+      { tense:"present", verb:"become", text:"She will become a doctor when she grows up." },
+      { tense:"past", verb:"became", text:"He became very tired after the long trip." },
+      { tense:"participle", verb:"become", text:"They have become friends over the years." }
+    ]
+  },
   {
     present: "begin", past: "began", pp: "begun",
     icon: "🚀", zh: "開始",
@@ -75,12 +93,30 @@ const VERBS = [
     ]
   },
   {
+    present: "cost", past: "cost", pp: "cost",
+    icon: "💰", zh: "成本 (còuhn)",
+    sentences: [
+      { tense:"present", verb:"cost", text:"The book costs five dollars." },
+      { tense:"past", verb:"cost", text:"The tickets cost twenty dollars last week." },
+      { tense:"participle", verb:"cost", text:"The repair has cost us a lot of time." }
+    ]
+  },
+  {
     present: "cut", past: "cut", pp: "cut",
     icon: "✂️", zh: "剪 / 切",
     sentences: [
       { tense:"present", verb:"cut", text:"I cut the paper into stars for decoration." },
       { tense:"past", verb:"cut", text:"Mum cut the birthday cake into ten pieces." },
       { tense:"participle", verb:"cut", text:"The ribbon has been cut to open the shop." }
+    ]
+  },
+  {
+    present: "do", past: "did", pp: "done",
+    icon: "emoji", zh: "Traditional Chinese Cantonese",
+    sentences: [
+      { tense:"present", verb:"do", text:"I do my homework." },
+      { tense:"past", verb:"did", text:"He did well in the test." },
+      { tense:"participle", verb:"done", text:"She has done her chores." }
     ]
   },
   {
@@ -138,6 +174,15 @@ const VERBS = [
     ]
   },
   {
+    present: "fight", past: "fought", pp: "fought",
+    icon: "🥊", zh: "打鬥",
+    sentences: [
+      { tense:"present", verb:"fight", text:"The children fight over the last piece of cake." },
+      { tense:"past", verb:"fought", text:"The boys fought fiercely during recess." },
+      { tense:"participle", verb:"fought", text:"She has fought many challenges with determination." }
+    ]
+  },
+  {
     present: "find", past: "found", pp: "found",
     icon: "🔍", zh: "找到",
     sentences: [
@@ -153,6 +198,15 @@ const VERBS = [
       { tense:"present", verb:"fly", text:"Birds fly south in the winter." },
       { tense:"past", verb:"flew", text:"We flew to Japan for the holiday." },
       { tense:"participle", verb:"flown", text:"He has flown over 100 times." }
+    ]
+  },
+  {
+    present: "forget", past: "forgot", pp: "forgotten",
+    icon: "🤔", zh: "唔記得",
+    sentences: [
+      { tense:"present", verb:"forget", text:"I often forget my keys." },
+      { tense:"past", verb:"forgot", text:"I forgot my keys yesterday." },
+      { tense:"participle", verb:"forgotten", text:"I have forgotten my keys." }
     ]
   },
   {
@@ -192,6 +246,15 @@ const VERBS = [
     ]
   },
   {
+    present: "have", past: "had", pp: "had",
+    icon: "👐", zh: "有",
+    sentences: [
+      { tense:"present", verb:"have", text:"I have a blue notebook." },
+      { tense:"past", verb:"had", text:"She had a tasty snack yesterday." },
+      { tense:"participle", verb:"had", text:"They have had many adventures together." }
+    ]
+  },
+  {
     present: "hear", past: "heard", pp: "heard",
     icon: "👂", zh: "聽到",
     sentences: [
@@ -219,12 +282,48 @@ const VERBS = [
     ]
   },
   {
+    present: "hurt", past: "hurt", pp: "hurt",
+    icon: "🤕", zh: "受傷",
+    sentences: [
+      { tense:"present", verb:"hurt", text:"I hurt my knee while playing." },
+      { tense:"past", verb:"hurt", text:"I hurt my knee yesterday." },
+      { tense:"participle", verb:"hurt", text:"I have hurt my knee before." }
+    ]
+  },
+  {
+    present: "keep", past: "kept", pp: "kept",
+    icon: "🔒", zh: "保持",
+    sentences: [
+      { tense:"present", verb:"keep", text:"I keep my books organized." },
+      { tense:"past", verb:"kept", text:"I kept my books organized." },
+      { tense:"participle", verb:"kept", text:"I have kept my books organized." }
+    ]
+  },
+  {
     present: "know", past: "knew", pp: "known",
     icon: "🧠", zh: "知道",
     sentences: [
       { tense:"present", verb:"know", text:"I know all the planets in our solar system." },
       { tense:"past", verb:"knew", text:"She knew the answer straight away." },
       { tense:"participle", verb:"known", text:"This trick has been known for years." }
+    ]
+  },
+  {
+    present: "learn", past: "learned", pp: "learned",
+    icon: "📚", zh: "學習",
+    sentences: [
+      { tense:"present", verb:"learn", text:"I learn new words every day." },
+      { tense:"past", verb:"learned", text:"I learned new words yesterday." },
+      { tense:"participle", verb:"learned", text:"I have learned many new words." }
+    ]
+  },
+  {
+    present: "leave", past: "left", pp: "left",
+    icon: "🚶", zh: "離開",
+    sentences: [
+      { tense:"present", verb:"leave", text:"They leave the school every day." },
+      { tense:"past", verb:"left", text:"They left the school yesterday." },
+      { tense:"participle", verb:"left", text:"They have left the school." }
     ]
   },
   {
@@ -246,12 +345,39 @@ const VERBS = [
     ]
   },
   {
+    present: "mean", past: "meant", pp: "meant",
+    icon: "🔤", zh: "意思",
+    sentences: [
+      { tense:"present", verb:"mean", text:"I mean what I say." },
+      { tense:"past", verb:"meant", text:"She meant to call you yesterday." },
+      { tense:"participle", verb:"meant", text:"He has always meant well." }
+    ]
+  },
+  {
     present: "meet", past: "met", pp: "met",
     icon: "🤝", zh: "見面 / 認識",
     sentences: [
       { tense:"present", verb:"meet", text:"We meet our friends at the playground after school." },
       { tense:"past", verb:"met", text:"I met my best friend on the first day of school." },
       { tense:"participle", verb:"met", text:"Have you met the new student yet?" }
+    ]
+  },
+  {
+    present: "pay", past: "paid", pp: "paid",
+    icon: "💰", zh: "付錢",
+    sentences: [
+      { tense:"present", verb:"pay", text:"I pay the bus fare every day." },
+      { tense:"past", verb:"paid", text:"She paid the bill yesterday." },
+      { tense:"participle", verb:"paid", text:"They have paid the tuition for the whole year." }
+    ]
+  },
+  {
+    present: "put", past: "put", pp: "put",
+    icon: "📥", zh: "放",
+    sentences: [
+      { tense:"present", verb:"put", text:"She puts the book on the shelf." },
+      { tense:"past", verb:"put", text:"He put the keys in his pocket yesterday." },
+      { tense:"participle", verb:"put", text:"They have put away the toys after playtime." }
     ]
   },
   {
@@ -270,6 +396,15 @@ const VERBS = [
       { tense:"present", verb:"ride", text:"I ride my bicycle to the park every weekend." },
       { tense:"past", verb:"rode", text:"We rode horses at the farm last holiday." },
       { tense:"participle", verb:"ridden", text:"Have you ridden a horse before?" }
+    ]
+  },
+  {
+    present: "ring", past: "rang", pp: "rung",
+    icon: "🔔", zh: "響",
+    sentences: [
+      { tense:"present", verb:"ring", text:"The school bell rings every hour." },
+      { tense:"past", verb:"rang", text:"The school bell rang yesterday." },
+      { tense:"participle", verb:"rung", text:"The school bell has rung many times today." }
     ]
   },
   {
@@ -327,6 +462,33 @@ const VERBS = [
     ]
   },
   {
+    present: "shine", past: "shone", pp: "shone", pastAlt:"shined", ppAlt:"shined",
+    icon: "☀️", zh: "閃耀",
+    sentences: [
+      { tense:"present", verb:"shine", text:"The sun always shines brightly in the morning." },
+      { tense:"past", verb:"shone", text:"The stars shone brilliantly last night." },
+      { tense:"participle", verb:"shone", text:"The diamonds have shone ever since they were set in the crown." }
+    ]
+  },
+  {
+    present: "show", past: "showed", pp: "shown",
+    icon: "📊", zh: "顯示",
+    sentences: [
+      { tense:"present", verb:"show", text:"She shows her artwork." },
+      { tense:"past", verb:"showed", text:"She showed her artwork." },
+      { tense:"participle", verb:"shown", text:"She has shown her artwork." }
+    ]
+  },
+  {
+    present: "shut", past: "shut", pp: "shut",
+    icon: "emoji", zh: "Traditional Chinese Cantonese",
+    sentences: [
+      { tense:"present", verb:"shut", text:"Please shut the door." },
+      { tense:"past", verb:"shut", text:"She shut the book after reading." },
+      { tense:"participle", verb:"shut", text:"They have shut the shop early today." }
+    ]
+  },
+  {
     present: "sing", past: "sang", pp: "sung",
     icon: "🎤", zh: "唱歌",
     sentences: [
@@ -354,6 +516,15 @@ const VERBS = [
     ]
   },
   {
+    present: "smell", past: "smelled", pp: "smelled",
+    icon: "👃", zh: "聞",
+    sentences: [
+      { tense:"present", verb:"smell", text:"The flower smells sweet." },
+      { tense:"past", verb:"smelled", text:"The flower smelled sweet." },
+      { tense:"participle", verb:"smelled", text:"The flower has smelled sweet." }
+    ]
+  },
+  {
     present: "speak", past: "spoke", pp: "spoken",
     icon: "💬", zh: "說話",
     sentences: [
@@ -369,6 +540,15 @@ const VERBS = [
       { tense:"present", verb:"stand", text:"Please stand when the teacher enters." },
       { tense:"past", verb:"stood", text:"We stood in line for the bus." },
       { tense:"participle", verb:"stood", text:"He has stood at the top of the queue." }
+    ]
+  },
+  {
+    present: "steal", past: "stole", pp: "stolen",
+    icon: "🛍️", zh: "偷",
+    sentences: [
+      { tense:"present", verb:"steal", text:"He steals the cookies." },
+      { tense:"past", verb:"stole", text:"He stole the cookies." },
+      { tense:"participle", verb:"stolen", text:"He has stolen the cookies." }
     ]
   },
   {
@@ -426,12 +606,30 @@ const VERBS = [
     ]
   },
   {
+    present: "understand", past: "understood", pp: "understood",
+    icon: "🤔", zh: "明白",
+    sentences: [
+      { tense:"present", verb:"understand", text:"I understand the lesson." },
+      { tense:"past", verb:"understood", text:"She understood the problem." },
+      { tense:"participle", verb:"understood", text:"They have understood the instructions." }
+    ]
+  },
+  {
     present: "wake", past: "woke", pp: "woken",
     icon: "⏰", zh: "醒來",
     sentences: [
       { tense:"present", verb:"wake", text:"I wake up at seven o'clock every school day." },
       { tense:"past", verb:"woke", text:"The loud noise woke everyone in the house." },
       { tense:"participle", verb:"woken", text:"She has woken up early all week." }
+    ]
+  },
+  {
+    present: "wear", past: "wore", pp: "worn",
+    icon: "👕", zh: "著",
+    sentences: [
+      { tense:"present", verb:"wear", text:"She wears a hat every day." },
+      { tense:"past", verb:"wore", text:"He wore his new shoes to school yesterday." },
+      { tense:"participle", verb:"worn", text:"They have worn those uniforms for many years." }
     ]
   },
   {
@@ -450,204 +648,6 @@ const VERBS = [
       { tense:"present", verb:"write", text:"I write in my diary every night." },
       { tense:"past", verb:"wrote", text:"She wrote a long letter to her friend." },
       { tense:"participle", verb:"written", text:"He has written three books already." }
-    ]
-  },
-  {
-    present: "be", past: "was/were", pp: "been",
-    icon: "🔤", zh: "係",
-    sentences: [
-      { tense:"present", verb:"be", text:"I am a student." },
-      { tense:"past", verb:"was/were", text:"I was a student." },
-      { tense:"participle", verb:"been", text:"I have been a student." }
-    ]
-  },
-  {
-    present: "become", past: "became", pp: "become",
-    icon: "🔀", zh: "變成",
-    sentences: [
-      { tense:"present", verb:"become", text:"She will become a doctor when she grows up." },
-      { tense:"past", verb:"became", text:"He became very tired after the long trip." },
-      { tense:"participle", verb:"become", text:"They have become friends over the years." }
-    ]
-  },
-  {
-    present: "cost", past: "cost", pp: "cost",
-    icon: "💰", zh: "成本 (còuhn)",
-    sentences: [
-      { tense:"present", verb:"cost", text:"The book costs five dollars." },
-      { tense:"past", verb:"cost", text:"The tickets cost twenty dollars last week." },
-      { tense:"participle", verb:"cost", text:"The repair has cost us a lot of time." }
-    ]
-  },
-  {
-    present: "do", past: "did", pp: "done",
-    icon: "emoji", zh: "Traditional Chinese Cantonese",
-    sentences: [
-      { tense:"present", verb:"do", text:"I do my homework." },
-      { tense:"past", verb:"did", text:"He did well in the test." },
-      { tense:"participle", verb:"done", text:"She has done her chores." }
-    ]
-  },
-  {
-    present: "fight", past: "fought", pp: "fought",
-    icon: "🥊", zh: "打鬥",
-    sentences: [
-      { tense:"present", verb:"fight", text:"The children fight over the last piece of cake." },
-      { tense:"past", verb:"fought", text:"The boys fought fiercely during recess." },
-      { tense:"participle", verb:"fought", text:"She has fought many challenges with determination." }
-    ]
-  },
-  {
-    present: "forget", past: "forgot", pp: "forgotten",
-    icon: "🤔", zh: "唔記得",
-    sentences: [
-      { tense:"present", verb:"forget", text:"I often forget my keys." },
-      { tense:"past", verb:"forgot", text:"I forgot my keys yesterday." },
-      { tense:"participle", verb:"forgotten", text:"I have forgotten my keys." }
-    ]
-  },
-  {
-    present: "have", past: "had", pp: "had",
-    icon: "👐", zh: "有",
-    sentences: [
-      { tense:"present", verb:"have", text:"I have a blue notebook." },
-      { tense:"past", verb:"had", text:"She had a tasty snack yesterday." },
-      { tense:"participle", verb:"had", text:"They have had many adventures together." }
-    ]
-  },
-  {
-    present: "hurt", past: "hurt", pp: "hurt",
-    icon: "🤕", zh: "受傷",
-    sentences: [
-      { tense:"present", verb:"hurt", text:"I hurt my knee while playing." },
-      { tense:"past", verb:"hurt", text:"I hurt my knee yesterday." },
-      { tense:"participle", verb:"hurt", text:"I have hurt my knee before." }
-    ]
-  },
-  {
-    present: "keep", past: "kept", pp: "kept",
-    icon: "🔒", zh: "保持",
-    sentences: [
-      { tense:"present", verb:"keep", text:"I keep my books organized." },
-      { tense:"past", verb:"kept", text:"I kept my books organized." },
-      { tense:"participle", verb:"kept", text:"I have kept my books organized." }
-    ]
-  },
-  {
-    present: "learn", past: "learned", pp: "learned",
-    icon: "📚", zh: "學習",
-    sentences: [
-      { tense:"present", verb:"learn", text:"I learn new words every day." },
-      { tense:"past", verb:"learned", text:"I learned new words yesterday." },
-      { tense:"participle", verb:"learned", text:"I have learned many new words." }
-    ]
-  },
-  {
-    present: "leave", past: "left", pp: "left",
-    icon: "🚶", zh: "離開",
-    sentences: [
-      { tense:"present", verb:"leave", text:"They leave the school every day." },
-      { tense:"past", verb:"left", text:"They left the school yesterday." },
-      { tense:"participle", verb:"left", text:"They have left the school." }
-    ]
-  },
-  {
-    present: "mean", past: "meant", pp: "meant",
-    icon: "🔤", zh: "意思",
-    sentences: [
-      { tense:"present", verb:"mean", text:"I mean what I say." },
-      { tense:"past", verb:"meant", text:"She meant to call you yesterday." },
-      { tense:"participle", verb:"meant", text:"He has always meant well." }
-    ]
-  },
-  {
-    present: "pay", past: "paid", pp: "paid",
-    icon: "💰", zh: "付錢",
-    sentences: [
-      { tense:"present", verb:"pay", text:"I pay the bus fare every day." },
-      { tense:"past", verb:"paid", text:"She paid the bill yesterday." },
-      { tense:"participle", verb:"paid", text:"They have paid the tuition for the whole year." }
-    ]
-  },
-  {
-    present: "put", past: "put", pp: "put",
-    icon: "📥", zh: "放",
-    sentences: [
-      { tense:"present", verb:"put", text:"She puts the book on the shelf." },
-      { tense:"past", verb:"put", text:"He put the keys in his pocket yesterday." },
-      { tense:"participle", verb:"put", text:"They have put away the toys after playtime." }
-    ]
-  },
-  {
-    present: "ring", past: "rang", pp: "rung",
-    icon: "🔔", zh: "響",
-    sentences: [
-      { tense:"present", verb:"ring", text:"The school bell rings every hour." },
-      { tense:"past", verb:"rang", text:"The school bell rang yesterday." },
-      { tense:"participle", verb:"rung", text:"The school bell has rung many times today." }
-    ]
-  },
-  {
-    present: "shine", past: "shone", pp: "shone", pastAlt:"shined", ppAlt:"shined",
-    icon: "☀️", zh: "閃耀",
-    sentences: [
-      { tense:"present", verb:"shine", text:"The sun always shines brightly in the morning." },
-      { tense:"past", verb:"shone", text:"The stars shone brilliantly last night." },
-      { tense:"participle", verb:"shone", text:"The diamonds have shone ever since they were set in the crown." }
-    ]
-  },
-  {
-    present: "show", past: "showed", pp: "shown",
-    icon: "📊", zh: "顯示",
-    sentences: [
-      { tense:"present", verb:"show", text:"She shows her artwork." },
-      { tense:"past", verb:"showed", text:"She showed her artwork." },
-      { tense:"participle", verb:"shown", text:"She has shown her artwork." }
-    ]
-  },
-  {
-    present: "shut", past: "shut", pp: "shut",
-    icon: "emoji", zh: "Traditional Chinese Cantonese",
-    sentences: [
-      { tense:"present", verb:"shut", text:"Please shut the door." },
-      { tense:"past", verb:"shut", text:"She shut the book after reading." },
-      { tense:"participle", verb:"shut", text:"They have shut the shop early today." }
-    ]
-  },
-  {
-    present: "smell", past: "smelled", pp: "smelled",
-    icon: "👃", zh: "聞",
-    sentences: [
-      { tense:"present", verb:"smell", text:"The flower smells sweet." },
-      { tense:"past", verb:"smelled", text:"The flower smelled sweet." },
-      { tense:"participle", verb:"smelled", text:"The flower has smelled sweet." }
-    ]
-  },
-  {
-    present: "steal", past: "stole", pp: "stolen",
-    icon: "🛍️", zh: "偷",
-    sentences: [
-      { tense:"present", verb:"steal", text:"He steals the cookies." },
-      { tense:"past", verb:"stole", text:"He stole the cookies." },
-      { tense:"participle", verb:"stolen", text:"He has stolen the cookies." }
-    ]
-  },
-  {
-    present: "understand", past: "understood", pp: "understood",
-    icon: "🤔", zh: "明白",
-    sentences: [
-      { tense:"present", verb:"understand", text:"I understand the lesson." },
-      { tense:"past", verb:"understood", text:"She understood the problem." },
-      { tense:"participle", verb:"understood", text:"They have understood the instructions." }
-    ]
-  },
-  {
-    present: "wear", past: "wore", pp: "worn",
-    icon: "👕", zh: "著",
-    sentences: [
-      { tense:"present", verb:"wear", text:"She wears a hat every day." },
-      { tense:"past", verb:"wore", text:"He wore his new shoes to school yesterday." },
-      { tense:"participle", verb:"worn", text:"They have worn those uniforms for many years." }
     ]
   }
 ];

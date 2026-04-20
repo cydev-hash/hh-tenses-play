@@ -428,7 +428,7 @@
         <div class="actions" style="margin-top:16px">
           <button class="btn btn-secondary btn-sm" onclick="prevTest()">⬅️ Back</button>
           <button class="btn btn-read btn-sm" onclick="readTestWord()">🔊 Read</button>
-          <button class="btn btn-secondary btn-sm" onclick="nextTest()">Next ➡️</button>
+          <button class="btn btn-secondary btn-sm" id="test-next-btn" onclick="testNextFromBtn()">Next ➡️</button>
         </div>
       </div>
     </div>
@@ -775,7 +775,7 @@ function loadTestQuestion(idx) {
     '<label class="input-label">' + labels[t] + '</label>' +
     '<input class="input-field" id="test-inp-' + t + '" type="text" ' +
     'placeholder="' + placeholders[t] + '" autocomplete="off" autocorrect="off" spellcheck="false" ' +
-    'oninput="saveTestAnswer(' + idx + ')" data-field="' + t + '"/>' +
+    'oninput="saveTestAnswer(' + idx + ')" onkeydown="testInputKeydown(event,\'' + t + '\')" data-field="' + t + '"/>' +
     '</div>'
   ).join('');
 
@@ -786,6 +786,13 @@ function loadTestQuestion(idx) {
       if (inp && testAnswers[idx][t] !== undefined) inp.value = testAnswers[idx][t];
     });
   }
+
+  // Reset Next button state and focus first input
+  setNextReady(false);
+  setTimeout(() => {
+    const first = document.getElementById('test-inp-' + needFields[0]);
+    if (first) first.focus();
+  }, 120);
 
   const card = document.getElementById('test-question-card');
   card.classList.remove('animate-pop');
@@ -807,6 +814,10 @@ function saveTestAnswer(idx) {
 }
 
 function prevTest() { saveTestAnswer(testCurrentIdx); if (testCurrentIdx > 0) loadTestQuestion(testCurrentIdx - 1); }
+function testNextFromBtn() {
+  setNextReady(false);
+  nextTest();
+}
 function nextTest() { saveTestAnswer(testCurrentIdx); if (testCurrentIdx < testWords.length - 1) loadTestQuestion(testCurrentIdx + 1); }
 function jumpToTest(idx) { saveTestAnswer(testCurrentIdx); loadTestQuestion(idx); }
 
@@ -882,6 +893,45 @@ function backToSetup()  {
   document.getElementById('test-results').classList.add('hidden');
   document.getElementById('test-session').classList.add('hidden');
   document.getElementById('test-setup').classList.remove('hidden');
+}
+
+
+// ===================================================
+//  TEST KEYBOARD NAVIGATION
+// ===================================================
+function testInputKeydown(e, currentField) {
+  if (e.key !== 'Enter') return;
+  e.preventDefault();
+
+  const givenTense   = testGivenTense[testCurrentIdx];
+  const needFields   = ['present','past','pp'].filter(t => t !== givenTense);
+  const currentIndex = needFields.indexOf(currentField);
+  const nextField    = needFields[currentIndex + 1];
+
+  if (nextField) {
+    // Move to next input field
+    const nextInp = document.getElementById('test-inp-' + nextField);
+    if (nextInp) nextInp.focus();
+  } else {
+    // Last field — highlight Next button as ready
+    saveTestAnswer(testCurrentIdx);
+    setNextReady(true);
+    document.getElementById('test-next-btn').focus();
+  }
+}
+
+function setNextReady(ready) {
+  const btn = document.getElementById('test-next-btn');
+  if (!btn) return;
+  if (ready) {
+    btn.classList.remove('btn-secondary');
+    btn.classList.add('btn-success');
+    btn.textContent = 'Next ➡️';
+  } else {
+    btn.classList.remove('btn-success');
+    btn.classList.add('btn-secondary');
+    btn.textContent = 'Next ➡️';
+  }
 }
 
 // ===================================================

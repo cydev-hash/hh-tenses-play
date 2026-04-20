@@ -12,6 +12,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes toastIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 
 /* LOGIN */
 #login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);background-image:radial-gradient(ellipse at 30% 30%,rgba(79,110,247,.15) 0%,transparent 60%),radial-gradient(ellipse at 70% 70%,rgba(255,107,157,.1) 0%,transparent 60%)}
@@ -42,121 +43,122 @@ header{background:var(--card);border-bottom:1px solid var(--border);padding:0 28
 .btn-success{background:var(--success);color:#111}.btn-success:hover:not(:disabled){opacity:.9;transform:translateY(-1px)}
 .btn-danger{background:var(--danger);color:#fff}.btn-danger:hover:not(:disabled){opacity:.9}
 .btn-ghost{background:var(--card);color:var(--text);border:1.5px solid var(--border)}.btn-ghost:hover:not(:disabled){border-color:var(--primary);color:var(--primary)}
-.btn-accent{background:var(--accent);color:#111}.btn-accent:hover:not(:disabled){opacity:.9}
-.btn-ai{background:linear-gradient(135deg,#7c3aed,#4f6ef7);color:#fff}.btn-ai:hover:not(:disabled){opacity:.9;transform:translateY(-1px)}
 .btn-back{background:var(--card2);color:var(--text-muted);border:1.5px solid var(--border)}.btn-back:hover{border-color:var(--secondary);color:var(--secondary)}
 .btn-sm{padding:6px 14px;font-size:.8rem}
-.spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block}
+.spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block;flex-shrink:0}
+.spinner-dark{border-color:rgba(0,0,0,.2);border-top-color:#111}
 
 /* MAIN */
-main{max-width:1080px;margin:0 auto;padding:24px 20px 80px}
+main{max-width:1000px;margin:0 auto;padding:28px 20px 80px}
 
-/* SETTINGS PANEL */
-.settings-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:20px}
-.settings-title{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.settings-row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap}
-.settings-field{display:flex;flex-direction:column;gap:5px;flex:1;min-width:200px}
-.settings-input{padding:9px 14px;border-radius:var(--radius-sm);border:2px solid var(--border);background:var(--bg2);color:var(--text);font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:600;outline:none;transition:border .2s}
-.settings-input:focus{border-color:var(--primary)}
-.key-status{font-size:.78rem;font-weight:700;padding:2px 10px;border-radius:50px}
-.key-set{background:rgba(6,214,160,.12);color:var(--success)}
-.key-missing{background:rgba(239,71,111,.1);color:var(--danger)}
+/* ADD VERB PANEL */
+.add-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-bottom:24px}
+.add-panel-title{font-family:'Baloo 2',cursive;font-size:1.2rem;font-weight:800;color:var(--primary);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.add-panel-desc{color:var(--text-muted);font-size:.88rem;margin-bottom:20px;line-height:1.5}
+.add-input-row{display:flex;gap:12px;align-items:flex-start}
+.verb-paste-box{flex:1;padding:13px 16px;border-radius:var(--radius-sm);border:2px solid var(--border);background:var(--bg2);color:var(--text);font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:700;outline:none;transition:border .2s;min-width:0}
+.verb-paste-box:focus{border-color:var(--primary)}
+.verb-paste-box::placeholder{color:var(--text-muted);font-weight:600}
+.btn-generate{padding:13px 28px;border-radius:50px;border:none;background:linear-gradient(135deg,#7c3aed,var(--primary));color:#fff;font-family:'Nunito',sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;white-space:nowrap;flex-shrink:0}
+.btn-generate:hover:not(:disabled){opacity:.9;transform:translateY(-1px);box-shadow:0 4px 20px rgba(79,110,247,.4)}
+.btn-generate:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
-/* TOOLBAR */
-.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
-.search-wrap{position:relative;flex:1;min-width:180px}
-.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%)}
-.search-input{width:100%;padding:10px 14px 10px 36px;border-radius:50px;border:2px solid var(--border);background:var(--card);color:var(--text);font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:600;outline:none;transition:border .2s}
-.search-input:focus{border-color:var(--primary)}
-.stats-bar{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;align-items:center}
+/* AI RESULT PREVIEW */
+.ai-preview{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:20px;margin-top:16px;display:none}
+.ai-preview.show{display:block;animation:fadeUp .25s ease}
+.preview-title{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:14px}
+.preview-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.preview-field{display:flex;flex-direction:column;gap:4px}
+.preview-label{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--text-muted)}
+.preview-value{font-size:.95rem;font-weight:700;color:var(--text)}
+.preview-value.present{color:var(--primary);font-family:'Baloo 2',cursive;font-size:1.1rem}
+.preview-value.past{color:var(--secondary)}
+.preview-value.pp{color:var(--success)}
+.preview-sentences{margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+.preview-sent{display:flex;gap:8px;align-items:flex-start;padding:6px 0;font-size:.88rem;line-height:1.5;color:var(--text-muted)}
+.sent-badge{flex-shrink:0;padding:2px 8px;border-radius:50px;font-size:.68rem;font-weight:800;text-transform:uppercase}
+.badge-present{background:rgba(79,110,247,.15);color:var(--primary)}
+.badge-past{background:rgba(255,107,157,.15);color:var(--secondary)}
+.badge-participle{background:rgba(6,214,160,.15);color:var(--success)}
+.preview-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
+
+/* AI STATUS BAR */
+.ai-status-bar{display:none;align-items:center;gap:10px;margin-top:14px;padding:12px 16px;background:rgba(79,110,247,.06);border-radius:var(--radius-sm);border:1px solid rgba(79,110,247,.2)}
+.ai-status-bar.show{display:flex}
+.ai-status-text{font-size:.88rem;font-weight:700;color:var(--text-muted)}
+
+/* STATS + TOOLBAR */
+.section-header{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+.section-title{font-family:'Baloo 2',cursive;font-size:1.1rem;font-weight:800;color:var(--text)}
 .stat-chip{background:var(--card);border:1px solid var(--border);border-radius:50px;padding:5px 14px;font-size:.82rem;font-weight:700;color:var(--text-muted)}
 .stat-chip strong{color:var(--text)}
 .unsaved-chip{background:rgba(255,209,102,.12);border:1px solid var(--accent);color:var(--accent);border-radius:50px;padding:5px 14px;font-size:.82rem;font-weight:800;display:none}
-.audio-chip{background:rgba(79,110,247,.1);border:1px solid var(--primary);color:var(--primary);border-radius:50px;padding:5px 14px;font-size:.82rem;font-weight:800}
+.search-wrap{position:relative;margin-left:auto}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:.9rem}
+.search-input{padding:8px 14px 8px 34px;border-radius:50px;border:2px solid var(--border);background:var(--card2);color:var(--text);font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:600;outline:none;transition:border .2s;width:200px}
+.search-input:focus{border-color:var(--primary)}
 
 /* TABLE */
 .table-wrap{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden}
 .verb-table{width:100%;border-collapse:collapse}
 .verb-table thead tr{background:var(--card2);border-bottom:1px solid var(--border)}
-.verb-table th{padding:12px 14px;text-align:left;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--text-muted);white-space:nowrap}
+.verb-table th{padding:11px 14px;text-align:left;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--text-muted);white-space:nowrap}
 .verb-table th.sortable{cursor:pointer;user-select:none}.verb-table th.sortable:hover{color:var(--primary)}
 .verb-table td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:.9rem;vertical-align:middle}
 .verb-table tr:last-child td{border-bottom:none}
 .verb-table tr:hover td{background:rgba(79,110,247,.04)}
 .verb-table tr.drag-over td{background:rgba(79,110,247,.12)}
 .verb-table tr.dragging{opacity:.35}
-.drag-handle{cursor:grab;color:var(--text-muted)}.drag-handle:active{cursor:grabbing}
-.cell-num{color:var(--text-muted);font-size:.8rem;font-weight:700}
+.drag-handle{cursor:grab;color:var(--text-muted);user-select:none}.drag-handle:active{cursor:grabbing}
+.cell-num{color:var(--text-muted);font-size:.78rem;font-weight:700}
 .cell-present{font-family:'Baloo 2',cursive;font-size:1.05rem;font-weight:700;color:var(--primary)}
 .cell-past{font-weight:700;color:var(--secondary)}
 .cell-pp{font-weight:700;color:var(--success)}
 .cell-zh{color:var(--text-muted);font-size:.85rem}
 .row-actions{display:flex;gap:5px}
-.audio-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:3px}
-.audio-ok{background:var(--success)}.audio-missing{background:var(--danger)}
 
-/* MODAL */
+/* EDIT MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);z-index:500;align-items:center;justify-content:center;padding:20px}
 .modal-overlay.open{display:flex}
-.modal{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:32px;width:100%;max-width:700px;max-height:90vh;overflow-y:auto;animation:fadeUp .25s ease;box-shadow:0 20px 60px rgba(0,0,0,.5)}
-.modal-title{font-family:'Baloo 2',cursive;font-size:1.4rem;font-weight:800;color:var(--primary);margin-bottom:6px;display:flex;align-items:center;gap:10px}
-.modal-subtitle{color:var(--text-muted);font-size:.85rem;margin-bottom:22px}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:32px;width:100%;max-width:660px;max-height:90vh;overflow-y:auto;animation:fadeUp .25s ease;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.modal-title{font-family:'Baloo 2',cursive;font-size:1.3rem;font-weight:800;color:var(--primary);margin-bottom:20px}
 .modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
 .modal-grid.three{grid-template-columns:1fr 1fr 1fr}
 .form-group{display:flex;flex-direction:column;gap:5px}
 .form-input,.form-textarea{padding:10px 14px;border-radius:var(--radius-sm);border:2px solid var(--border);background:var(--bg2);color:var(--text);font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:600;outline:none;transition:border .2s}
 .form-input:focus,.form-textarea:focus{border-color:var(--primary)}
-.form-input.ai-filled{border-color:var(--success);background:rgba(6,214,160,.06)}
 .form-textarea{resize:vertical;min-height:65px}
 .tense-select{padding:6px 10px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;font-size:.85rem;font-weight:700;outline:none}
 .sentence-item{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:14px;margin-bottom:10px}
 .sentence-row-header{display:flex;gap:8px;align-items:center;margin-bottom:10px}
-.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;flex-wrap:wrap}
-
-/* AI auto-fill bar */
-.ai-bar{background:rgba(124,58,237,.08);border:1.5px solid rgba(124,58,237,.3);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:18px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.ai-bar-label{font-size:.82rem;font-weight:800;color:#a78bfa;flex:1;min-width:150px}
-.ai-status{font-size:.8rem;color:var(--text-muted);font-weight:700}
-
-/* Audio status in modal */
-.audio-status-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
-.audio-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:50px;font-size:.75rem;font-weight:800}
-.audio-badge.ok{background:rgba(6,214,160,.12);color:var(--success)}
-.audio-badge.missing{background:rgba(239,71,111,.1);color:var(--danger)}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+.btn-regen{padding:7px 16px;border-radius:50px;border:none;background:linear-gradient(135deg,#7c3aed,var(--primary));color:#fff;font-family:'Nunito',sans-serif;font-weight:800;font-size:.8rem;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.btn-regen:hover:not(:disabled){opacity:.9}.btn-regen:disabled{opacity:.5;cursor:not-allowed}
 
 /* PUBLISH MODAL */
-.publish-modal{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:36px;width:100%;max-width:460px;animation:fadeUp .25s ease;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.publish-modal{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:36px;width:100%;max-width:440px;animation:fadeUp .25s ease;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5)}
 .publish-icon{font-size:3rem;margin-bottom:12px}
-.publish-modal h2{font-family:'Baloo 2',cursive;font-size:1.5rem;font-weight:800;color:var(--primary);margin-bottom:8px}
-.publish-modal p{color:var(--text-muted);font-size:.9rem;line-height:1.6;min-height:36px;margin-bottom:16px}
-.publish-log{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:14px;font-family:monospace;font-size:.82rem;color:var(--success);min-height:80px;max-height:160px;overflow-y:auto;margin-bottom:20px;text-align:left;white-space:pre-wrap;display:none}
+.publish-modal h2{font-family:'Baloo 2',cursive;font-size:1.4rem;font-weight:800;color:var(--primary);margin-bottom:8px}
+.publish-modal p{color:var(--text-muted);font-size:.9rem;line-height:1.6;min-height:32px;margin-bottom:14px}
+.publish-log{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:14px;font-family:monospace;font-size:.82rem;color:var(--success);min-height:80px;max-height:150px;overflow-y:auto;margin-bottom:16px;text-align:left;white-space:pre-wrap;display:none}
 .log-info{color:var(--text-muted)}.log-error{color:var(--danger)}
 .publish-actions{display:flex;gap:10px;justify-content:center}
 .btn-publish{padding:13px 32px;border-radius:50px;border:none;background:var(--success);color:#111;font-family:'Nunito',sans-serif;font-size:1rem;font-weight:800;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
-.btn-publish:hover:not(:disabled){opacity:.9;transform:translateY(-1px)}
-.btn-publish:disabled{opacity:.5;cursor:not-allowed}
-
-/* AUDIO GUIDE MODAL */
-.audio-guide{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:32px;width:100%;max-width:540px;animation:fadeUp .25s ease;box-shadow:0 20px 60px rgba(0,0,0,.5)}
-.audio-guide h2{font-family:'Baloo 2',cursive;font-size:1.3rem;font-weight:800;color:var(--primary);margin-bottom:16px}
-.step{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start}
-.step-num{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800}
-.step-text{font-size:.9rem;line-height:1.5;color:var(--text)}
-.code-block{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:monospace;font-size:.82rem;color:var(--accent);margin:6px 0;white-space:pre-wrap;word-break:break-all}
+.btn-publish:hover:not(:disabled){opacity:.9;transform:translateY(-1px)}.btn-publish:disabled{opacity:.5;cursor:not-allowed}
 
 /* CONFIRM */
 .confirm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:600;align-items:center;justify-content:center}
 .confirm-overlay.open{display:flex}
-.confirm-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;max-width:360px;width:90%;text-align:center;animation:fadeUp .2s ease}
-.confirm-box h3{font-size:1.1rem;font-weight:800;margin-bottom:10px}
-.confirm-box p{color:var(--text-muted);font-size:.9rem;margin-bottom:20px}
+.confirm-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;max-width:340px;width:90%;text-align:center;animation:fadeUp .2s ease}
+.confirm-box h3{font-size:1.05rem;font-weight:800;margin-bottom:8px}
+.confirm-box p{color:var(--text-muted);font-size:.88rem;margin-bottom:18px}
 .confirm-actions{display:flex;gap:10px;justify-content:center}
 
 /* TOAST */
 .toast{position:fixed;bottom:28px;right:28px;padding:13px 20px;border-radius:var(--radius-sm);font-weight:800;font-size:.9rem;z-index:9999;animation:toastIn .3s ease;display:none;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,.4)}
 .toast.show{display:flex}.toast.success{background:var(--success);color:#111}.toast.error{background:var(--danger);color:#fff}.toast.info{background:var(--primary);color:#fff}
 .hidden{display:none!important}
-@media(max-width:680px){.modal-grid,.modal-grid.three{grid-template-columns:1fr}header{padding:0 12px}main{padding:16px 10px 60px}.settings-row{flex-direction:column}}
+@media(max-width:680px){.modal-grid,.modal-grid.three{grid-template-columns:1fr}header{padding:0 12px}main{padding:16px 10px 60px}.add-input-row{flex-direction:column}.preview-grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -190,59 +192,82 @@ main{max-width:1080px;margin:0 auto;padding:24px 20px 80px}
   </header>
 
   <main>
-    <!-- Settings: API Keys -->
-    <div class="settings-panel">
-      <div class="settings-title">&#9881;&#65039; API Settings <span style="font-size:.7rem;font-weight:600;color:var(--text-muted)">(saved in your browser only)</span></div>
-      <div class="settings-row">
-        <div class="settings-field">
-          <label class="form-label">OpenRouter API Key</label>
-          <div style="padding:9px 14px;border-radius:var(--radius-sm);border:2px solid var(--border);background:var(--bg2);font-size:.88rem;color:var(--success);font-weight:700">
-            &#128274; Secured via GitHub Secrets
+
+    <!-- ADD VERB PANEL -->
+    <div class="add-panel">
+      <div class="add-panel-title">&#10133; Add New Verb</div>
+      <div class="add-panel-desc">Type one verb or multiple verbs (separated by comma or space). The app will automatically generate past tense, past participle, Chinese translation, example sentences, and icon.</div>
+
+      <div class="add-input-row">
+        <textarea class="verb-paste-box" id="verb-input"
+          placeholder="Type one or more verbs, e.g:  jump, run, eat&#10;Separate multiple verbs with comma or space"
+          autocomplete="off" autocorrect="off" spellcheck="false"
+          rows="2" style="resize:none;line-height:1.5"></textarea>
+        <button class="btn-generate" id="gen-btn" onclick="generateVerb()">
+          &#10024; Generate
+        </button>
+      </div>
+
+      <!-- Status bar -->
+      <div class="ai-status-bar" id="ai-status-bar">
+        <span class="spinner"></span>
+        <span class="ai-status-text" id="ai-status-text">Generating verb data...</span>
+      </div>
+
+      <!-- Preview result -->
+      <div class="ai-preview" id="ai-preview">
+        <div class="preview-title">&#129302; AI Generated — Please review before saving</div>
+        <div class="preview-grid">
+          <div class="preview-field">
+            <div class="preview-label">Present</div>
+            <div class="preview-value present" id="prev-present">—</div>
+          </div>
+          <div class="preview-field">
+            <div class="preview-label">Past</div>
+            <div class="preview-value past" id="prev-past">—</div>
+          </div>
+          <div class="preview-field">
+            <div class="preview-label">Past Participle</div>
+            <div class="preview-value pp" id="prev-pp">—</div>
+          </div>
+          <div class="preview-field">
+            <div class="preview-label">Icon &amp; Chinese</div>
+            <div class="preview-value" id="prev-icon-zh">—</div>
           </div>
         </div>
-        <div class="settings-field">
-          <label class="form-label">GitHub Token <span class="key-status" id="gh-key-status">&#9888; Not set</span></label>
-          <input class="settings-input" id="gh-key-input" type="password" placeholder="ghp_xxxxxxxxxxxx"
-            oninput="saveApiKey('github', this.value)"/>
+        <div class="preview-sentences" id="prev-sentences"></div>
+        <div class="preview-actions">
+          <button class="btn btn-ghost btn-sm" onclick="clearPreview()">&#10005; Cancel</button>
+          <button class="btn-regen btn-sm" id="regen-btn" onclick="generateVerb()">&#128260; Regenerate</button>
+          <button class="btn btn-success" onclick="confirmAddVerb()">&#10003; Add to List</button>
         </div>
-        <button class="btn btn-ghost btn-sm" onclick="clearKeys()" style="align-self:flex-end">&#128465; Clear Keys</button>
       </div>
     </div>
 
-    <!-- Toolbar -->
-    <div class="toolbar">
-      <div class="search-wrap">
-        <span class="search-icon">&#128269;</span>
-        <input class="search-input" id="search-input" type="text" placeholder="Search verbs..." oninput="renderTable()"/>
-      </div>
-      <button class="btn btn-primary" onclick="openAddModal()">&#10133; Add Verb</button>
-      <button class="btn btn-accent"  onclick="triggerImport()">&#128229; Import JSON</button>
-      <button class="btn btn-ghost"   onclick="exportJSON()">&#128228; Export JSON</button>
-      <button class="btn btn-ghost"   onclick="exportCSV()">&#128202; Export CSV</button>
-      <button class="btn btn-ghost"   onclick="openAudioGuide()">&#128266; Audio Guide</button>
-      <input type="file" id="import-file" accept=".json,.csv" class="hidden" onchange="handleImport(event)"/>
-    </div>
-    <div class="stats-bar">
+    <!-- VERB LIST -->
+    <div class="section-header">
+      <div class="section-title">&#128218; Verb List</div>
       <div class="stat-chip">Total: <strong id="stat-total">0</strong> verbs</div>
       <div class="stat-chip">Showing: <strong id="stat-showing">0</strong></div>
-      <div class="audio-chip" id="audio-chip">&#128266; Audio: checking...</div>
       <div class="unsaved-chip" id="unsaved-chip">&#9888;&#65039; Unsaved &mdash; click Save &amp; Publish</div>
+      <div class="search-wrap">
+        <span class="search-icon">&#128269;</span>
+        <input class="search-input" id="search-input" type="text" placeholder="Search..." oninput="renderTable()"/>
+      </div>
     </div>
 
-    <!-- Table -->
     <div class="table-wrap">
       <table class="verb-table">
         <thead>
           <tr>
             <th style="width:30px"></th>
-            <th style="width:34px">#</th>
-            <th style="width:38px">Icon</th>
+            <th style="width:32px">#</th>
+            <th style="width:36px">Icon</th>
             <th class="sortable" onclick="sortBy('present')">Present <span id="sort-present"></span></th>
             <th class="sortable" onclick="sortBy('past')">Past <span id="sort-past"></span></th>
             <th class="sortable" onclick="sortBy('pp')">Past Part. <span id="sort-pp"></span></th>
             <th>Chinese &#20013;&#25991;</th>
-            <th title="Audio file status">&#128266;</th>
-            <th style="width:100px">Actions</th>
+            <th style="width:90px">Actions</th>
           </tr>
         </thead>
         <tbody id="verb-tbody"></tbody>
@@ -251,68 +276,32 @@ main{max-width:1080px;margin:0 auto;padding:24px 20px 80px}
   </main>
 </div>
 
-<!-- VERB MODAL -->
-<div class="modal-overlay" id="verb-modal">
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="edit-modal">
   <div class="modal">
-    <div class="modal-title" id="modal-title">Add New Verb</div>
-    <div class="modal-subtitle" id="modal-subtitle">Fill in the verb forms or use AI to auto-fill everything.</div>
-
-    <!-- AI Auto-fill bar -->
-    <div class="ai-bar">
-      <div class="ai-bar-label">&#129302; AI Auto-fill &mdash; type the present tense then click Generate</div>
-      <span class="ai-status" id="ai-status"></span>
-      <button class="btn btn-ai btn-sm" id="ai-btn" onclick="aiAutoFill()">&#10024; Generate with AI</button>
+    <div class="modal-title" id="edit-modal-title">&#9999;&#65039; Edit Verb</div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+      <button class="btn-regen" id="edit-regen-btn" onclick="regenCurrentEdit()">&#10024; Regenerate with AI</button>
     </div>
-
     <div class="modal-grid three">
-      <div class="form-group">
-        <label class="form-label">Present Tense *</label>
-        <input class="form-input" id="f-present" type="text" placeholder="e.g. go" oninput="onPresentInput()"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Past Tense *</label>
-        <input class="form-input" id="f-past" type="text" placeholder="e.g. went"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Past Participle *</label>
-        <input class="form-input" id="f-pp" type="text" placeholder="e.g. gone"/>
-      </div>
+      <div class="form-group"><label class="form-label">Present *</label><input class="form-input" id="e-present" type="text"/></div>
+      <div class="form-group"><label class="form-label">Past *</label><input class="form-input" id="e-past" type="text"/></div>
+      <div class="form-group"><label class="form-label">Past Participle *</label><input class="form-input" id="e-pp" type="text"/></div>
     </div>
     <div class="modal-grid">
-      <div class="form-group">
-        <label class="form-label">Alt. Past (optional)</label>
-        <input class="form-input" id="f-pastAlt" type="text" placeholder="e.g. learnt"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Alt. Past Participle (optional)</label>
-        <input class="form-input" id="f-ppAlt" type="text" placeholder="e.g. learnt"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Emoji Icon</label>
-        <input class="form-input" id="f-icon" type="text" placeholder="&#128694;" maxlength="4"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Chinese &#20013;&#25991; (HK)</label>
-        <input class="form-input" id="f-zh" type="text" placeholder="e.g. &#21435; / &#36208;"/>
-      </div>
+      <div class="form-group"><label class="form-label">Alt. Past</label><input class="form-input" id="e-pastAlt" type="text" placeholder="optional"/></div>
+      <div class="form-group"><label class="form-label">Alt. Past Part.</label><input class="form-input" id="e-ppAlt" type="text" placeholder="optional"/></div>
+      <div class="form-group"><label class="form-label">Icon</label><input class="form-input" id="e-icon" type="text" maxlength="4"/></div>
+      <div class="form-group"><label class="form-label">Chinese &#20013;&#25991;</label><input class="form-input" id="e-zh" type="text"/></div>
     </div>
-
-    <!-- Audio status -->
-    <div class="form-group" style="margin-bottom:14px">
-      <label class="form-label">&#128266; Pronunciation Audio Files</label>
-      <div class="audio-status-row" id="modal-audio-status">
-        <span style="color:var(--text-muted);font-size:.82rem">Type a verb above to check audio status</span>
-      </div>
-    </div>
-
-    <div class="form-group">
+    <div class="form-group" style="margin-top:4px">
       <label class="form-label" style="margin-bottom:10px">&#128218; Example Sentences</label>
-      <div id="sentences-editor-list"></div>
-      <button class="btn btn-ghost btn-sm" style="margin-top:8px;width:fit-content" onclick="addSentenceRow()">&#10133; Add sentence</button>
+      <div id="edit-sentences-list"></div>
+      <button class="btn btn-ghost btn-sm" style="margin-top:8px;width:fit-content" onclick="addSentenceRow('edit-sentences-list')">&#10133; Add sentence</button>
     </div>
     <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeVerbModal()">Cancel</button>
-      <button class="btn btn-primary" onclick="saveVerb()">&#128190; Save Verb</button>
+      <button class="btn btn-ghost" onclick="closeEditModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEdit()">&#128190; Save Changes</button>
     </div>
   </div>
 </div>
@@ -322,50 +311,11 @@ main{max-width:1080px;margin:0 auto;padding:24px 20px 80px}
   <div class="publish-modal">
     <div class="publish-icon" id="pub-icon">&#128640;</div>
     <h2 id="pub-title">Save &amp; Publish</h2>
-    <p id="pub-desc">This will save your verb list and update the live app for everyone.</p>
+    <p id="pub-desc">This will update the live app for everyone.</p>
     <div class="publish-log" id="pub-log"></div>
     <div class="publish-actions">
       <button class="btn btn-ghost" id="pub-cancel-btn" onclick="closePublishModal()">Cancel</button>
       <button class="btn-publish" id="pub-btn" onclick="doPublish()">&#128640; Publish Now</button>
-    </div>
-  </div>
-</div>
-
-<!-- AUDIO GUIDE MODAL -->
-<div class="modal-overlay" id="audio-modal">
-  <div class="audio-guide">
-    <h2>&#128266; How to Generate Audio Files</h2>
-    <p style="color:var(--text-muted);font-size:.88rem;margin-bottom:18px;line-height:1.5">
-      Audio files use Microsoft's free neural TTS voice (en-US-JennyNeural). Run this once on your PC to generate all MP3s, then commit them to GitHub.
-    </p>
-    <div class="step">
-      <div class="step-num">1</div>
-      <div class="step-text"><strong>Install edge-tts</strong> (one time only)<br/>Open PowerShell or Command Prompt and run:
-        <div class="code-block">pip install edge-tts</div>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">2</div>
-      <div class="step-text"><strong>Run the audio generator</strong> in your project folder:
-        <div class="code-block">cd C:\GitHub\hh-tenses-play
-node generate-audio.js</div>
-        This creates an <code style="color:var(--accent)">audio/</code> folder with one MP3 per word form.
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">3</div>
-      <div class="step-text"><strong>Commit and push</strong> the audio files:
-        <div class="code-block">git add audio/
-git commit -m "Add pronunciation audio"
-git push</div>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">4</div>
-      <div class="step-text"><strong>Done!</strong> The app will now play natural MP3 audio. If a file is missing, it automatically falls back to the browser's built-in voice.</div>
-    </div>
-    <div style="margin-top:20px;text-align:right">
-      <button class="btn btn-ghost" onclick="closeAudioGuide()">Close</button>
     </div>
   </div>
 </div>
@@ -386,43 +336,36 @@ git push</div>
 
 <script src="verbs.js"></script>
 <script>
-// ══════════════════════════════════════════
-//  CONFIG — edit these to match your setup
-// ══════════════════════════════════════════
-const ADMIN_PASSWORD = 'admin1234';
-const GH_OWNER  = 'cydev-hash';
-const GH_REPO   = 'hh-tenses-play';
-const GH_BRANCH = 'main';
-const GH_FILE   = 'verbs.js';
-
-// OpenRouter models (primary + fallback)
+// ══════════════════════════════════════════════
+//  CONFIG (superadmin only — injected by GitHub Actions)
+// ══════════════════════════════════════════════
+const ADMIN_PASSWORD    = 'admin1234';
+const GH_OWNER          = 'cydev-hash';
+const GH_REPO           = 'hh-tenses-play';
+const GH_BRANCH         = 'main';
+const GH_FILE           = 'verbs.js';
 const OR_MODEL_PRIMARY  = 'openai/gpt-4o-mini-search-preview:free';
 const OR_MODEL_FALLBACK = 'minimax/minimax-m2:free';
-const OR_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
+const OR_API_URL        = 'https://openrouter.ai/api/v1/chat/completions';
+const OR_KEY_INJECTED   = '__OPENROUTER_KEY__';
+const KEY_GH            = 'tenses_gh_key';
 
-// OpenRouter key injected by GitHub Actions at build time
-const OR_KEY_INJECTED = '__OPENROUTER_KEY__';
-
-// localStorage keys (GitHub token only — OR key comes from build)
-const KEY_GH = 'tenses_gh_key';
-
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════
 //  STATE
-// ══════════════════════════════════════════
-let verbs=[], editingIdx=null, sortKey=null, sortDir=1, isDirty=false, dragSrcIdx=null;
-let audioCache = {}; // word -> true/false (file exists)
+// ══════════════════════════════════════════════
+let verbs = [], editingIdx = null, sortKey = null, sortDir = 1;
+let isDirty = false, dragSrcIdx = null;
+let pendingVerb = null; // AI-generated verb waiting for confirmation
 
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════
 //  LOGIN
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════
 function doLogin() {
   if (document.getElementById('pw-input').value === ADMIN_PASSWORD) {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('admin-ui').style.display = 'block';
-    loadApiKeys();
     verbs = JSON.parse(JSON.stringify(VERBS));
     isDirty = false;
-    checkAllAudio();
     renderTable();
   } else {
     document.getElementById('login-error').classList.add('show');
@@ -443,87 +386,25 @@ function goBackToApp() {
   } else { window.location.href = 'index.html'; }
 }
 
-// ══════════════════════════════════════════
-//  API KEYS
-// ══════════════════════════════════════════
-function loadApiKeys() {
-  const ghKey = localStorage.getItem(KEY_GH) || '';
-  document.getElementById('gh-key-input').value = ghKey ? '••••••••••••' + ghKey.slice(-4) : '';
-  updateKeyStatus('gh', !!ghKey);
-}
-function saveApiKey(type, val) {
-  if (!val || val.includes('•')) return;
-  localStorage.setItem(KEY_GH, val.trim());
-  updateKeyStatus('gh', true);
-}
-function updateKeyStatus(type, isSet) {
-  const el = document.getElementById(type + '-key-status');
-  el.textContent = isSet ? '✅ Set' : '⚠ Not set';
-  el.className   = 'key-status ' + (isSet ? 'key-set' : 'key-missing');
-}
-function clearKeys() {
-  showConfirm('Clear API Keys?', 'This will remove your stored API keys from this browser.', 'Clear', () => {
-    localStorage.removeItem(KEY_OR);
-    localStorage.removeItem(KEY_GH);
-    document.getElementById('or-key-input').value = '';
-    document.getElementById('gh-key-input').value = '';
-    updateKeyStatus('or', false);
-    updateKeyStatus('gh', false);
-    showToast('API keys cleared', 'info');
-  });
-}
-
-// ══════════════════════════════════════════
-//  AUDIO CHECK
-// ══════════════════════════════════════════
-function getAudioPath(word) {
-  return 'audio/' + word.toLowerCase().replace(/\s+/g,'_') + '.mp3';
-}
-async function checkAudioExists(word) {
-  if (word in audioCache) return audioCache[word];
-  try {
-    const res = await fetch(getAudioPath(word), { method: 'HEAD' });
-    audioCache[word] = res.ok;
-    return res.ok;
-  } catch { audioCache[word] = false; return false; }
-}
-async function checkAllAudio() {
-  const words = new Set();
-  verbs.forEach(v => { words.add(v.present); words.add(v.past); words.add(v.pp); });
-  let found = 0;
-  await Promise.all([...words].map(async w => { if (await checkAudioExists(w)) found++; }));
-  const chip = document.getElementById('audio-chip');
-  chip.textContent = '🔊 Audio: ' + found + ' / ' + words.size + ' files ready';
-  chip.style.color = found === words.size ? 'var(--success)' : found > 0 ? 'var(--accent)' : 'var(--danger)';
-}
-async function updateModalAudioStatus() {
-  const present = (document.getElementById('f-present').value||'').trim().toLowerCase();
-  const past    = (document.getElementById('f-past').value||'').trim().toLowerCase();
-  const pp      = (document.getElementById('f-pp').value||'').trim().toLowerCase();
-  const words   = [present, past, pp].filter(Boolean);
-  const container = document.getElementById('modal-audio-status');
-  if (!words.length) { container.innerHTML = '<span style="color:var(--text-muted);font-size:.82rem">Type a verb above</span>'; return; }
-  container.innerHTML = '<span style="color:var(--text-muted);font-size:.82rem">Checking...</span>';
-  const results = await Promise.all(words.map(async w => ({ w, ok: await checkAudioExists(w) })));
-  container.innerHTML = results.map(r =>
-    `<span class="audio-badge ${r.ok?'ok':'missing'}">${r.ok?'✅':'❌'} ${r.w}.mp3</span>`
-  ).join('') + (results.some(r=>!r.ok) ?
-    '<span style="font-size:.75rem;color:var(--text-muted);align-self:center"> — run generate-audio.js to create missing files</span>' : '');
-}
-
-// ══════════════════════════════════════════
-//  AI AUTO-FILL (OpenRouter)
-// ══════════════════════════════════════════
-function onPresentInput() {
-  updateModalAudioStatus();
+// ══════════════════════════════════════════════
+//  AI GENERATE
+// ══════════════════════════════════════════════
+function getOrKey() {
+  // 1. Injected by GitHub Actions at build time (deployed version)
+  if (OR_KEY_INJECTED && !OR_KEY_INJECTED.startsWith('__')) return OR_KEY_INJECTED;
+  // 2. Manually entered by superadmin when running locally
+  const stored = localStorage.getItem('tenses_or_key');
+  if (stored) return stored;
+  // 3. Prompt once and save
+  const entered = prompt('OpenRouter API key required (one-time setup):\nEnter your sk-or-v1-... key:');
+  if (!entered || !entered.trim()) return null;
+  localStorage.setItem('tenses_or_key', entered.trim());
+  return entered.trim();
 }
 
 async function callOpenRouter(prompt, model) {
-  // Use build-time injected key; fall back to localStorage if running locally
-  const key = (OR_KEY_INJECTED && !OR_KEY_INJECTED.startsWith('__'))
-    ? OR_KEY_INJECTED
-    : localStorage.getItem('tenses_or_key');
-  if (!key) throw new Error('OpenRouter API key not configured. Check GitHub Secrets.');
+  const key = getOrKey();
+  if (!key) throw new Error('OpenRouter key not configured.');
   const res = await fetch(OR_API_URL, {
     method: 'POST',
     headers: {
@@ -532,411 +413,461 @@ async function callOpenRouter(prompt, model) {
       'HTTP-Referer': window.location.origin,
       'X-Title': 'TensesPlay Admin',
     },
-    body: JSON.stringify({
-      model,
-      max_tokens: 600,
-      messages: [{ role: 'user', content: prompt }]
-    })
+    body: JSON.stringify({ model, max_tokens: 700,
+      messages: [{ role: 'user', content: prompt }] })
   });
   if (!res.ok) {
-    const err = await res.json().catch(()=>({}));
-    throw new Error(err.error?.message || 'HTTP ' + res.status);
+    const e = await res.json().catch(() => ({}));
+    throw new Error(e.error?.message || 'HTTP ' + res.status);
   }
   const data = await res.json();
   return data.choices?.[0]?.message?.content || '';
 }
 
-async function aiAutoFill() {
-  const present = document.getElementById('f-present').value.trim().toLowerCase();
-  if (!present) { showToast('Type the present tense verb first', 'error'); return; }
+async function generateVerb() {
+  const raw = document.getElementById('verb-input').value.trim();
+  if (!raw) { showToast('Please type a verb first', 'error'); return; }
 
-  const btn = document.getElementById('ai-btn');
-  const status = document.getElementById('ai-status');
+  // Parse bulk input: split by comma, space, or newline
+  const inputs = raw.split(/[,\s\n]+/).map(w => w.trim().toLowerCase()).filter(Boolean);
+
+  // If multiple verbs, process them all sequentially
+  if (inputs.length > 1) {
+    await generateBulk(inputs);
+    return;
+  }
+
+  const present = inputs[0];
+  // Check duplicate
+  if (verbs.some(v => v.present === present)) {
+    showToast('"' + present + '" is already in the list', 'error'); return;
+  }
+
+  const btn = document.getElementById('gen-btn');
+  const regenBtn = document.getElementById('regen-btn');
   btn.disabled = true;
+  if (regenBtn) regenBtn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span> Generating...';
-  status.textContent = '';
 
-  const prompt = `You are a helpful English language assistant for a Hong Kong primary school verb tenses app.
+  const statusBar = document.getElementById('ai-status-bar');
+  const statusText = document.getElementById('ai-status-text');
+  statusBar.classList.add('show');
+  document.getElementById('ai-preview').classList.remove('show');
 
-For the English verb "${present}", provide ALL of the following in valid JSON only (no markdown, no explanation):
+  const prompt = `You are an English language assistant for a Hong Kong primary school verb tenses app.
+
+For the English verb "${present}", respond with ONLY valid JSON (no markdown, no extra text):
 
 {
   "present": "${present}",
-  "past": "correct past tense",
+  "past": "correct simple past tense",
   "pp": "correct past participle",
-  "pastAlt": "alternative past tense if exists, else null",
-  "ppAlt": "alternative past participle if exists, else null",
-  "icon": "single most relevant emoji",
-  "zh": "Hong Kong Cantonese Chinese translation (use Traditional Chinese, show main meaning, e.g. 去 / 走)",
+  "pastAlt": null,
+  "ppAlt": null,
+  "icon": "one relevant emoji",
+  "zh": "Traditional Chinese (Cantonese) translation, e.g. 去 / 走",
   "sentences": [
-    {"tense": "present", "verb": "${present}", "text": "A simple example sentence using the present tense form for primary school students."},
-    {"tense": "past", "verb": "PAST_FORM_HERE", "text": "A simple example sentence using the past tense form for primary school students."},
-    {"tense": "participle", "verb": "PP_FORM_HERE", "text": "A simple example sentence using the past participle form with 'have/has' for primary school students."}
+    {"tense": "present", "verb": "${present}", "text": "Simple sentence for primary school students using present tense."},
+    {"tense": "past", "verb": "PAST_FORM", "text": "Simple sentence using past tense."},
+    {"tense": "participle", "verb": "PP_FORM", "text": "Simple sentence using past participle with have/has."}
   ]
 }
 
-Rules:
-- Sentences must be simple, suitable for 8-12 year old Hong Kong students
-- Use "They" or "She/He" as subjects
-- JSON only, no extra text`;
+Rules: sentences must be simple (age 8-12), use They/She/He as subjects, JSON only.`;
 
   let result = null;
-  let usedModel = OR_MODEL_PRIMARY;
-
   try {
-    status.textContent = '⏳ Trying primary model...';
+    statusText.textContent = 'Asking AI for verb data...';
     const raw = await callOpenRouter(prompt, OR_MODEL_PRIMARY);
-    result = parseAIJson(raw);
+    result = parseJson(raw);
   } catch (e1) {
-    status.textContent = '⚠ Primary failed, trying fallback...';
     try {
+      statusText.textContent = 'Trying backup AI...';
       const raw2 = await callOpenRouter(prompt, OR_MODEL_FALLBACK);
-      result = parseAIJson(raw2);
-      usedModel = OR_MODEL_FALLBACK;
+      result = parseJson(raw2);
     } catch (e2) {
+      statusBar.classList.remove('show');
       btn.disabled = false;
-      btn.textContent = '✨ Generate with AI';
-      status.textContent = '❌ ' + e2.message;
+      btn.innerHTML = '&#10024; Generate';
+      if (regenBtn) regenBtn.disabled = false;
       showToast('AI failed: ' + e2.message, 'error');
       return;
     }
   }
 
-  if (!result) {
-    btn.disabled = false;
-    btn.textContent = '✨ Generate with AI';
-    status.textContent = '❌ Could not parse AI response';
-    showToast('AI returned unexpected format', 'error');
-    return;
-  }
-
-  // Fill in the form fields
-  const fields = ['present','past','pp','pastAlt','ppAlt','icon','zh'];
-  fields.forEach(f => {
-    const el = document.getElementById('f-' + f);
-    if (!el) return;
-    const val = result[f] || '';
-    if (val && val !== 'null') {
-      el.value = val;
-      el.classList.add('ai-filled');
-      setTimeout(() => el.classList.remove('ai-filled'), 2000);
-    }
-  });
-
-  // Fill sentences
-  if (result.sentences && result.sentences.length) {
-    const list = document.getElementById('sentences-editor-list');
-    list.innerHTML = '';
-    result.sentences.forEach(s => addSentenceRow(s.tense, s.verb, s.text));
-  }
-
+  statusBar.classList.remove('show');
   btn.disabled = false;
-  btn.textContent = '✨ Generate with AI';
-  status.textContent = '✅ Done (' + usedModel.split('/')[0] + ')';
-  updateModalAudioStatus();
-  showToast('AI auto-fill complete!', 'success');
+  btn.innerHTML = '&#10024; Generate';
+  if (regenBtn) regenBtn.disabled = false;
+
+  if (!result || !result.past || !result.pp) {
+    showToast('AI returned unexpected data. Try again.', 'error'); return;
+  }
+
+  pendingVerb = result;
+  showPreview(result);
 }
 
-function parseAIJson(raw) {
+async function generateBulk(words) {
+  const btn = document.getElementById('gen-btn');
+  btn.disabled = true;
+
+  let added = 0, skipped = 0, failed = 0;
+  const results = [];
+
+  for (const present of words) {
+    if (verbs.some(v => v.present === present)) {
+      skipped++;
+      showToast('"' + present + '" already exists, skipping', 'info');
+      continue;
+    }
+    btn.innerHTML = '<span class="spinner"></span> Generating "' + present + '"...';
+
+    const prompt = `You are an English language assistant for a Hong Kong primary school verb tenses app.
+For the verb "${present}", respond with ONLY valid JSON (no markdown):
+{"present":"${present}","past":"past tense","pp":"past participle","pastAlt":null,"ppAlt":null,"icon":"emoji","zh":"Traditional Chinese Cantonese","sentences":[{"tense":"present","verb":"${present}","text":"simple sentence"},{"tense":"past","verb":"PAST","text":"simple sentence"},{"tense":"participle","verb":"PP","text":"sentence with have/has"}]}`;
+
+    try {
+      let raw;
+      try { raw = await callOpenRouter(prompt, OR_MODEL_PRIMARY); }
+      catch { raw = await callOpenRouter(prompt, OR_MODEL_FALLBACK); }
+      const r = parseJson(raw);
+      if (r && r.past && r.pp) {
+        verbs.push({ present:r.present||present, past:r.past, pp:r.pp,
+          pastAlt:r.pastAlt||undefined, ppAlt:r.ppAlt||undefined,
+          icon:r.icon||'📝', zh:r.zh||'', sentences:r.sentences||[] });
+        added++;
+        results.push('✅ ' + present);
+      } else { failed++; results.push('❌ ' + present + ' (parse error)'); }
+    } catch(e) { failed++; results.push('❌ ' + present + ': ' + e.message); }
+
+    // Small delay between requests
+    await new Promise(r => setTimeout(r, 600));
+  }
+
+  markDirty();
+  renderTable();
+  document.getElementById('verb-input').value = '';
+  btn.disabled = false;
+  btn.innerHTML = '&#10024; Generate';
+
+  const summary = 'Done! Added: ' + added + (skipped?' | Skipped: '+skipped:'') + (failed?' | Failed: '+failed:'');
+  showToast(summary, added > 0 ? 'success' : 'error');
+}
+
+function parseJson(raw) {
   try {
-    // Strip markdown code blocks if present
     const clean = raw.replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim();
-    // Find JSON object
-    const start = clean.indexOf('{');
-    const end   = clean.lastIndexOf('}');
-    if (start === -1 || end === -1) return null;
-    return JSON.parse(clean.slice(start, end+1));
+    const s = clean.indexOf('{'), e = clean.lastIndexOf('}');
+    if (s === -1 || e === -1) return null;
+    return JSON.parse(clean.slice(s, e+1));
   } catch { return null; }
 }
 
-// ══════════════════════════════════════════
+function showPreview(v) {
+  document.getElementById('prev-present').textContent = v.icon + '  ' + v.present;
+  document.getElementById('prev-past').textContent    = v.past + (v.pastAlt ? ' / ' + v.pastAlt : '');
+  document.getElementById('prev-pp').textContent      = v.pp   + (v.ppAlt   ? ' / ' + v.ppAlt   : '');
+  document.getElementById('prev-icon-zh').textContent = v.zh || '—';
+
+  const sentEl = document.getElementById('prev-sentences');
+  sentEl.innerHTML = (v.sentences || []).map(s =>
+    `<div class="preview-sent">
+      <span class="sent-badge badge-${s.tense}">${s.tense}</span>
+      <span>${s.text}</span>
+    </div>`
+  ).join('');
+
+  document.getElementById('ai-preview').classList.add('show');
+}
+
+function clearPreview() {
+  pendingVerb = null;
+  document.getElementById('ai-preview').classList.remove('show');
+  document.getElementById('verb-input').value = '';
+  document.getElementById('verb-input').focus();
+}
+
+function confirmAddVerb() {
+  if (!pendingVerb) return;
+  verbs.push({
+    present:  pendingVerb.present,
+    past:     pendingVerb.past,
+    pp:       pendingVerb.pp,
+    pastAlt:  pendingVerb.pastAlt || undefined,
+    ppAlt:    pendingVerb.ppAlt   || undefined,
+    icon:     pendingVerb.icon    || '📝',
+    zh:       pendingVerb.zh      || '',
+    sentences: pendingVerb.sentences || [],
+  });
+  markDirty();
+  renderTable();
+  clearPreview();
+  showToast('"' + pendingVerb.present + '" added to the list!', 'success');
+}
+
+// ══════════════════════════════════════════════
 //  TABLE
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════
 function renderTable() {
   const q = document.getElementById('search-input').value.trim().toLowerCase();
   let rows = verbs.map((v,i) => ({...v, _i:i}));
-  if (q) rows = rows.filter(v => v.present.includes(q)||v.past.includes(q)||v.pp.includes(q)||(v.zh||'').includes(q));
+  if (q) rows = rows.filter(v =>
+    v.present.includes(q) || v.past.includes(q) || v.pp.includes(q) || (v.zh||'').includes(q)
+  );
   document.getElementById('stat-total').textContent   = verbs.length;
   document.getElementById('stat-showing').textContent = rows.length;
   document.getElementById('unsaved-chip').style.display = isDirty ? '' : 'none';
   ['present','past','pp'].forEach(k => {
-    document.getElementById('sort-'+k).textContent = sortKey===k?(sortDir===1?' ▲':' ▼'):'';
+    document.getElementById('sort-'+k).textContent = sortKey===k ? (sortDir===1?' ▲':' ▼') : '';
   });
   const tbody = document.getElementById('verb-tbody');
-  if (!rows.length) { tbody.innerHTML='<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--text-muted)">No verbs found</td></tr>'; return; }
-  tbody.innerHTML = rows.map(v => {
-    const pOk  = audioCache[v.present];
-    const paOk = audioCache[v.past];
-    const ppOk = audioCache[v.pp];
-    const allOk = pOk && paOk && ppOk;
-    const audioDot = allOk ? '<span title="All audio ready" style="color:var(--success)">&#9679;</span>'
-      : (pOk||paOk||ppOk) ? '<span title="Some audio missing" style="color:var(--accent)">&#9679;</span>'
-      : '<span title="No audio files" style="color:var(--danger)">&#9675;</span>';
-    return `<tr draggable="true" data-idx="${v._i}"
-      ondragstart="dragStart(event,${v._i})" ondragover="dragOver(event)"
-      ondrop="dragDrop(event,${v._i})" ondragleave="this.classList.remove('drag-over')">
-      <td><span class="drag-handle">&#10784;</span></td>
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--text-muted)">No verbs found</td></tr>';
+    return;
+  }
+  tbody.innerHTML = rows.map(v => `
+    <tr draggable="true" data-idx="${v._i}"
+        ondragstart="dragStart(event,${v._i})" ondragover="dragOver(event)"
+        ondrop="dragDrop(event,${v._i})" ondragleave="this.classList.remove('drag-over')">
+      <td><span class="drag-handle" title="Drag to reorder">&#10784;</span></td>
       <td class="cell-num">${v._i+1}</td>
       <td style="font-size:1.2rem">${v.icon}</td>
       <td class="cell-present">${v.present}</td>
       <td class="cell-past">${v.past}${v.pastAlt?` <small style="opacity:.5">/ ${v.pastAlt}</small>`:''}</td>
       <td class="cell-pp">${v.pp}${v.ppAlt?` <small style="opacity:.5">/ ${v.ppAlt}</small>`:''}</td>
       <td class="cell-zh">${v.zh}</td>
-      <td>${audioDot}</td>
       <td><div class="row-actions">
         <button class="btn btn-ghost btn-sm" onclick="openEditModal(${v._i})" title="Edit">&#9999;&#65039;</button>
         <button class="btn btn-danger btn-sm" onclick="confirmDelete(${v._i})" title="Delete">&#128465;</button>
       </div></td>
-    </tr>`;
-  }).join('');
+    </tr>`).join('');
 }
+
 function sortBy(key) {
   sortDir = sortKey===key ? sortDir*-1 : 1; sortKey=key;
-  verbs.sort((a,b)=>a[key].localeCompare(b[key])*sortDir);
+  verbs.sort((a,b) => a[key].localeCompare(b[key])*sortDir);
   markDirty(); renderTable();
 }
+
 function dragStart(e,idx){dragSrcIdx=idx;e.currentTarget.classList.add('dragging');}
 function dragOver(e){e.preventDefault();e.currentTarget.classList.add('drag-over');}
 function dragDrop(e,targetIdx){
   e.preventDefault();e.currentTarget.classList.remove('drag-over');
   document.querySelectorAll('.dragging').forEach(el=>el.classList.remove('dragging'));
   if(dragSrcIdx===null||dragSrcIdx===targetIdx)return;
-  const item=verbs.splice(dragSrcIdx,1)[0];verbs.splice(targetIdx,0,item);
-  dragSrcIdx=null;markDirty();renderTable();
+  const item=verbs.splice(dragSrcIdx,1)[0]; verbs.splice(targetIdx,0,item);
+  dragSrcIdx=null; markDirty(); renderTable();
 }
 
-// ══════════════════════════════════════════
-//  ADD / EDIT MODAL
-// ══════════════════════════════════════════
-function openAddModal() {
-  editingIdx=null;
-  document.getElementById('modal-title').textContent='Add New Verb';
-  document.getElementById('modal-subtitle').textContent='Fill in the verb forms or use AI to auto-fill everything.';
-  ['f-present','f-past','f-pp','f-pastAlt','f-ppAlt','f-icon','f-zh'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('ai-status').textContent='';
-  document.getElementById('ai-btn').disabled=false;
-  document.getElementById('ai-btn').textContent='✨ Generate with AI';
-  const list=document.getElementById('sentences-editor-list'); list.innerHTML='';
-  ['present','past','participle'].forEach(t=>addSentenceRow(t));
-  document.getElementById('modal-audio-status').innerHTML='<span style="color:var(--text-muted);font-size:.82rem">Type a verb above to check audio status</span>';
-  document.getElementById('verb-modal').classList.add('open');
-  setTimeout(()=>document.getElementById('f-present').focus(),100);
-}
+// ══════════════════════════════════════════════
+//  EDIT MODAL
+// ══════════════════════════════════════════════
 function openEditModal(idx) {
-  editingIdx=idx; const v=verbs[idx];
-  document.getElementById('modal-title').textContent='Edit: '+v.present;
-  document.getElementById('modal-subtitle').textContent='Update verb forms, or regenerate with AI.';
-  document.getElementById('f-present').value=v.present;
-  document.getElementById('f-past').value=v.past;
-  document.getElementById('f-pp').value=v.pp;
-  document.getElementById('f-pastAlt').value=v.pastAlt||'';
-  document.getElementById('f-ppAlt').value=v.ppAlt||'';
-  document.getElementById('f-icon').value=v.icon;
-  document.getElementById('f-zh').value=v.zh;
-  document.getElementById('ai-status').textContent='';
-  const list=document.getElementById('sentences-editor-list'); list.innerHTML='';
-  (v.sentences||[]).forEach(s=>addSentenceRow(s.tense,s.verb,s.text));
-  document.getElementById('verb-modal').classList.add('open');
-  updateModalAudioStatus();
+  editingIdx = idx;
+  const v = verbs[idx];
+  document.getElementById('edit-modal-title').textContent = 'Edit: ' + v.present;
+  document.getElementById('e-present').value = v.present;
+  document.getElementById('e-past').value    = v.past;
+  document.getElementById('e-pp').value      = v.pp;
+  document.getElementById('e-pastAlt').value = v.pastAlt || '';
+  document.getElementById('e-ppAlt').value   = v.ppAlt   || '';
+  document.getElementById('e-icon').value    = v.icon;
+  document.getElementById('e-zh').value      = v.zh;
+  const list = document.getElementById('edit-sentences-list');
+  list.innerHTML = '';
+  (v.sentences || []).forEach(s => addSentenceRow('edit-sentences-list', s.tense, s.verb, s.text));
+  document.getElementById('edit-modal').classList.add('open');
 }
-function addSentenceRow(tense='present',verb='',text='') {
-  const div=document.createElement('div'); div.className='sentence-item';
-  div.innerHTML=`<div class="sentence-row-header">
+
+async function regenCurrentEdit() {
+  const present = document.getElementById('e-present').value.trim().toLowerCase();
+  if (!present) return;
+  const btn = document.getElementById('edit-regen-btn');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Regenerating...';
+  const prompt = `You are an English language assistant for a Hong Kong primary school verb tenses app.
+For the English verb "${present}", respond with ONLY valid JSON:
+{"present":"${present}","past":"past tense","pp":"past participle","pastAlt":null,"ppAlt":null,"icon":"emoji","zh":"Traditional Chinese Cantonese translation","sentences":[{"tense":"present","verb":"${present}","text":"sentence"},{"tense":"past","verb":"PAST","text":"sentence"},{"tense":"participle","verb":"PP","text":"sentence using have/has"}]}
+JSON only, no extra text.`;
+  try {
+    let raw;
+    try { raw = await callOpenRouter(prompt, OR_MODEL_PRIMARY); }
+    catch { raw = await callOpenRouter(prompt, OR_MODEL_FALLBACK); }
+    const r = parseJson(raw);
+    if (r) {
+      document.getElementById('e-past').value    = r.past    || '';
+      document.getElementById('e-pp').value      = r.pp      || '';
+      document.getElementById('e-pastAlt').value = r.pastAlt || '';
+      document.getElementById('e-ppAlt').value   = r.ppAlt   || '';
+      document.getElementById('e-icon').value    = r.icon    || '';
+      document.getElementById('e-zh').value      = r.zh      || '';
+      const list = document.getElementById('edit-sentences-list');
+      list.innerHTML = '';
+      (r.sentences||[]).forEach(s => addSentenceRow('edit-sentences-list', s.tense, s.verb, s.text));
+      showToast('Regenerated!', 'success');
+    }
+  } catch(e) { showToast('Regen failed: ' + e.message, 'error'); }
+  btn.disabled = false; btn.innerHTML = '&#10024; Regenerate with AI';
+}
+
+function addSentenceRow(listId, tense='present', verb='', text='') {
+  const div = document.createElement('div');
+  div.className = 'sentence-item';
+  div.innerHTML = `<div class="sentence-row-header">
     <select class="tense-select">
-      <option value="present" ${tense==='present'?'selected':''}>Present</option>
-      <option value="past" ${tense==='past'?'selected':''}>Past</option>
+      <option value="present"    ${tense==='present'   ?'selected':''}>Present</option>
+      <option value="past"       ${tense==='past'      ?'selected':''}>Past</option>
       <option value="participle" ${tense==='participle'?'selected':''}>Participle</option>
     </select>
-    <input class="form-input" placeholder="Verb form (e.g. went)" value="${esc(verb)}" style="flex:0 0 150px"/>
+    <input class="form-input" placeholder="Verb form used" value="${esc(verb)}" style="flex:0 0 130px"/>
     <button class="btn btn-danger btn-sm" onclick="this.closest('.sentence-item').remove()" style="margin-left:auto">&#x2715;</button>
   </div>
   <textarea class="form-textarea" placeholder="Full example sentence..." style="width:100%">${esc(text)}</textarea>`;
-  document.getElementById('sentences-editor-list').appendChild(div);
+  document.getElementById(listId).appendChild(div);
 }
-function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function saveVerb() {
-  const present=document.getElementById('f-present').value.trim().toLowerCase();
-  const past=document.getElementById('f-past').value.trim().toLowerCase();
-  const pp=document.getElementById('f-pp').value.trim().toLowerCase();
-  if(!present||!past||!pp){showToast('Present, Past and Past Participle are required','error');return;}
-  const sentences=Array.from(document.querySelectorAll('#sentences-editor-list .sentence-item')).map(item=>({
-    tense:item.querySelector('select').value,
-    verb:item.querySelectorAll('input')[0].value.trim(),
-    text:item.querySelector('textarea').value.trim()
+
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function saveEdit() {
+  const present = document.getElementById('e-present').value.trim().toLowerCase();
+  const past    = document.getElementById('e-past').value.trim().toLowerCase();
+  const pp      = document.getElementById('e-pp').value.trim().toLowerCase();
+  if (!present||!past||!pp) { showToast('Present, Past and PP are required','error'); return; }
+  const sentences = Array.from(document.querySelectorAll('#edit-sentences-list .sentence-item')).map(item=>({
+    tense: item.querySelector('select').value,
+    verb:  item.querySelectorAll('input')[0].value.trim(),
+    text:  item.querySelector('textarea').value.trim()
   })).filter(s=>s.text);
-  const verb={present,past,pp,
-    pastAlt:document.getElementById('f-pastAlt').value.trim().toLowerCase()||undefined,
-    ppAlt:document.getElementById('f-ppAlt').value.trim().toLowerCase()||undefined,
-    icon:document.getElementById('f-icon').value.trim()||'📝',
-    zh:document.getElementById('f-zh').value.trim(),sentences};
-  if(editingIdx===null){verbs.push(verb);showToast('"'+present+'" added!','success');}
-  else{verbs[editingIdx]=verb;showToast('"'+present+'" updated!','success');}
-  markDirty(); closeVerbModal(); renderTable(); checkAllAudio();
+  verbs[editingIdx] = { present, past, pp,
+    pastAlt: document.getElementById('e-pastAlt').value.trim().toLowerCase() || undefined,
+    ppAlt:   document.getElementById('e-ppAlt').value.trim().toLowerCase()   || undefined,
+    icon:    document.getElementById('e-icon').value.trim() || '📝',
+    zh:      document.getElementById('e-zh').value.trim(), sentences };
+  markDirty(); closeEditModal(); renderTable();
+  showToast('"' + present + '" updated!', 'success');
 }
-function closeVerbModal(){document.getElementById('verb-modal').classList.remove('open');}
+function closeEditModal() { document.getElementById('edit-modal').classList.remove('open'); }
 
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════
 //  DELETE
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════
 function confirmDelete(idx) {
-  showConfirm('Delete "'+verbs[idx].present+'"?','This removes the verb and all its sentences.','Delete',()=>{
-    const name=verbs[idx].present; verbs.splice(idx,1);
-    markDirty();renderTable();showToast('"'+name+'" deleted','info');
-  });
+  showConfirm('Delete "'+verbs[idx].present+'"?',
+    'This removes the verb and all its data.',
+    'Delete', () => {
+      const name = verbs[idx].present;
+      verbs.splice(idx,1); markDirty(); renderTable();
+      showToast('"'+name+'" deleted','info');
+    });
 }
 
-// ══════════════════════════════════════════
-//  IMPORT / EXPORT
-// ══════════════════════════════════════════
-function triggerImport(){document.getElementById('import-file').click();}
-function handleImport(e){
-  const file=e.target.files[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=ev=>{
-    try{
-      const ext=file.name.split('.').pop().toLowerCase();
-      if(ext==='json'){
-        const data=JSON.parse(ev.target.result);
-        const arr=Array.isArray(data)?data:(data.verbs||[]);
-        if(!arr.length)throw new Error('No verbs found');
-        verbs=arr;markDirty();renderTable();checkAllAudio();
-        showToast('Imported '+arr.length+' verbs','success');
-      } else {
-        const lines=ev.target.result.trim().split('\n');
-        const header=lines[0].split(',').map(h=>h.trim().replace(/"/g,'').toLowerCase());
-        const arr=lines.slice(1).map(line=>{
-          const cols=line.split(',').map(c=>c.trim().replace(/^"|"$/g,''));
-          const obj={};header.forEach((h,i)=>obj[h]=cols[i]||'');
-          return{present:obj.present||'',past:obj.past||'',pp:obj.pp||'',
-            pastAlt:obj.pastalt||undefined,ppAlt:obj.ppalt||undefined,
-            icon:obj.icon||'📝',zh:obj.zh||obj.chinese||'',sentences:[]};
-        }).filter(v=>v.present&&v.past&&v.pp);
-        verbs=arr;markDirty();renderTable();checkAllAudio();
-        showToast('Imported '+arr.length+' verbs from CSV','success');
-      }
-    }catch(err){showToast('Import failed: '+err.message,'error');}
-    e.target.value='';
-  };
-  reader.readAsText(file);
-}
-function exportJSON(){
-  const blob=new Blob([JSON.stringify(verbs,null,2)],{type:'application/json'});
-  dlBlob(blob,'verbs.json');showToast('Exported verbs.json','info');
-}
-function exportCSV(){
-  const rows=['present,past,pp,pastAlt,ppAlt,icon,zh',
-    ...verbs.map(v=>[v.present,v.past,v.pp,v.pastAlt||'',v.ppAlt||'',v.icon,'"'+(v.zh||'')+'"'].join(','))];
-  dlBlob(new Blob([rows.join('\n')],{type:'text/csv'}),'verbs.csv');showToast('Exported verbs.csv','info');
-}
-function dlBlob(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();URL.revokeObjectURL(a.href);}
-
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════
 //  PUBLISH
-// ══════════════════════════════════════════
-function generateVerbsJs(){
-  const lines=verbs.map(v=>{
-    const s=(v.sentences||[]).map(s=>`      { tense:"${s.tense}", verb:${JSON.stringify(s.verb)}, text:${JSON.stringify(s.text)} }`).join(',\n');
-    const ap=v.pastAlt?`, pastAlt:"${v.pastAlt}"`:'';const aP=v.ppAlt?`, ppAlt:"${v.ppAlt}"`:'';;
+// ══════════════════════════════════════════════
+function generateVerbsJs() {
+  const lines = verbs.map(v => {
+    const s = (v.sentences||[]).map(s =>
+      `      { tense:"${s.tense}", verb:${JSON.stringify(s.verb)}, text:${JSON.stringify(s.text)} }`
+    ).join(',\n');
+    const ap = v.pastAlt ? `, pastAlt:"${v.pastAlt}"` : '';
+    const aP = v.ppAlt   ? `, ppAlt:"${v.ppAlt}"`     : '';
     return `  {\n    present: "${v.present}", past: "${v.past}", pp: "${v.pp}"${ap}${aP},\n    icon: ${JSON.stringify(v.icon)}, zh: ${JSON.stringify(v.zh)},\n    sentences: [\n${s}\n    ]\n  }`;
   });
   return `// hh-tenses-play: verbs.js\n// Updated: ${new Date().toISOString()}\n\nconst VERBS = [\n${lines.join(',\n')}\n];\n`;
 }
-function openPublishModal(){
-  document.getElementById('pub-icon').textContent='🚀';
-  document.getElementById('pub-title').textContent='Save & Publish';
-  document.getElementById('pub-desc').textContent='This will update verbs.js on GitHub and the live app for everyone.';
-  document.getElementById('pub-log').style.display='none';
-  document.getElementById('pub-log').innerHTML='';
-  document.getElementById('pub-btn').disabled=false;
-  document.getElementById('pub-btn').textContent='🚀 Publish Now';
-  document.getElementById('pub-cancel-btn').textContent='Cancel';
+
+function openPublishModal() {
+  document.getElementById('pub-icon').textContent  = '🚀';
+  document.getElementById('pub-title').textContent = 'Save & Publish';
+  document.getElementById('pub-desc').textContent  = 'This will update the live app for everyone.';
+  document.getElementById('pub-log').style.display = 'none';
+  document.getElementById('pub-log').innerHTML     = '';
+  document.getElementById('pub-btn').disabled      = false;
+  document.getElementById('pub-btn').textContent   = '🚀 Publish Now';
+  document.getElementById('pub-cancel-btn').textContent = 'Cancel';
   document.getElementById('publish-modal').classList.add('open');
 }
-function closePublishModal(){document.getElementById('publish-modal').classList.remove('open');}
-function logPub(msg,type=''){
-  const log=document.getElementById('pub-log');
-  log.style.display='block';
-  log.innerHTML+=`<span class="log-${type}">${msg}</span>\n`;
-  log.scrollTop=log.scrollHeight;
+function closePublishModal() { document.getElementById('publish-modal').classList.remove('open'); }
+
+function logPub(msg,type='') {
+  const log = document.getElementById('pub-log');
+  log.style.display = 'block';
+  log.innerHTML += `<span class="log-${type}">${msg}</span>\n`;
+  log.scrollTop = log.scrollHeight;
 }
-async function doPublish(){
-  let token=localStorage.getItem(KEY_GH)||'';
-  if(!token){
-    token=prompt('Enter your GitHub Personal Access Token (saved locally, entered once):');
-    if(!token)return;
-    localStorage.setItem(KEY_GH,token.trim());
-    updateKeyStatus('gh',true);
-    token=token.trim();
+
+async function doPublish() {
+  let token = localStorage.getItem(KEY_GH) || '';
+  if (!token) {
+    token = prompt('Enter your GitHub Personal Access Token (saved once):');
+    if (!token) return;
+    localStorage.setItem(KEY_GH, token.trim());
+    token = token.trim();
   }
-  const btn=document.getElementById('pub-btn');
-  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Publishing...';
-  document.getElementById('pub-cancel-btn').textContent='Close';
-  document.getElementById('pub-desc').textContent='';
-  const content=generateVerbsJs();
-  const b64=btoa(unescape(encodeURIComponent(content)));
-  const apiUrl=`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
-  const headers={'Authorization':'token '+token,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'};
-  try{
+  const btn = document.getElementById('pub-btn');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner spinner-dark"></span> Publishing...';
+  document.getElementById('pub-cancel-btn').textContent = 'Close';
+  document.getElementById('pub-desc').textContent = '';
+  const b64 = btoa(unescape(encodeURIComponent(generateVerbsJs())));
+  const url  = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
+  const hdrs = {'Authorization':'token '+token,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'};
+  try {
     logPub('Connecting to GitHub...','info');
-    const getRes=await fetch(`${apiUrl}?ref=${GH_BRANCH}`,{headers});
-    let sha=null;
-    if(getRes.ok){sha=(await getRes.json()).sha;logPub('Found existing file ✓','info');}
-    else if(getRes.status!==404)throw new Error('GitHub error '+getRes.status);
+    const getRes = await fetch(`${url}?ref=${GH_BRANCH}`, {headers:hdrs});
+    let sha = null;
+    if (getRes.ok) { sha=(await getRes.json()).sha; logPub('File found ✓','info'); }
+    else if (getRes.status!==404) throw new Error('GitHub error '+getRes.status);
     logPub('Uploading '+verbs.length+' verbs...','info');
-    const body={message:'Update verb list ('+verbs.length+' verbs)',content:b64,branch:GH_BRANCH};
-    if(sha)body.sha=sha;
-    const putRes=await fetch(apiUrl,{method:'PUT',headers,body:JSON.stringify(body)});
-    if(!putRes.ok){
-      const err=await putRes.json().catch(()=>({}));
-      if(putRes.status===401)localStorage.removeItem(KEY_GH);
-      throw new Error(err.message||'HTTP '+putRes.status);
+    const body = {message:'Update verb list ('+verbs.length+' verbs)',content:b64,branch:GH_BRANCH};
+    if (sha) body.sha = sha;
+    const putRes = await fetch(url,{method:'PUT',headers:hdrs,body:JSON.stringify(body)});
+    if (!putRes.ok) {
+      const e = await putRes.json().catch(()=>({}));
+      if (putRes.status===401) localStorage.removeItem(KEY_GH);
+      throw new Error(e.message||'HTTP '+putRes.status);
     }
-    const result=await putRes.json();
+    const result = await putRes.json();
     logPub('Published! ✅','');
     logPub('Commit: '+result.commit.sha.slice(0,8),'info');
     logPub('Live app updates in ~30 seconds 🌐','info');
-    document.getElementById('pub-icon').textContent='🎉';
-    document.getElementById('pub-title').textContent='Published!';
-    btn.textContent='✅ Done';
-    isDirty=false;renderTable();
+    document.getElementById('pub-icon').textContent  = '🎉';
+    document.getElementById('pub-title').textContent = 'Published!';
+    btn.textContent = '✅ Done';
+    isDirty = false; renderTable();
     showToast('Published to GitHub!','success');
-  }catch(err){
+  } catch(err) {
     logPub('Error: '+err.message,'error');
-    btn.disabled=false;btn.textContent='🔄 Retry';
-    showToast('Publish failed: '+err.message,'error');
+    btn.disabled = false; btn.textContent = '🔄 Retry';
+    showToast('Failed: '+err.message,'error');
   }
 }
 
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════
 //  HELPERS
-// ══════════════════════════════════════════
-function markDirty(){isDirty=true;document.getElementById('unsaved-chip').style.display='';}
-function openAudioGuide(){document.getElementById('audio-modal').classList.add('open');}
-function closeAudioGuide(){document.getElementById('audio-modal').classList.remove('open');}
-function showToast(msg,type='info'){
+// ══════════════════════════════════════════════
+function markDirty() { isDirty=true; document.getElementById('unsaved-chip').style.display=''; }
+function showToast(msg,type='info') {
   const el=document.getElementById('toast');
-  el.textContent=msg;el.className='toast show '+type;
-  clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),3500);
+  el.textContent=msg; el.className='toast show '+type;
+  clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('show'),3500);
 }
-function showConfirm(title,msg,okLabel,cb){
+function showConfirm(title,msg,okLabel,cb) {
   document.getElementById('confirm-title').textContent=title;
   document.getElementById('confirm-msg').textContent=msg;
   document.getElementById('confirm-ok').textContent=okLabel;
   document.getElementById('confirm-ok').onclick=()=>{cb();closeConfirm();};
   document.getElementById('confirm-overlay').classList.add('open');
 }
-function closeConfirm(){document.getElementById('confirm-overlay').classList.remove('open');}
+function closeConfirm() { document.getElementById('confirm-overlay').classList.remove('open'); }
 
-['verb-modal','publish-modal','audio-modal'].forEach(id=>{
+['edit-modal','publish-modal'].forEach(id=>{
   document.getElementById(id).addEventListener('click',e=>{
     if(e.target!==e.currentTarget)return;
-    if(id==='verb-modal')closeVerbModal();
-    else if(id==='publish-modal')closePublishModal();
-    else closeAudioGuide();
+    if(id==='edit-modal')closeEditModal(); else closePublishModal();
   });
 });
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){closeVerbModal();closePublishModal();closeAudioGuide();closeConfirm();}
+  if(e.key==='Escape'){closeEditModal();closePublishModal();closeConfirm();}
 });
 </script>
 </body>

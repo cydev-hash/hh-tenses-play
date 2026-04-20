@@ -922,10 +922,23 @@ async function doPublish() {
   const hdrs = {'Authorization':'token '+token,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'};
   try {
     logPub('Connecting to GitHub...','info');
-    const getRes = await fetch(`${url}?ref=${GH_BRANCH}`, {headers:hdrs});
+    // Always fetch fresh SHA — never use cached value to avoid mismatch
+    const getRes = await fetch(`${url}?ref=${GH_BRANCH}&t=${Date.now()}`, {
+      headers: {...hdrs, 'Cache-Control': 'no-cache'}
+    });
     let sha = null;
-    if (getRes.ok) { sha=(await getRes.json()).sha; logPub('File found ✓','info'); }
-    else if (getRes.status!==404) throw new Error('GitHub error '+getRes.status);
+    if (getRes.ok) {
+      const fileData = await getRes.json();
+      sha = fileData.sha;
+      logPub('File found ✓ (SHA: ' + sha.slice(0,8) + ')','info');
+    } else if (getRes.status === 404) {
+      logPub('File not found — will create new','info');
+    } else if (getRes.status === 401) {
+      localStorage.removeItem(KEY_GH);
+      throw new Error('GitHub token invalid or expired. Please re-enter.');
+    } else {
+      throw new Error('GitHub error ' + getRes.status);
+    }
     logPub('Uploading '+verbs.length+' verbs...','info');
     const body = {message:'Update verb list ('+verbs.length+' verbs)',content:b64,branch:GH_BRANCH};
     if (sha) body.sha = sha;
@@ -933,6 +946,7 @@ async function doPublish() {
     if (!putRes.ok) {
       const e = await putRes.json().catch(()=>({}));
       if (putRes.status===401) localStorage.removeItem(KEY_GH);
+      if (putRes.status===422) throw new Error('SHA mismatch — please try again (click Retry)');
       throw new Error(e.message||'HTTP '+putRes.status);
     }
     const result = await putRes.json();

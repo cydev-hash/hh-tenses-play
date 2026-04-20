@@ -1141,18 +1141,24 @@ function getAudioPath(word) {
 function speak(word, onEnd) {
   const src = getAudioPath(word);
   const audio = new Audio(src);
-  audio.onended = () => { if (onEnd) onEnd(); };
-  audio.onerror = () => {
-    // Fallback to Web Speech API if MP3 not found
+  let handled = false;
+
+  function fallback() {
+    if (handled) return; // prevent double-firing
+    handled = true;
     if (!window.speechSynthesis) { if (onEnd) onEnd(); return; }
+    speechSynthesis.cancel(); // clear any queued speech first
     const utt  = new SpeechSynthesisUtterance(word);
     utt.lang   = 'en-US';
     utt.rate   = 0.85;
     utt.pitch  = 1.0;
     if (onEnd) utt.onend = onEnd;
     speechSynthesis.speak(utt);
-  };
-  audio.play().catch(() => audio.onerror());
+  }
+
+  audio.onended = () => { handled = true; if (onEnd) onEnd(); };
+  audio.onerror = fallback;
+  audio.play().catch(fallback);
 }
 
 function speakSequence(words, i=0) {

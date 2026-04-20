@@ -434,6 +434,31 @@
           </div>
         </div>
         <button class="btn btn-primary" onclick="startTest()">🚀 Start Test</button>
+        <button class="btn btn-secondary" onclick="openStatsPanel()" style="margin-left:10px">📊 History &amp; Weak Verbs</button>
+      </div>
+    </div>
+
+    <!-- Stats Panel (shown inline, hidden by default) -->
+    <div id="stats-panel" class="hidden" style="margin-top:16px">
+      <div class="test-config">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+          <h3 style="margin:0">📊 History &amp; Weak Verbs</h3>
+          <button class="btn btn-secondary btn-sm" onclick="closeStatsPanel()" style="margin-left:auto">✕ Close</button>
+        </div>
+        <div class="results-tabs" style="margin-bottom:16px">
+          <button class="results-tab active" onclick="switchStatsTab('weak')">❌ Weak Verbs</button>
+          <button class="results-tab" onclick="switchStatsTab('hist')">📅 History</button>
+        </div>
+        <div class="stats-section active" id="stab-weak">
+          <div style="color:var(--text-muted);font-size:.85rem;margin-bottom:12px">Verbs you get wrong most often — focus your practice here!</div>
+          <div class="mistake-list" id="setup-mistake-list"></div>
+        </div>
+        <div class="stats-section" id="stab-hist">
+          <table class="history-table">
+            <thead><tr><th>#</th><th>Date &amp; Time</th><th>Mode</th><th>Words</th><th>Score</th><th>Time</th></tr></thead>
+            <tbody id="setup-history-tbody"></tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -456,7 +481,7 @@
         <div class="actions" style="margin-top:16px">
           <button class="btn btn-secondary btn-sm" onclick="prevTest()">⬅️ Back</button>
           <button class="btn btn-read btn-sm" onclick="readTestWord()">🔊 Read</button>
-          <button class="btn btn-secondary btn-sm" onclick="nextTest()">Next ➡️</button>
+          <button class="btn btn-secondary btn-sm" id="test-next-btn" onclick="testNextFromBtn()">Next ➡️</button>
         </div>
       </div>
     </div>
@@ -814,7 +839,7 @@ function loadTestQuestion(idx) {
     '<label class="input-label">' + labels[t] + '</label>' +
     '<input class="input-field" id="test-inp-' + t + '" type="text" ' +
     'placeholder="' + placeholders[t] + '" autocomplete="off" autocorrect="off" spellcheck="false" ' +
-    'oninput="saveTestAnswer(' + idx + ')" data-field="' + t + '"/>' +
+    'oninput="saveTestAnswer(' + idx + ')" onkeydown="testInputKeydown(event,\'' + t + '\')" data-field="' + t + '"/>' +
     '</div>'
   ).join('');
 
@@ -825,6 +850,13 @@ function loadTestQuestion(idx) {
       if (inp && testAnswers[idx][t] !== undefined) inp.value = testAnswers[idx][t];
     });
   }
+
+  // Reset Next button and focus first input
+  setNextReady(false);
+  setTimeout(() => {
+    const first = document.getElementById('test-inp-' + needFields[0]);
+    if (first) first.focus();
+  }, 120);
 
   const card = document.getElementById('test-question-card');
   card.classList.remove('animate-pop');
@@ -997,6 +1029,105 @@ function backToSetup()  {
   document.getElementById('test-results').classList.add('hidden');
   document.getElementById('test-session').classList.add('hidden');
   document.getElementById('test-setup').classList.remove('hidden');
+}
+
+
+// ===================================================
+//  TEST KEYBOARD NAVIGATION
+// ===================================================
+function testInputKeydown(e, currentField) {
+  if (e.key !== 'Enter') return;
+  e.preventDefault();
+  const givenTense   = testGivenTense[testCurrentIdx];
+  const needFields   = ['present','past','pp'].filter(t => t !== givenTense);
+  const currentIndex = needFields.indexOf(currentField);
+  const nextField    = needFields[currentIndex + 1];
+  if (nextField) {
+    const nextInp = document.getElementById('test-inp-' + nextField);
+    if (nextInp) nextInp.focus();
+  } else {
+    saveTestAnswer(testCurrentIdx);
+    setNextReady(true);
+    document.getElementById('test-next-btn').focus();
+  }
+}
+function setNextReady(ready) {
+  const btn = document.getElementById('test-next-btn');
+  if (!btn) return;
+  if (ready) {
+    btn.classList.remove('btn-secondary');
+    btn.classList.add('btn-success');
+  } else {
+    btn.classList.remove('btn-success');
+    btn.classList.add('btn-secondary');
+  }
+}
+function testNextFromBtn() {
+  setNextReady(false);
+  nextTest();
+}
+
+// ===================================================
+//  STATS PANEL (on test setup page)
+// ===================================================
+function openStatsPanel() {
+  renderSetupMistakes();
+  renderSetupHistory();
+  document.getElementById('stats-panel').classList.remove('hidden');
+  document.getElementById('stats-panel').scrollIntoView({ behavior:'smooth' });
+}
+function closeStatsPanel() {
+  document.getElementById('stats-panel').classList.add('hidden');
+}
+function switchStatsTab(tab) {
+  document.querySelectorAll('#stats-panel .results-tab').forEach((t,i) => {
+    t.classList.toggle('active', i === (tab==='weak'?0:1));
+  });
+  document.getElementById('stab-weak').classList.toggle('active', tab==='weak');
+  document.getElementById('stab-hist').classList.toggle('active', tab==='hist');
+}
+function renderSetupMistakes() {
+  const mistakes = loadMistakes();
+  const sorted   = Object.entries(mistakes).sort((a,b) => b[1].count - a[1].count);
+  const list     = document.getElementById('setup-mistake-list');
+  if (!sorted.length) {
+    list.innerHTML = '<div class="history-empty">No mistakes recorded yet. Complete a test first!</div>';
+    return;
+  }
+  const max = sorted[0][1].count;
+  list.innerHTML = sorted.slice(0,20).map(([verb,d]) =>
+    '<div class="mistake-row">' +
+    '<span style="font-size:1.2rem">' + (d.icon||'') + '</span>' +
+    '<span class="mistake-verb">' + verb + '</span>' +
+    '<span class="mistake-forms">' + d.past + ' / ' + d.pp + '</span>' +
+    '<div class="mistake-bar-wrap"><div class="mistake-bar" style="width:' + Math.round((d.count/max)*100) + '%"></div></div>' +
+    '<span class="mistake-count">' + d.count + ' time' + (d.count>1?'s':'') + '</span>' +
+    '</div>'
+  ).join('');
+}
+function renderSetupHistory() {
+  const history = loadHistory();
+  const tbody   = document.getElementById('setup-history-tbody');
+  if (!history.length) {
+    tbody.innerHTML = '<tr><td colspan="6" class="history-empty">No test history yet.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = history.map((r,i) => {
+    const d    = new Date(r.date);
+    const date = d.toLocaleDateString('en-HK',{day:'2-digit',month:'short',year:'numeric'});
+    const time = d.toLocaleTimeString('en-HK',{hour:'2-digit',minute:'2-digit'});
+    const pct  = Math.round((r.correct/r.total)*100);
+    const cls  = pct>=75?'score-high':pct>=50?'score-mid':'score-low';
+    const mins = Math.floor((r.elapsed||0)/60), secs = (r.elapsed||0)%60;
+    const dur  = mins>0 ? mins+'m '+secs+'s' : secs+'s';
+    return '<tr>' +
+      '<td style="color:var(--text-muted)">' + (i+1) + '</td>' +
+      '<td>' + date + ' <span style="color:var(--text-muted)">' + time + '</span></td>' +
+      '<td style="font-size:.8rem;color:var(--text-muted)">' + (r.mode==='random'?'Random':'Normal') + '</td>' +
+      '<td>' + r.total + ' words</td>' +
+      '<td><span class="score-pill ' + cls + '">' + r.correct + '/' + r.total + ' (' + pct + '%)</span></td>' +
+      '<td style="color:var(--text-muted)">' + dur + '</td></tr>';
+  }).join('');
 }
 
 // ===================================================

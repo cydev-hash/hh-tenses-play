@@ -885,20 +885,33 @@ function backToSetup()  {
 }
 
 // ===================================================
-//  SPEECH
+//  SPEECH — MP3 first, Web Speech API fallback
 // ===================================================
-function speak(text, onEnd) {
-  if (!window.speechSynthesis) { if (onEnd) onEnd(); return; }
-  const utt  = new SpeechSynthesisUtterance(text);
-  utt.lang   = 'en-US';
-  utt.rate   = 0.85;
-  utt.pitch  = 1.1;
-  if (onEnd) utt.onend = onEnd;
-  speechSynthesis.speak(utt);
+function getAudioPath(word) {
+  const file = word.toLowerCase().replace(/\s+/g, '_') + '.mp3';
+  return 'audio/' + file;
 }
+
+function speak(word, onEnd) {
+  const src = getAudioPath(word);
+  const audio = new Audio(src);
+  audio.onended = () => { if (onEnd) onEnd(); };
+  audio.onerror = () => {
+    // Fallback to Web Speech API if MP3 not found
+    if (!window.speechSynthesis) { if (onEnd) onEnd(); return; }
+    const utt  = new SpeechSynthesisUtterance(word);
+    utt.lang   = 'en-US';
+    utt.rate   = 0.85;
+    utt.pitch  = 1.0;
+    if (onEnd) utt.onend = onEnd;
+    speechSynthesis.speak(utt);
+  };
+  audio.play().catch(() => audio.onerror());
+}
+
 function speakSequence(words, i=0) {
   if (i >= words.length) return;
-  speak(words[i], () => setTimeout(() => speakSequence(words, i+1), 350));
+  speak(words[i], () => setTimeout(() => speakSequence(words, i+1), 400));
 }
 
 // ===================================================

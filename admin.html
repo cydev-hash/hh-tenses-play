@@ -326,6 +326,11 @@ main{max-width:1000px;margin:0 auto;padding:28px 20px 80px}
       <button class="btn btn-ghost" id="pub-cancel-btn" onclick="closePublishModal()">Cancel</button>
       <button class="btn-publish" id="pub-btn" onclick="doPublish()">&#128640; Publish Now</button>
     </div>
+    <div style="margin-top:12px;text-align:center">
+      <button onclick="resetGhToken()" style="background:none;border:none;color:var(--text-muted);font-size:.78rem;cursor:pointer;text-decoration:underline;font-family:'Nunito',sans-serif">
+        &#128274; Reset GitHub Token
+      </button>
+    </div>
   </div>
 </div>
 
@@ -914,60 +919,89 @@ async function doPublish() {
     token = token.trim();
   }
   const btn = document.getElementById('pub-btn');
-  btn.disabled = true; btn.innerHTML = '<span class="spinner spinner-dark"></span> Publishing...';
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner spinner-dark"></span> Publishing...';
   document.getElementById('pub-cancel-btn').textContent = 'Close';
   document.getElementById('pub-desc').textContent = '';
-  const b64 = btoa(unescape(encodeURIComponent(generateVerbsJs())));
-  const url  = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
-  const hdrs = {'Authorization':'token '+token,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'};
+
+  const b64  = btoa(unescape(encodeURIComponent(generateVerbsJs())));
+  const url  = 'https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/' + GH_FILE;
+  const hdrs = {
+    'Authorization': 'token ' + token,
+    'Content-Type':  'application/json',
+    'Accept':        'application/vnd.github.v3+json'
+  };
+
   try {
-    logPub('Connecting to GitHub...','info');
-    // Always fetch fresh SHA — never use cached value to avoid mismatch
-    const getRes = await fetch(`${url}?ref=${GH_BRANCH}&t=${Date.now()}`, {
-      headers: {...hdrs, 'Cache-Control': 'no-cache'}
-    });
+    logPub('Connecting to GitHub...', 'info');
+
+    const getRes = await fetch(url + '?ref=' + GH_BRANCH, { headers: hdrs });
+
     let sha = null;
     if (getRes.ok) {
-      const fileData = await getRes.json();
-      sha = fileData.sha;
-      logPub('File found ✓ (SHA: ' + sha.slice(0,8) + ')','info');
+      const data = await getRes.json();
+      sha = data.sha;
+      logPub('File found ✓', 'info');
     } else if (getRes.status === 404) {
-      logPub('File not found — will create new','info');
+      logPub('File not found — will create new', 'info');
     } else if (getRes.status === 401) {
       localStorage.removeItem(KEY_GH);
-      throw new Error('GitHub token invalid or expired. Please re-enter.');
+      throw new Error('Token invalid or expired — click Reset Token below and try again.');
     } else {
       throw new Error('GitHub error ' + getRes.status);
     }
-    logPub('Uploading '+verbs.length+' verbs...','info');
-    const body = {message:'Update verb list ('+verbs.length+' verbs)',content:b64,branch:GH_BRANCH};
+
+    logPub('Uploading ' + verbs.length + ' verbs...', 'info');
+    const body = {
+      message: 'Update verb list (' + verbs.length + ' verbs)',
+      content: b64,
+      branch:  GH_BRANCH
+    };
     if (sha) body.sha = sha;
-    const putRes = await fetch(url,{method:'PUT',headers:hdrs,body:JSON.stringify(body)});
+
+    const putRes = await fetch(url, {
+      method:  'PUT',
+      headers: hdrs,
+      body:    JSON.stringify(body)
+    });
+
     if (!putRes.ok) {
-      const e = await putRes.json().catch(()=>({}));
-      if (putRes.status===401) localStorage.removeItem(KEY_GH);
-      if (putRes.status===422) throw new Error('SHA mismatch — please try again (click Retry)');
-      throw new Error(e.message||'HTTP '+putRes.status);
+      const e = await putRes.json().catch(() => ({}));
+      if (putRes.status === 401) localStorage.removeItem(KEY_GH);
+      if (putRes.status === 422) throw new Error('SHA mismatch — please click Retry');
+      throw new Error(e.message || 'HTTP ' + putRes.status);
     }
+
     const result = await putRes.json();
-    logPub('Published! ✅','');
-    logPub('Commit: '+result.commit.sha.slice(0,8),'info');
-    logPub('Live app updates in ~30 seconds 🌐','info');
+    logPub('Published! ✅', '');
+    logPub('Commit: ' + result.commit.sha.slice(0, 8), 'info');
+    logPub('Live app updates in ~60 seconds 🌐', 'info');
     document.getElementById('pub-icon').textContent  = '🎉';
     document.getElementById('pub-title').textContent = 'Published!';
     btn.textContent = '✅ Done';
-    isDirty = false; renderTable();
-    showToast('Published to GitHub!','success');
+    isDirty = false;
+    renderTable();
+    showToast('Published to GitHub!', 'success');
+
   } catch(err) {
-    logPub('Error: '+err.message,'error');
-    btn.disabled = false; btn.textContent = '🔄 Retry';
-    showToast('Failed: '+err.message,'error');
+    logPub('Error: ' + err.message, 'error');
+    btn.disabled = false;
+    btn.textContent = '🔄 Retry';
+    showToast('Failed: ' + err.message, 'error');
   }
 }
 
-// ══════════════════════════════════════════════
-//  HELPERS
-// ══════════════════════════════════════════════
+
+function resetGhToken() {
+  localStorage.removeItem('tenses_gh_key');
+  document.getElementById('pub-btn').disabled = false;
+  document.getElementById('pub-btn').textContent = '&#128640; Publish Now';
+  document.getElementById('pub-log').innerHTML = '';
+  document.getElementById('pub-log').style.display = 'none';
+  document.getElementById('pub-desc').textContent = 'Token cleared. Click Publish Now to enter your new token.';
+  showToast('Token cleared — enter new token on next publish', 'info');
+}
+
 function markDirty() { isDirty=true; document.getElementById('unsaved-chip').style.display=''; }
 function showToast(msg,type='info') {
   const el=document.getElementById('toast');

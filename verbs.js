@@ -1,5 +1,5 @@
 // hh-tenses-play: verbs.js
-// Updated: 2026-04-20T17:27:29.744Z
+// Updated: 2026-04-21T14:35:00.824Z
 
 const VERBS = [
   {
@@ -309,7 +309,7 @@ const VERBS = [
     ]
   },
   {
-    present: "learn", past: "learned", pp: "learned",
+    present: "learn", past: "learnt", pp: "learnt",
     icon: "📚", zh: "學習",
     sentences: [
       { tense:"present", verb:"learn", text:"I learn new words every day." },

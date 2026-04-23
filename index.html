@@ -420,13 +420,7 @@
             <button class="config-chip selected" data-mode="normal" onclick="selectChip('mode-chips',this)">📋 Normal – Show Present</button>
             <button class="config-chip" data-mode="random" onclick="selectChip('mode-chips',this)">🎲 Random – Show Any Tense</button>
           </div>
-          <div class="config-row" id="count-chips">
-            <div class="sentences-title" style="width:100%;margin-bottom:4px">Number of Words</div>
-            <button class="config-chip selected" data-count="10" onclick="selectChip('count-chips',this)">10</button>
-            <button class="config-chip" data-count="20" onclick="selectChip('count-chips',this)">20</button>
-            <button class="config-chip" data-count="30" onclick="selectChip('count-chips',this)">30</button>
-            <button class="config-chip" data-count="all" onclick="selectChip('count-chips',this)">All (50)</button>
-          </div>
+
           <div class="config-row" id="order-chips">
             <div class="sentences-title" style="width:100%;margin-bottom:4px">Word Order</div>
             <button class="config-chip selected" data-order="sequential" onclick="selectChip('order-chips',this)">Sequential</button>
@@ -729,10 +723,19 @@ function showAnswer() {
   document.getElementById('ex-sentences').classList.remove('hidden');
 }
 
+function cleanForSpeech(word) {
+  // Take only the first form if slash-separated (e.g. "was/were" -> "was")
+  return (word || '').split('/')[0].split('(')[0].trim();
+}
+
 function readWord() {
-  // Cancel any currently playing speech before starting fresh
+  const v = VERBS[exIndex];
   if (window.speechSynthesis) speechSynthesis.cancel();
-  speakSequence([VERBS[exIndex].present, VERBS[exIndex].past, VERBS[exIndex].pp]);
+  speakSequence([
+    cleanForSpeech(v.present),
+    cleanForSpeech(v.past),
+    cleanForSpeech(v.pp)
+  ]);
 }
 
 function prevExercise() {
@@ -762,13 +765,11 @@ function selectChip(groupId, el) {
 
 function startTest() {
   const modeChip  = document.querySelector('#mode-chips .config-chip.selected');
-  const countChip = document.querySelector('#count-chips .config-chip.selected');
   const orderChip = document.querySelector('#order-chips .config-chip.selected');
 
-  testConfig.mode  = modeChip  ? modeChip.dataset.mode   : 'normal';
-  const countVal   = countChip ? countChip.dataset.count  : '10';
-  testConfig.count = countVal === 'all' ? VERBS.length : parseInt(countVal);
-  testConfig.order = orderChip ? orderChip.dataset.order  : 'sequential';
+  testConfig.mode  = modeChip  ? modeChip.dataset.mode  : 'normal';
+  testConfig.count = VERBS.length; // always test all verbs
+  testConfig.order = orderChip ? orderChip.dataset.order : 'sequential';
 
   let indices = Array.from({length: VERBS.length}, (_,i) => i);
   if (testConfig.order === 'shuffle') indices = shuffle(indices);

@@ -890,6 +890,25 @@
       <button class="btn btn-secondary" onclick="prevExercise()">⬅️ Previous</button>
       <button class="btn btn-secondary" onclick="nextExercise()">Next ➡️</button>
     </div>
+
+    <!-- WW2 Exercise Map -->
+    <div id="ex-ww2-map" class="hidden" style="margin-top:20px">
+      <div id="ww2-map-card">
+        <div id="ww2-map-header">
+          <div id="ww2-map-title">&#9876;&#65039; Exercise Campaign Map</div>
+          <div id="ww2-conquest-stats"><span id="ex-ww2-count">0</span> / <span id="ex-ww2-total">0</span> territories</div>
+        </div>
+        <div id="ww2-progress-bar-wrap">
+          <div id="ex-ww2-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#8B0000,#cc2200);border-radius:2px;transition:width 0.8s ease"></div>
+          <div id="ww2-progress-label">0% Conquered</div>
+        </div>
+        <div id="ex-ww2-grid"></div>
+        <div id="ex-ww2-victory" class="hidden">
+          <div id="ww2-victory-text">&#9876;&#65039; VICTORY! &#9876;&#65039;</div>
+          <div id="ww2-victory-sub">All verbs conquered! Europe is yours!</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ===== TEST MODE ===== -->
@@ -971,6 +990,7 @@
         <div class="result-summary" id="result-summary"></div>
         <div style="margin-bottom:24px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
           <button class="btn btn-primary" onclick="restartTest()">🔄 Try Again</button>
+          <button class="btn btn-success" onclick="restartFromBeginning()">⏮️ Restart</button>
           <button class="btn btn-secondary" onclick="backToSetup()">⚙️ New Test</button>
         </div>
         <div class="results-tabs">
@@ -996,28 +1016,29 @@
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- WW2 Conquest Map -->
-  <div id="ww2-map-section" class="hidden" style="margin-top:24px;padding:0 0 40px">
-    <div id="ww2-map-card">
-      <div id="ww2-map-header">
-        <div id="ww2-map-title">&#9876;&#65039; European Theatre of Operations</div>
-        <div id="ww2-conquest-stats">
-          <span id="ww2-conquered-count">0</span> / <span id="ww2-total-count">0</span> territories conquered
+    <!-- WW2 Test Map -->
+    <div id="test-ww2-map" class="hidden" style="margin-top:24px">
+      <div id="ww2-map-card">
+        <div id="ww2-map-header">
+          <div id="ww2-map-title">&#9876;&#65039; Test Campaign Map</div>
+          <div id="ww2-conquest-stats">
+            <span id="test-ww2-count">0</span> / <span id="test-ww2-total">0</span> territories conquered
+          </div>
         </div>
-      </div>
-      <div id="ww2-progress-bar-wrap">
-        <div id="ww2-progress-bar-fill"></div>
-        <div id="ww2-progress-label">0% Conquered</div>
-      </div>
-      <div id="ww2-map-grid"></div>
-      <div id="ww2-victory-banner" class="hidden">
-        <div id="ww2-victory-text">&#9876;&#65039; VICTORY! &#9876;&#65039;</div>
-        <div id="ww2-victory-sub">All territories conquered! The war is over!</div>
+        <div id="ww2-progress-bar-wrap">
+          <div id="test-ww2-bar"></div>
+          <div id="ww2-progress-label" id="test-ww2-label">0% Conquered</div>
+        </div>
+        <div id="test-ww2-grid"></div>
+        <div id="test-ww2-victory" class="hidden">
+          <div id="ww2-victory-text">&#9876;&#65039; TOTAL VICTORY! &#9876;&#65039;</div>
+          <div id="ww2-victory-sub">All territories conquered! The war is won!</div>
+        </div>
       </div>
     </div>
   </div>
+
 </main>
 
 <!-- WW2 MAP OVERLAY -->
@@ -1203,7 +1224,7 @@ function checkExercise() {
     fb.className = 'feedback-bar show feedback-correct';
     document.getElementById('ex-sentences').classList.remove('hidden');
     launchConfetti(30);
-    ww2ConquerTerritory(exIndex);
+    ww2ConquerTerritory(exIndex, 'ex');
 
   } else {
     // ---- INCORRECT ----
@@ -1327,7 +1348,7 @@ function startTest() {
 
   testStartTime = Date.now();
   // Reset WW2 map for new test
-  if (ww2Mode) { ww2Conquered = 0; initWW2Map(); }
+  if (ww2Mode) { ww2Conquered = 0; initWW2Map('test'); }
   document.getElementById('test-setup').classList.add('hidden');
   document.getElementById('test-session').classList.remove('hidden');
   document.getElementById('test-results').classList.add('hidden');
@@ -1464,7 +1485,7 @@ function submitTest() {
     const filled = needFields.every(t => ans[t]);
     if (allCorrect && filled) {
       correct++;
-      setTimeout(() => ww2ConquerTerritory(i), i * 200); // stagger conquest animation
+      setTimeout(() => ww2ConquerTerritory(i, 'test'), i * 200); // stagger conquest animation
     } else {
       wrongVerbs.push(v.present);
       if (!mistakes[v.present]) mistakes[v.present] = { count:0, past:v.past, pp:v.pp, icon:v.icon };
@@ -1567,6 +1588,17 @@ function renderHistoryTab() {
 }
 
 function restartTest() { document.getElementById('test-results').classList.add('hidden'); startTest(); }
+function restartFromBeginning() {
+  // Reset to first word, same settings
+  document.getElementById('test-results').classList.add('hidden');
+  testAnswers  = {};
+  testSkipped  = new Set();
+  testCurrentIdx = 0;
+  if (ww2Mode) { ww2Conquered = 0; initWW2Map('test'); }
+  buildNavDots();
+  loadTestQuestion(0);
+  document.getElementById('test-session').classList.remove('hidden');
+}
 function backToSetup()  {
   document.getElementById('test-results').classList.add('hidden');
   document.getElementById('test-session').classList.add('hidden');
@@ -1806,8 +1838,7 @@ function toggleWW2Mode() {
     btn.style.color = 'var(--ww2-primary)';
     btn.style.background = 'rgba(200,168,75,0.1)';
     logo.innerHTML = '🎖️ Tenses<span>Play</span>';
-    document.getElementById('ww2-map-section').classList.remove('hidden');
-    initWW2Map();
+    initWW2Map('ex');
     playWW2Sound('march');
   } else {
     btn.textContent = '🎖️ WW2 Mode';
@@ -1815,59 +1846,76 @@ function toggleWW2Mode() {
     btn.style.color = '';
     btn.style.background = '';
     logo.innerHTML = '🌟 Tenses<span>Play</span>';
-    document.getElementById('ww2-map-section').classList.add('hidden');
+    
   }
   localStorage.setItem('tenses_ww2_mode', ww2Mode ? '1' : '0');
 }
 
-function initWW2Map() {
+function initWW2Map(mode) {
+  // mode = 'ex' or 'test'
+  const prefix = mode || 'ex';
   const total = VERBS.length;
   ww2Total = total;
   ww2Conquered = 0;
-  document.getElementById('ww2-total-count').textContent = total;
-  document.getElementById('ww2-conquered-count').textContent = 0;
-  document.getElementById('ww2-progress-bar-fill').style.width = '0%';
-  document.getElementById('ww2-progress-label').textContent = '0% Conquered';
-  document.getElementById('ww2-victory-banner').classList.add('hidden');
 
-  // Build territory grid — use exactly as many territories as verbs
-  const grid = document.getElementById('ww2-map-grid');
-  grid.innerHTML = '';
-  const territories = WW2_TERRITORIES.slice(0, total);
-  // Pad if we have more verbs than territories
-  while (territories.length < total) {
-    territories.push({name:'Territory', flag:'🏳️'});
-  }
+  // Show the right map
+  const exMap   = document.getElementById('ex-ww2-map');
+  const testMap = document.getElementById('test-ww2-map');
+  if (exMap)   exMap.classList.toggle('hidden',   prefix !== 'ex');
+  if (testMap) testMap.classList.toggle('hidden',  prefix !== 'test');
 
-  territories.forEach((t, i) => {
+  const countEl   = document.getElementById(prefix + '-ww2-count');
+  const totalEl   = document.getElementById(prefix + '-ww2-total');
+  const barEl     = document.getElementById(prefix + '-ww2-bar');
+  const victoryEl = document.getElementById(prefix + '-ww2-victory');
+  const gridEl    = document.getElementById(prefix + '-ww2-grid');
+
+  if (countEl)   countEl.textContent = 0;
+  if (totalEl)   totalEl.textContent = total;
+  if (barEl)     barEl.style.width   = '0%';
+  if (victoryEl) victoryEl.classList.add('hidden');
+
+  if (!gridEl) return;
+  gridEl.innerHTML = '';
+  const territories = [...WW2_TERRITORIES];
+  while (territories.length < total) territories.push({name:'Territory', flag:'🏳️'});
+
+  territories.slice(0, total).forEach((t, i) => {
     const div = document.createElement('div');
     div.className = 'ww2-territory';
-    div.id = 'terr-' + i;
+    div.id = prefix + '-terr-' + i;
     div.innerHTML = '<span class="terr-flag">' + t.flag + '</span><span class="terr-name">' + t.name + '</span>';
     div.title = t.name;
-    grid.appendChild(div);
+    gridEl.appendChild(div);
   });
 }
 
-function ww2ConquerTerritory(verbIndex) {
+function ww2ConquerTerritory(verbIndex, mode) {
   if (!ww2Mode) return;
-  const terr = document.getElementById('terr-' + verbIndex);
+  const prefix = mode || 'ex';
+  const terr = document.getElementById(prefix + '-terr-' + verbIndex);
   if (!terr || terr.classList.contains('conquered')) return;
   terr.classList.add('conquered');
   ww2Conquered++;
   const pct = Math.round((ww2Conquered / ww2Total) * 100);
-  document.getElementById('ww2-conquered-count').textContent = ww2Conquered;
-  document.getElementById('ww2-progress-bar-fill').style.width = pct + '%';
-  document.getElementById('ww2-progress-label').textContent = pct + '% Conquered';
+  const countEl = document.getElementById(prefix + '-ww2-count');
+  const barEl   = document.getElementById(prefix + '-ww2-bar');
+  if (countEl) countEl.textContent = ww2Conquered;
+  if (barEl)   barEl.style.width   = pct + '%';
+  // Update progress label inside bar
+  const labelEl = document.querySelector('#ww2-progress-bar-wrap #ww2-progress-label');
+  if (labelEl) labelEl.textContent = pct + '% Conquered';
   playWW2Sound('conquer');
 
   // Scroll map into view
-  document.getElementById('ww2-map-section').scrollIntoView({behavior:'smooth', block:'nearest'});
+  const mapEl = document.getElementById(prefix + '-ww2-map');
+  if (mapEl) mapEl.scrollIntoView({behavior:'smooth', block:'nearest'});
 
   // Victory!
   if (ww2Conquered >= ww2Total) {
     setTimeout(() => {
-      document.getElementById('ww2-victory-banner').classList.remove('hidden');
+      const victoryEl = document.getElementById(prefix + '-ww2-victory');
+      if (victoryEl) victoryEl.classList.remove('hidden');
       playWW2Sound('victory');
       launchConfetti(120);
     }, 600);

@@ -810,18 +810,17 @@
 
 <header>
   <div class="logo" id="app-logo">🌟 Tenses<span>Play</span></div>
-  <button id="ww2-toggle-btn" onclick="toggleWW2Mode()" title="Toggle WW2 Mode"
-  style="margin-left:auto;margin-right:8px;padding:6px 16px;border-radius:50px;border:2px solid var(--border);background:transparent;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.82rem;color:var(--text-muted);transition:all 0.2s">
-  🎖️ WW2 Mode
-</button>
-<a href="admin.html" style="margin-right:8px;font-size:0.8rem;font-weight:800;color:var(--text-muted);text-decoration:none;padding:6px 14px;border-radius:50px;border:1.5px solid var(--border)" onmouseover="this.style.color='var(--primary)';this.style.borderColor='var(--primary)'" onmouseout="this.style.color='var(--text-muted)';this.style.borderColor='var(--border)'">⚙️ 管理</a>
-  <button class="theme-toggle" id="theme-toggle-btn" onclick="toggleTheme()" title="Toggle WW2 Mode">
-    🌟 Normal
-  </button>
-  <div class="mode-tabs" style="margin-left:0">
+  <div class="mode-tabs" style="margin-left:auto">
     <button class="mode-tab active" onclick="switchMode('exercise')">📖 Exercise</button>
     <button class="mode-tab" onclick="switchMode('test')">📝 Test</button>
   </div>
+  <button id="ww2-toggle-btn" onclick="toggleWW2Mode()" title="Toggle WW2 Mode"
+    style="margin-left:10px;padding:6px 16px;border-radius:50px;border:2px solid var(--border);background:transparent;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.82rem;color:var(--text-muted);transition:all 0.2s;white-space:nowrap">
+    🎖️ WW2
+  </button>
+  <a href="admin.html" style="margin-left:8px;font-size:0.8rem;font-weight:800;color:var(--text-muted);text-decoration:none;padding:6px 14px;border-radius:50px;border:1.5px solid var(--border)"
+    onmouseover="this.style.color='var(--primary)';this.style.borderColor='var(--primary)'"
+    onmouseout="this.style.color='var(--text-muted)';this.style.borderColor='var(--border)'">⚙️ 管理</a>
 </header>
 
 <main>
@@ -1943,7 +1942,6 @@ function shuffle(arr) {
   return a;
 }
 
-// ═══════════════════════════════════════════════════════
-//  WW2 THEME ENGINE
-// ═══════════════════════════════════════════════════════
-
+</script>
+</body>
+</html>

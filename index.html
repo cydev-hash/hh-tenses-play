@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>🌟 Tenses Play – Verb Forms Practice</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@400;600;700;800&family=Special+Elite&family=Russo+One&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@400;600;700;800&family=Special+Elite&family=Russo+One&display=swap" rel="stylesheet"/>
 <style>
   :root {
     --bg: #f0f4ff;
@@ -599,6 +599,209 @@
     .logo { font-size:1.2rem; }
     .mode-tab { padding:6px 14px; font-size:0.8rem; }
   }
+
+  /* ════════════════════════════════════
+     WW2 THEME
+  ════════════════════════════════════ */
+  :root {
+    --ww2-bg:       #1a1a0e;
+    --ww2-bg2:      #232310;
+    --ww2-card:     #2a2a14;
+    --ww2-primary:  #c8a84b;
+    --ww2-red:      #cc2200;
+    --ww2-green:    #2d5a1b;
+    --ww2-text:     #e8ddb5;
+    --ww2-muted:    #8a7d5a;
+    --ww2-border:   #4a4020;
+    --ww2-conquered:#cc2200;
+    --ww2-neutral:  #3d3d20;
+    --ww2-shadow:   0 4px 24px rgba(0,0,0,0.6);
+  }
+
+  /* WW2 body override */
+  body.ww2-mode {
+    background: var(--ww2-bg) !important;
+    background-image:
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 40px,
+        rgba(200,168,75,0.03) 40px,
+        rgba(200,168,75,0.03) 41px
+      ) !important;
+    font-family: 'Special Elite', 'Courier New', monospace !important;
+  }
+  body.ww2-mode header {
+    background: var(--ww2-card) !important;
+    border-bottom: 2px solid var(--ww2-primary) !important;
+    box-shadow: 0 2px 20px rgba(200,168,75,0.2) !important;
+  }
+  body.ww2-mode .logo {
+    font-family: 'Special Elite', 'Courier New', monospace !important;
+    color: var(--ww2-primary) !important;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  body.ww2-mode .logo span { color: var(--ww2-red) !important; }
+  body.ww2-mode .mode-tab {
+    font-family: 'Special Elite', 'Courier New', monospace !important;
+    border-color: var(--ww2-border) !important;
+    color: var(--ww2-muted) !important;
+    background: var(--ww2-card) !important;
+  }
+  body.ww2-mode .mode-tab.active {
+    background: var(--ww2-red) !important;
+    border-color: var(--ww2-red) !important;
+    color: var(--ww2-text) !important;
+  }
+  body.ww2-mode .exercise-card,
+  body.ww2-mode .test-config,
+  body.ww2-mode .test-question,
+  body.ww2-mode .test-nav,
+  body.ww2-mode .results-card {
+    background: var(--ww2-card) !important;
+    border: 1.5px solid var(--ww2-border) !important;
+    box-shadow: var(--ww2-shadow) !important;
+  }
+  body.ww2-mode .word-info h2 {
+    font-family: 'Special Elite', 'Courier New', monospace !important;
+    color: var(--ww2-primary) !important;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  body.ww2-mode .word-info .zh { color: var(--ww2-muted) !important; }
+  body.ww2-mode .tense-box {
+    background: var(--ww2-bg2) !important;
+    border-color: var(--ww2-border) !important;
+  }
+  body.ww2-mode .tense-word { color: var(--ww2-text) !important; font-family: 'Special Elite', 'Courier New', monospace !important; }
+  body.ww2-mode .tense-label { color: var(--ww2-muted) !important; }
+  body.ww2-mode .input-field {
+    background: var(--ww2-bg2) !important;
+    border-color: var(--ww2-border) !important;
+    color: var(--ww2-text) !important;
+    font-family: 'Special Elite', 'Courier New', monospace !important;
+  }
+  body.ww2-mode .input-field:focus { border-color: var(--ww2-primary) !important; }
+  body.ww2-mode .input-field.correct { border-color: #4a9c2a !important; background: rgba(74,156,42,0.1) !important; }
+  body.ww2-mode .input-field.wrong   { border-color: var(--ww2-red) !important; background: rgba(204,34,0,0.1) !important; }
+  body.ww2-mode .btn-primary  { background: var(--ww2-red)     !important; border-radius: 4px !important; letter-spacing: 1px; text-transform: uppercase; }
+  body.ww2-mode .btn-success  { background: var(--ww2-green)   !important; color: var(--ww2-text) !important; border-radius: 4px !important; }
+  body.ww2-mode .btn-secondary, body.ww2-mode .btn-ghost {
+    background: var(--ww2-bg2) !important;
+    border-color: var(--ww2-border) !important;
+    color: var(--ww2-text) !important;
+    border-radius: 4px !important;
+  }
+  body.ww2-mode .btn-read { background: linear-gradient(135deg, #8B6914, var(--ww2-primary)) !important; border-radius: 4px !important; }
+  body.ww2-mode .feedback-correct { background: rgba(74,156,42,0.15) !important; color: #5cb85c !important; border-color: #4a9c2a !important; }
+  body.ww2-mode .feedback-wrong   { background: rgba(204,34,0,0.15) !important; color: var(--ww2-red) !important; border-color: var(--ww2-red) !important; }
+  body.ww2-mode .results-score { color: var(--ww2-primary) !important; font-family: 'Special Elite', 'Courier New', monospace !important; }
+  body.ww2-mode .config-chip { background: var(--ww2-bg2) !important; border-color: var(--ww2-border) !important; color: var(--ww2-muted) !important; border-radius: 4px !important; }
+  body.ww2-mode .config-chip.selected { background: var(--ww2-red) !important; border-color: var(--ww2-red) !important; color: var(--ww2-text) !important; }
+  body.ww2-mode .nav-dot { background: var(--ww2-bg2) !important; border-color: var(--ww2-border) !important; color: var(--ww2-muted) !important; }
+  body.ww2-mode .nav-dot.active   { background: var(--ww2-red) !important; border-color: var(--ww2-red) !important; color: #fff !important; }
+  body.ww2-mode .nav-dot.answered { background: rgba(74,156,42,0.2) !important; border-color: #4a9c2a !important; color: #5cb85c !important; }
+  body.ww2-mode .progress-bar-fill { background: linear-gradient(90deg, var(--ww2-green), var(--ww2-primary)) !important; }
+  body.ww2-mode #ww2-toggle-btn {
+    border-color: var(--ww2-primary) !important;
+    color: var(--ww2-primary) !important;
+    background: rgba(200,168,75,0.1) !important;
+  }
+
+  /* WW2 MAP */
+  #ww2-map-card {
+    background: var(--ww2-card);
+    border: 2px solid var(--ww2-primary);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: var(--ww2-shadow), 0 0 40px rgba(200,168,75,0.1);
+  }
+  #ww2-map-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 16px; flex-wrap: wrap; gap: 8px;
+  }
+  #ww2-map-title {
+    font-family: 'Special Elite', 'Courier New', monospace;
+    font-size: 1.1rem; font-weight: 700;
+    color: var(--ww2-primary); letter-spacing: 2px; text-transform: uppercase;
+  }
+  #ww2-conquest-stats {
+    font-family: 'Special Elite', 'Courier New', monospace;
+    font-size: 0.88rem; color: var(--ww2-muted); font-weight: 700;
+  }
+  #ww2-conquest-stats span { color: var(--ww2-primary); font-size: 1rem; }
+  #ww2-progress-bar-wrap {
+    height: 18px; background: var(--ww2-neutral); border-radius: 2px;
+    margin-bottom: 20px; position: relative; overflow: hidden;
+    border: 1px solid var(--ww2-border);
+  }
+  #ww2-progress-bar-fill {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--ww2-red), #ff4400);
+    transition: width 0.8s ease;
+    position: relative;
+  }
+  #ww2-progress-label {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Special Elite', 'Courier New', monospace;
+    font-size: 0.72rem; font-weight: 700; color: var(--ww2-text);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.8); z-index: 1;
+  }
+  #ww2-map-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(58px, 1fr));
+    gap: 5px;
+  }
+  .ww2-territory {
+    aspect-ratio: 1;
+    border-radius: 3px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    border: 1.5px solid var(--ww2-border);
+    background: var(--ww2-neutral);
+    cursor: default; transition: all 0.5s ease;
+    position: relative; overflow: hidden;
+    font-family: 'Special Elite', 'Courier New', monospace;
+  }
+  .ww2-territory .terr-flag { font-size: 1.3rem; line-height: 1; }
+  .ww2-territory .terr-name { font-size: 0.42rem; color: var(--ww2-muted); text-align: center; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .ww2-territory.conquered {
+    background: linear-gradient(135deg, #8B0000, var(--ww2-red)) !important;
+    border-color: #ff4400 !important;
+    box-shadow: 0 0 8px rgba(204,34,0,0.5);
+    animation: conquer-flash 0.6s ease;
+  }
+  .ww2-territory.conquered .terr-name { color: rgba(255,220,200,0.8) !important; }
+  @keyframes conquer-flash {
+    0%  { transform: scale(1);    filter: brightness(1); }
+    30% { transform: scale(1.15); filter: brightness(2); }
+    60% { transform: scale(0.95); filter: brightness(1.5); }
+    100%{ transform: scale(1);    filter: brightness(1); }
+  }
+  #ww2-victory-banner {
+    margin-top: 20px; text-align: center;
+    background: linear-gradient(135deg, #8B0000, #cc2200, #8B0000);
+    border: 2px solid var(--ww2-primary);
+    border-radius: 6px; padding: 20px;
+    animation: victory-pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes victory-pulse {
+    0%,100% { box-shadow: 0 0 10px rgba(200,168,75,0.3); }
+    50%      { box-shadow: 0 0 30px rgba(200,168,75,0.8); }
+  }
+  #ww2-victory-text {
+    font-family: 'Special Elite', 'Courier New', monospace;
+    font-size: 1.8rem; font-weight: 700;
+    color: var(--ww2-primary); letter-spacing: 4px;
+    text-shadow: 0 0 20px rgba(200,168,75,0.8);
+  }
+  #ww2-victory-sub {
+    font-family: 'Special Elite', 'Courier New', monospace;
+    color: var(--ww2-text); font-size: 0.9rem; margin-top: 6px; letter-spacing: 1px;
+  }
+
 </style>
 </head>
 <body>
@@ -606,8 +809,12 @@
 <canvas id="confetti-canvas"></canvas>
 
 <header>
-  <div class="logo">🌟 Tenses<span>Play</span></div>
-  <a href="admin.html" style="margin-left:auto;margin-right:8px;font-size:0.8rem;font-weight:800;color:var(--text-muted);text-decoration:none;padding:6px 14px;border-radius:50px;border:1.5px solid var(--border)" onmouseover="this.style.color='var(--primary)';this.style.borderColor='var(--primary)'" onmouseout="this.style.color='var(--text-muted)';this.style.borderColor='var(--border)'">⚙️ 管理</a>
+  <div class="logo" id="app-logo">🌟 Tenses<span>Play</span></div>
+  <button id="ww2-toggle-btn" onclick="toggleWW2Mode()" title="Toggle WW2 Mode"
+  style="margin-left:auto;margin-right:8px;padding:6px 16px;border-radius:50px;border:2px solid var(--border);background:transparent;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.82rem;color:var(--text-muted);transition:all 0.2s">
+  🎖️ WW2 Mode
+</button>
+<a href="admin.html" style="margin-right:8px;font-size:0.8rem;font-weight:800;color:var(--text-muted);text-decoration:none;padding:6px 14px;border-radius:50px;border:1.5px solid var(--border)" onmouseover="this.style.color='var(--primary)';this.style.borderColor='var(--primary)'" onmouseout="this.style.color='var(--text-muted)';this.style.borderColor='var(--border)'">⚙️ 管理</a>
   <button class="theme-toggle" id="theme-toggle-btn" onclick="toggleTheme()" title="Toggle WW2 Mode">
     🌟 Normal
   </button>
@@ -788,6 +995,27 @@
             <tbody id="history-tbody"></tbody>
           </table>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WW2 Conquest Map -->
+  <div id="ww2-map-section" class="hidden" style="margin-top:24px;padding:0 0 40px">
+    <div id="ww2-map-card">
+      <div id="ww2-map-header">
+        <div id="ww2-map-title">&#9876;&#65039; European Theatre of Operations</div>
+        <div id="ww2-conquest-stats">
+          <span id="ww2-conquered-count">0</span> / <span id="ww2-total-count">0</span> territories conquered
+        </div>
+      </div>
+      <div id="ww2-progress-bar-wrap">
+        <div id="ww2-progress-bar-fill"></div>
+        <div id="ww2-progress-label">0% Conquered</div>
+      </div>
+      <div id="ww2-map-grid"></div>
+      <div id="ww2-victory-banner" class="hidden">
+        <div id="ww2-victory-text">&#9876;&#65039; VICTORY! &#9876;&#65039;</div>
+        <div id="ww2-victory-sub">All territories conquered! The war is over!</div>
       </div>
     </div>
   </div>
@@ -976,6 +1204,7 @@ function checkExercise() {
     fb.className = 'feedback-bar show feedback-correct';
     document.getElementById('ex-sentences').classList.remove('hidden');
     launchConfetti(30);
+    ww2ConquerTerritory(exIndex);
 
   } else {
     // ---- INCORRECT ----
@@ -1098,6 +1327,8 @@ function startTest() {
   });
 
   testStartTime = Date.now();
+  // Reset WW2 map for new test
+  if (ww2Mode) { ww2Conquered = 0; initWW2Map(); }
   document.getElementById('test-setup').classList.add('hidden');
   document.getElementById('test-session').classList.remove('hidden');
   document.getElementById('test-results').classList.add('hidden');
@@ -1232,8 +1463,10 @@ function submitTest() {
       if (val !== cval && !(aval && val === aval)) allCorrect = false;
     });
     const filled = needFields.every(t => ans[t]);
-    if (allCorrect && filled) correct++;
-    else {
+    if (allCorrect && filled) {
+      correct++;
+      setTimeout(() => ww2ConquerTerritory(i), i * 200); // stagger conquest animation
+    } else {
       wrongVerbs.push(v.present);
       if (!mistakes[v.present]) mistakes[v.present] = { count:0, past:v.past, pp:v.pp, icon:v.icon };
       mistakes[v.present].count++;
@@ -1514,6 +1747,191 @@ function launchConfetti(count=50) {
 }
 
 // ===================================================
+//  WW2 THEME
+// ===================================================
+let ww2Mode = false;
+let ww2Conquered = 0;
+let ww2Total = 0;
+
+// European + World territories with flags
+const WW2_TERRITORIES = [
+  {name:'France',     flag:'🇫🇷'}, {name:'Germany',    flag:'🇩🇪'},
+  {name:'Poland',     flag:'🇵🇱'}, {name:'Italy',      flag:'🇮🇹'},
+  {name:'Spain',      flag:'🇪🇸'}, {name:'Portugal',   flag:'🇵🇹'},
+  {name:'Belgium',    flag:'🇧🇪'}, {name:'Netherlands',flag:'🇳🇱'},
+  {name:'Denmark',    flag:'🇩🇰'}, {name:'Norway',     flag:'🇳🇴'},
+  {name:'Sweden',     flag:'🇸🇪'}, {name:'Finland',    flag:'🇫🇮'},
+  {name:'Greece',     flag:'🇬🇷'}, {name:'Yugoslavia', flag:'🇷🇸'},
+  {name:'Romania',    flag:'🇷🇴'}, {name:'Hungary',    flag:'🇭🇺'},
+  {name:'Bulgaria',   flag:'🇧🇬'}, {name:'Czechia',    flag:'🇨🇿'},
+  {name:'Austria',    flag:'🇦🇹'}, {name:'Switzerland',flag:'🇨🇭'},
+  {name:'UK',         flag:'🇬🇧'}, {name:'Ireland',    flag:'🇮🇪'},
+  {name:'USSR',       flag:'🇷🇺'}, {name:'Turkey',     flag:'🇹🇷'},
+  {name:'Morocco',    flag:'🇲🇦'}, {name:'Algeria',    flag:'🇩🇿'},
+  {name:'Libya',      flag:'🇱🇾'}, {name:'Egypt',      flag:'🇪🇬'},
+  {name:'Japan',      flag:'🇯🇵'}, {name:'China',      flag:'🇨🇳'},
+  {name:'USA',        flag:'🇺🇸'}, {name:'Canada',     flag:'🇨🇦'},
+  {name:'Australia',  flag:'🇦🇺'}, {name:'India',      flag:'🇮🇳'},
+  {name:'Brazil',     flag:'🇧🇷'}, {name:'Mexico',     flag:'🇲🇽'},
+  {name:'Argentina',  flag:'🇦🇷'}, {name:'S.Africa',   flag:'🇿🇦'},
+  {name:'Philippines',flag:'🇵🇭'}, {name:'Indonesia',  flag:'🇮🇩'},
+  {name:'Burma',      flag:'🇲🇲'}, {name:'Thailand',   flag:'🇹🇭'},
+  {name:'Iran',       flag:'🇮🇷'}, {name:'Iraq',       flag:'🇮🇶'},
+  {name:'Ethiopia',   flag:'🇪🇹'}, {name:'Nigeria',    flag:'🇳🇬'},
+  {name:'Singapore',  flag:'🇸🇬'}, {name:'NewZealand', flag:'🇳🇿'},
+  {name:'Iceland',    flag:'🇮🇸'}, {name:'Albania',    flag:'🇦🇱'},
+  {name:'Estonia',    flag:'🇪🇪'}, {name:'Latvia',     flag:'🇱🇻'},
+  {name:'Lithuania',  flag:'🇱🇹'}, {name:'Slovakia',   flag:'🇸🇰'},
+  {name:'Croatia',    flag:'🇭🇷'}, {name:'Slovenia',   flag:'🇸🇮'},
+  {name:'Belarus',    flag:'🇧🇾'}, {name:'Ukraine',    flag:'🇺🇦'},
+  {name:'Moldova',    flag:'🇲🇩'}, {name:'Serbia',     flag:'🇷🇸'},
+  {name:'Montenegro', flag:'🇲🇪'}, {name:'N.Macedonia',flag:'🇲🇰'},
+  {name:'Bosnia',     flag:'🇧🇦'}, {name:'Luxembourg', flag:'🇱🇺'},
+  {name:'Malta',      flag:'🇲🇹'}, {name:'Cyprus',     flag:'🇨🇾'},
+  {name:'Sudan',      flag:'🇸🇩'}, {name:'Tunisia',    flag:'🇹🇳'},
+  {name:'Syria',      flag:'🇸🇾'}, {name:'Lebanon',    flag:'🇱🇧'},
+  {name:'Palestine',  flag:'🏳️'}, {name:'Jordan',     flag:'🇯🇴'},
+  {name:'S.Arabia',   flag:'🇸🇦'}, {name:'Yemen',      flag:'🇾🇪'},
+  {name:'Vietnam',    flag:'🇻🇳'}, {name:'Korea',      flag:'🇰🇷'},
+];
+
+function toggleWW2Mode() {
+  ww2Mode = !ww2Mode;
+  document.body.classList.toggle('ww2-mode', ww2Mode);
+  const btn = document.getElementById('ww2-toggle-btn');
+  const logo = document.getElementById('app-logo');
+
+  if (ww2Mode) {
+    btn.textContent = '✨ Normal Mode';
+    btn.style.borderColor = 'var(--ww2-primary)';
+    btn.style.color = 'var(--ww2-primary)';
+    btn.style.background = 'rgba(200,168,75,0.1)';
+    logo.innerHTML = '🎖️ Tenses<span>Play</span>';
+    document.getElementById('ww2-map-section').classList.remove('hidden');
+    initWW2Map();
+    playWW2Sound('march');
+  } else {
+    btn.textContent = '🎖️ WW2 Mode';
+    btn.style.borderColor = '';
+    btn.style.color = '';
+    btn.style.background = '';
+    logo.innerHTML = '🌟 Tenses<span>Play</span>';
+    document.getElementById('ww2-map-section').classList.add('hidden');
+  }
+  localStorage.setItem('tenses_ww2_mode', ww2Mode ? '1' : '0');
+}
+
+function initWW2Map() {
+  const total = VERBS.length;
+  ww2Total = total;
+  ww2Conquered = 0;
+  document.getElementById('ww2-total-count').textContent = total;
+  document.getElementById('ww2-conquered-count').textContent = 0;
+  document.getElementById('ww2-progress-bar-fill').style.width = '0%';
+  document.getElementById('ww2-progress-label').textContent = '0% Conquered';
+  document.getElementById('ww2-victory-banner').classList.add('hidden');
+
+  // Build territory grid — use exactly as many territories as verbs
+  const grid = document.getElementById('ww2-map-grid');
+  grid.innerHTML = '';
+  const territories = WW2_TERRITORIES.slice(0, total);
+  // Pad if we have more verbs than territories
+  while (territories.length < total) {
+    territories.push({name:'Territory', flag:'🏳️'});
+  }
+
+  territories.forEach((t, i) => {
+    const div = document.createElement('div');
+    div.className = 'ww2-territory';
+    div.id = 'terr-' + i;
+    div.innerHTML = '<span class="terr-flag">' + t.flag + '</span><span class="terr-name">' + t.name + '</span>';
+    div.title = t.name;
+    grid.appendChild(div);
+  });
+}
+
+function ww2ConquerTerritory(verbIndex) {
+  if (!ww2Mode) return;
+  const terr = document.getElementById('terr-' + verbIndex);
+  if (!terr || terr.classList.contains('conquered')) return;
+  terr.classList.add('conquered');
+  ww2Conquered++;
+  const pct = Math.round((ww2Conquered / ww2Total) * 100);
+  document.getElementById('ww2-conquered-count').textContent = ww2Conquered;
+  document.getElementById('ww2-progress-bar-fill').style.width = pct + '%';
+  document.getElementById('ww2-progress-label').textContent = pct + '% Conquered';
+  playWW2Sound('conquer');
+
+  // Scroll map into view
+  document.getElementById('ww2-map-section').scrollIntoView({behavior:'smooth', block:'nearest'});
+
+  // Victory!
+  if (ww2Conquered >= ww2Total) {
+    setTimeout(() => {
+      document.getElementById('ww2-victory-banner').classList.remove('hidden');
+      playWW2Sound('victory');
+      launchConfetti(120);
+    }, 600);
+  }
+}
+
+// WW2 Sound effects using Web Audio API
+function playWW2Sound(type) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if (type === 'conquer') {
+      // Victory drum hit
+      [0, 0.1, 0.2].forEach((t, i) => {
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.frequency.value = [200, 250, 350][i];
+        o.type = 'sawtooth';
+        g.gain.setValueAtTime(0.3, ctx.currentTime + t);
+        g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + 0.15);
+        o.start(ctx.currentTime + t);
+        o.stop(ctx.currentTime + t + 0.15);
+      });
+    } else if (type === 'march') {
+      // March drum
+      [0, 0.25, 0.5, 0.75].forEach(t => {
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.frequency.value = 80;
+        o.type = 'square';
+        g.gain.setValueAtTime(0.2, ctx.currentTime + t);
+        g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + 0.1);
+        o.start(ctx.currentTime + t);
+        o.stop(ctx.currentTime + t + 0.1);
+      });
+    } else if (type === 'victory') {
+      // Fanfare
+      const notes = [523, 659, 784, 1047];
+      notes.forEach((freq, i) => {
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.frequency.value = freq;
+        o.type = 'square';
+        g.gain.setValueAtTime(0.25, ctx.currentTime + i * 0.15);
+        g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.15 + 0.4);
+        o.start(ctx.currentTime + i * 0.15);
+        o.stop(ctx.currentTime + i * 0.15 + 0.4);
+      });
+    }
+  } catch(e) {}
+}
+
+// Restore WW2 mode on page load
+document.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('tenses_ww2_mode') === '1') {
+    toggleWW2Mode();
+  }
+});
+
+
+// ===================================================
 //  UTILS
 // ===================================================
 function shuffle(arr) {
@@ -1528,389 +1946,4 @@ function shuffle(arr) {
 // ═══════════════════════════════════════════════════════
 //  WW2 THEME ENGINE
 // ═══════════════════════════════════════════════════════
-let ww2Mode    = localStorage.getItem('tenses_ww2') === '1';
-let currentMap = 'europe';
-let conquered  = { europe: new Set(), pacific: new Set() };
 
-// Europe territories (simplified list mapped to SVG IDs)
-const EUROPE_TERRITORIES = [
-  'GB','FR','DE','IT','ES','PL','NL','BE','NO','SE','DK','FI',
-  'CH','AT','CZ','SK','HU','RO','BG','GR','PT','IE','HR','RS',
-  'UA','BY','LT','LV','EE','SI','BA','MK','AL','ME','LU','MT'
-];
-const PACIFIC_TERRITORIES = [
-  'PH','ID','JP','KR','TW','MY','SG','VN','TH','MM','AU','NZ',
-  'PG','FJ','GU','WS','TO','SB','VU','NC','PF','CK','NU','KI',
-  'MH','FM','PW','MP','AS','WF'
-];
-
-function applyTheme() {
-  const html = document.documentElement;
-  if (ww2Mode) {
-    html.classList.add('ww2');
-    document.getElementById('theme-toggle-btn').innerHTML = '🎖️ WW2 Mode';
-    document.body.style.fontFamily = "'Special Elite', cursive";
-  } else {
-    html.classList.remove('ww2');
-    document.getElementById('theme-toggle-btn').innerHTML = '🌟 Normal';
-    document.body.style.fontFamily = '';
-  }
-}
-
-function toggleTheme() {
-  ww2Mode = !ww2Mode;
-  localStorage.setItem('tenses_ww2', ww2Mode ? '1' : '0');
-  applyTheme();
-  if (ww2Mode) {
-    showToast('⚔️ WW2 Conquest Mode activated!', 'success');
-    playWw2Sound('activate');
-  } else {
-    showToast('🌟 Normal mode restored', 'info');
-  }
-}
-
-// ── SOUNDS ──────────────────────────────────────────────
-function playWw2Sound(type) {
-  if (!ww2Mode) return;
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    if (type === 'correct') {
-      // Victory fanfare - ascending notes
-      [523, 659, 784, 1047].forEach((freq, i) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain); gain.connect(ctx.destination);
-        osc.frequency.value = freq;
-        osc.type = 'square';
-        gain.gain.setValueAtTime(0.15, ctx.currentTime + i*0.12);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + i*0.12 + 0.25);
-        osc.start(ctx.currentTime + i*0.12);
-        osc.stop(ctx.currentTime + i*0.12 + 0.25);
-      });
-    } else if (type === 'wrong') {
-      // Alarm / buzzer
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.type = 'sawtooth';
-      osc.frequency.value = 150;
-      gain.gain.setValueAtTime(0.2, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
-      osc.start(ctx.currentTime);
-      osc.stop(ctx.currentTime + 0.4);
-    } else if (type === 'activate') {
-      // March drums
-      [0, 0.1, 0.2, 0.35].forEach(t => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain); gain.connect(ctx.destination);
-        osc.type = 'sine';
-        osc.frequency.value = 80;
-        gain.gain.setValueAtTime(0.3, ctx.currentTime + t);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + t + 0.08);
-        osc.start(ctx.currentTime + t);
-        osc.stop(ctx.currentTime + t + 0.08);
-      });
-    } else if (type === 'victory') {
-      // Full victory fanfare
-      const notes = [523,523,523,415,622,523,415,622,523];
-      const times = [0,.15,.3,.45,.5,.65,.8,.85,1.0];
-      notes.forEach((freq,i) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain); gain.connect(ctx.destination);
-        osc.frequency.value = freq;
-        osc.type = 'square';
-        gain.gain.setValueAtTime(0.2, ctx.currentTime + times[i]);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + times[i] + 0.2);
-        osc.start(ctx.currentTime + times[i]);
-        osc.stop(ctx.currentTime + times[i] + 0.2);
-      });
-    }
-  } catch(e) {}
-}
-
-// ── CONQUEST LOGIC ──────────────────────────────────────
-function conquerTerritory(correctCount, totalCount) {
-  if (!ww2Mode) return;
-
-  const territories = currentMap === 'europe' ? EUROPE_TERRITORIES : PACIFIC_TERRITORIES;
-  const conqueredSet = conquered[currentMap];
-  const targetIdx = Math.floor((correctCount / totalCount) * territories.length);
-
-  // Conquer all territories up to current progress
-  for (let i = 0; i < targetIdx && i < territories.length; i++) {
-    conqueredSet.add(territories[i]);
-  }
-
-  updateMapDisplay();
-
-  // Flash card
-  const card = document.getElementById('exercise-card') || document.getElementById('test-question-card');
-  if (card) {
-    card.classList.remove('territory-flash');
-    void card.offsetWidth;
-    card.classList.add('territory-flash');
-  }
-}
-
-function updateMapDisplay() {
-  const territories = currentMap === 'europe' ? EUROPE_TERRITORIES : PACIFIC_TERRITORIES;
-  const conqueredSet = conquered[currentMap];
-  const pct = Math.round((conqueredSet.size / territories.length) * 100);
-
-  document.getElementById('map-subtitle').textContent =
-    conqueredSet.size + ' of ' + territories.length + ' territories conquered (' + pct + '%)';
-  document.getElementById('map-progress-fill').style.width = pct + '%';
-
-  // Update SVG countries
-  conqueredSet.forEach(id => {
-    const el = document.querySelector('#map-svg-wrap .country-' + id);
-    if (el && !el.classList.contains('conquered')) {
-      el.classList.add('conquered');
-    }
-  });
-}
-
-// ── MAP SVG (Simplified schematic) ──────────────────────
-function buildEuropeSVG() {
-  // Schematic Europe map with clickable country blocks
-  const countries = [
-    {id:'GB', x:140, y:60,  w:50, h:60,  name:'United Kingdom'},
-    {id:'IE', x:90,  y:70,  w:40, h:50,  name:'Ireland'},
-    {id:'NO', x:200, y:10,  w:60, h:100, name:'Norway'},
-    {id:'SE', x:260, y:10,  w:55, h:110, name:'Sweden'},
-    {id:'FI', x:315, y:10,  w:60, h:100, name:'Finland'},
-    {id:'DK', x:215, y:100, w:40, h:50,  name:'Denmark'},
-    {id:'NL', x:190, y:140, w:35, h:35,  name:'Netherlands'},
-    {id:'BE', x:190, y:175, w:35, h:30,  name:'Belgium'},
-    {id:'LU', x:210, y:205, w:20, h:20,  name:'Luxembourg'},
-    {id:'FR', x:155, y:155, w:90, h:90,  name:'France'},
-    {id:'ES', x:110, y:240, w:100,h:80,  name:'Spain'},
-    {id:'PT', x:90,  y:240, w:30, h:80,  name:'Portugal'},
-    {id:'DE', x:225, y:125, w:80, h:80,  name:'Germany'},
-    {id:'CH', x:215, y:205, w:45, h:35,  name:'Switzerland'},
-    {id:'AT', x:260, y:205, w:55, h:30,  name:'Austria'},
-    {id:'IT', x:220, y:240, w:55, h:100, name:'Italy'},
-    {id:'PL', x:305, y:110, w:80, h:70,  name:'Poland'},
-    {id:'CZ', x:280, y:155, w:60, h:35,  name:'Czechia'},
-    {id:'SK', x:315, y:190, w:50, h:25,  name:'Slovakia'},
-    {id:'HU', x:300, y:215, w:65, h:35,  name:'Hungary'},
-    {id:'RO', x:340, y:190, w:80, h:60,  name:'Romania'},
-    {id:'BG', x:330, y:250, w:70, h:45,  name:'Bulgaria'},
-    {id:'GR', x:300, y:295, w:60, h:60,  name:'Greece'},
-    {id:'UA', x:360, y:120, w:100,h:80,  name:'Ukraine'},
-    {id:'BY', x:340, y:90,  w:70, h:50,  name:'Belarus'},
-    {id:'LT', x:320, y:75,  w:45, h:30,  name:'Lithuania'},
-    {id:'LV', x:330, y:55,  w:45, h:25,  name:'Latvia'},
-    {id:'EE', x:330, y:38,  w:45, h:22,  name:'Estonia'},
-    {id:'HR', x:265, y:240, w:50, h:35,  name:'Croatia'},
-    {id:'RS', x:300, y:240, w:45, h:40,  name:'Serbia'},
-    {id:'SI', x:255, y:215, w:35, h:25,  name:'Slovenia'},
-    {id:'BA', x:265, y:260, w:45, h:35,  name:'Bosnia'},
-    {id:'ME', x:295, y:275, w:25, h:25,  name:'Montenegro'},
-    {id:'MK', x:305, y:290, w:35, h:25,  name:'N.Macedonia'},
-    {id:'AL', x:285, y:290, w:25, h:30,  name:'Albania'},
-    {id:'MT', x:235, y:355, w:20, h:15,  name:'Malta'},
-  ];
-
-  const rects = countries.map(c => {
-    const isConquered = conquered.europe.has(c.id);
-    return `<rect class="country country-${c.id}${isConquered?' conquered':''}"
-      x="${c.x}" y="${c.y}" width="${c.w}" height="${c.h}" rx="2">
-      <title>${c.name}</title>
-    </rect>
-    <text x="${c.x+c.w/2}" y="${c.y+c.h/2+4}" text-anchor="middle"
-      font-family="Special Elite,cursive" font-size="8" fill="rgba(232,224,200,0.6)">${c.id}</text>`;
-  }).join('');
-
-  return `<svg viewBox="0 0 500 380" xmlns="http://www.w3.org/2000/svg"
-    style="background:#0d1a08;border:1px solid #4a4030;border-radius:4px">
-    ${rects}
-  </svg>`;
-}
-
-function buildPacificSVG() {
-  const islands = [
-    {id:'JP', x:340, y:60,  w:40, h:80,  name:'Japan'},
-    {id:'KR', x:300, y:80,  w:30, h:60,  name:'Korea'},
-    {id:'TW', x:310, y:160, w:25, h:35,  name:'Taiwan'},
-    {id:'PH', x:310, y:200, w:35, h:80,  name:'Philippines'},
-    {id:'MY', x:255, y:215, w:60, h:40,  name:'Malaysia'},
-    {id:'SG', x:265, y:255, w:20, h:15,  name:'Singapore'},
-    {id:'ID', x:230, y:240, w:120,h:60,  name:'Indonesia'},
-    {id:'VN', x:270, y:160, w:30, h:70,  name:'Vietnam'},
-    {id:'TH', x:245, y:145, w:40, h:60,  name:'Thailand'},
-    {id:'MM', x:225, y:120, w:40, h:60,  name:'Myanmar'},
-    {id:'AU', x:280, y:310, w:130,h:100, name:'Australia'},
-    {id:'NZ', x:400, y:360, w:35, h:50,  name:'New Zealand'},
-    {id:'PG', x:350, y:255, w:60, h:50,  name:'Papua NG'},
-    {id:'GU', x:370, y:165, w:18, h:18,  name:'Guam'},
-    {id:'PF', x:80,  y:235, w:30, h:25,  name:'Fr. Polynesia'},
-    {id:'FJ', x:430, y:280, w:25, h:20,  name:'Fiji'},
-    {id:'NC', x:400, y:300, w:30, h:20,  name:'New Caledonia'},
-    {id:'SB', x:400, y:265, w:25, h:20,  name:'Solomon Is.'},
-    {id:'MH', x:410, y:165, w:20, h:20,  name:'Marshall Is.'},
-    {id:'FM', x:385, y:190, w:20, h:20,  name:'Micronesia'},
-    {id:'PW', x:355, y:195, w:18, h:18,  name:'Palau'},
-    {id:'MP', x:380, y:145, w:18, h:18,  name:'N. Mariana'},
-    {id:'KI', x:440, y:210, w:20, h:20,  name:'Kiribati'},
-    {id:'WS', x:455, y:260, w:20, h:15,  name:'Samoa'},
-    {id:'TO', x:460, y:280, w:18, h:15,  name:'Tonga'},
-    {id:'VU', x:420, y:285, w:18, h:20,  name:'Vanuatu'},
-    {id:'AS', x:470, y:265, w:15, h:12,  name:'Am. Samoa'},
-    {id:'CK', x:460, y:310, w:15, h:12,  name:'Cook Is.'},
-    {id:'NU', x:475, y:295, w:12, h:10,  name:'Niue'},
-    {id:'WF', x:460, y:250, w:12, h:10,  name:'Wallis Is.'},
-  ];
-
-  const rects = islands.map(c => {
-    const isConquered = conquered.pacific.has(c.id);
-    return `<rect class="country country-${c.id}${isConquered?' conquered':''}"
-      x="${c.x}" y="${c.y}" width="${c.w}" height="${c.h}" rx="2">
-      <title>${c.name}</title>
-    </rect>
-    <text x="${c.x+c.w/2}" y="${c.y+c.h/2+4}" text-anchor="middle"
-      font-family="Special Elite,cursive" font-size="7" fill="rgba(232,224,200,0.6)">${c.id}</text>`;
-  }).join('');
-
-  return `<svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg"
-    style="background:#071020;border:1px solid #4a4030;border-radius:4px">
-    <!-- Ocean label -->
-    <text x="50" y="140" font-family="Special Elite,cursive" font-size="14"
-      fill="rgba(200,168,75,0.2)" transform="rotate(-15,50,140)">PACIFIC OCEAN</text>
-    ${rects}
-  </svg>`;
-}
-
-function switchMap(map) {
-  currentMap = map;
-  document.getElementById('tab-europe').classList.toggle('active', map==='europe');
-  document.getElementById('tab-pacific').classList.toggle('active', map==='pacific');
-  document.getElementById('map-svg-wrap').innerHTML =
-    map === 'europe' ? buildEuropeSVG() : buildPacificSVG();
-  updateMapDisplay();
-}
-
-function openMapOverlay() {
-  document.getElementById('map-svg-wrap').innerHTML = buildEuropeSVG();
-  updateMapDisplay();
-  document.getElementById('map-overlay').classList.add('show');
-}
-function closeMapOverlay() {
-  document.getElementById('map-overlay').classList.remove('show');
-}
-
-// ── VICTORY ─────────────────────────────────────────────
-function showVictory(totalCorrect, totalWords) {
-  if (!ww2Mode) return;
-  const pct = Math.round((totalCorrect / totalWords) * 100);
-  if (pct < 100) return;
-
-  const mapName = currentMap === 'europe' ? 'EUROPE' : 'THE PACIFIC';
-  document.querySelector('.victory-title').textContent = mapName + ' CONQUERED!';
-  document.getElementById('victory-sub').textContent =
-    'All ' + totalWords + ' verb tenses mastered — Allied forces prevail!';
-  document.getElementById('victory-screen').classList.add('show');
-  playWw2Sound('victory');
-  launchVictoryFireworks();
-}
-function closeVictory() {
-  document.getElementById('victory-screen').classList.remove('show');
-}
-
-function launchVictoryFireworks() {
-  const canvas = document.getElementById('victory-canvas');
-  const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  const colors = ['#e8c55a','#cc3300','#e8e0c8','#8B0000','#c8a84b','#ffffff'];
-  const particles = Array.from({length:120}, () => ({
-    x: Math.random() * canvas.width,
-    y: canvas.height + 10,
-    vx: (Math.random()-0.5)*8,
-    vy: -(Math.random()*15+8),
-    color: colors[Math.floor(Math.random()*colors.length)],
-    r: 3+Math.random()*4,
-    gravity: 0.25,
-    alpha: 1,
-  }));
-  let frame = 0;
-  function draw() {
-    ctx.fillStyle = 'rgba(0,0,0,0.15)';
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-    particles.forEach(p => {
-      p.x  += p.vx;
-      p.y  += p.vy;
-      p.vy += p.gravity;
-      p.alpha = Math.max(0, 1 - frame/180);
-      ctx.globalAlpha = p.alpha;
-      ctx.fillStyle = p.color;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-      ctx.fill();
-    });
-    ctx.globalAlpha = 1;
-    frame++;
-    if (frame < 200) requestAnimationFrame(draw);
-    else ctx.clearRect(0,0,canvas.width,canvas.height);
-  }
-  draw();
-}
-
-// ── MAP BUTTON in exercise mode ──────────────────────────
-// (add map icon next to Read button in WW2 mode via JS)
-function addWw2MapButton() {
-  if (!ww2Mode) return;
-  if (document.getElementById('ww2-map-btn')) return;
-  const actions = document.querySelector('.actions');
-  if (!actions) return;
-  const btn = document.createElement('button');
-  btn.id = 'ww2-map-btn';
-  btn.className = 'btn btn-secondary';
-  btn.innerHTML = '🗺 Map';
-  btn.onclick = openMapOverlay;
-  actions.appendChild(btn);
-}
-
-// ── HOOK INTO EXISTING FUNCTIONS ─────────────────────────
-// Intercept checkExercise correct answer in WW2 mode
-const _origCheckEx = checkExercise;
-window.checkExercise = function() {
-  _origCheckEx.apply(this, arguments);
-  if (ww2Mode) {
-    setTimeout(() => {
-      const fb = document.getElementById('ex-feedback');
-      if (fb && fb.classList.contains('feedback-correct')) {
-        playWw2Sound('correct');
-        conquerTerritory(exScore, VERBS.length);
-      } else if (fb && fb.classList.contains('feedback-wrong') && fb.classList.contains('show')) {
-        playWw2Sound('wrong');
-      }
-    }, 50);
-  }
-};
-
-// Intercept submitTest for victory check
-const _origSubmit = submitTest;
-window.submitTest = function() {
-  _origSubmit.apply(this, arguments);
-  if (ww2Mode) {
-    const scoreEl = document.getElementById('results-score');
-    if (scoreEl) {
-      const parts = scoreEl.textContent.split('/');
-      const correct = parseInt(parts[0]);
-      const total   = parseInt(parts[1]);
-      if (correct === total) showVictory(correct, total);
-    }
-  }
-};
-
-// ── INIT ─────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  applyTheme();
-});
-
-</script>
-</body>
-</html>
